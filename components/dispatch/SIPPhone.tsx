@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
-import { UserAgent, Registerer, Invitation, SessionState } from "sip.js";
-import { SIP_CONFIG } from "@/lib/sip-config";
+import { Device, Call } from "@twilio/voice-sdk";
 import IncomingCall from "@/components/dispatch/IncomingCall";
 import ActiveCall from "@/components/dispatch/ActiveCall";
 
@@ -15,9 +14,8 @@ interface CallerInfo {
 }
 
 export default function SIPPhone() {
-  const uaRef = useRef<UserAgent | null>(null);
-  const sessionRef = useRef<Invitation | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const deviceRef = useRef<Device | null>(null);
+  const callRef = useRef<Call | null>(null);
   const [status, setStatus] = useState<"disconnected" | "connecting" | "registered" | "error">("disconnected");
   const [incoming, setIncoming] = useState<CallerInfo | null>(null);
   const [activeCall, setActiveCall] = useState<CallerInfo | null>(null);
@@ -47,107 +45,87 @@ export default function SIPPhone() {
     }
   }, []);
 
-  useEffect(() => {
-    if (!SIP_CONFIG.password) return;
-
-    const uri = UserAgent.makeURI(`sip:${SIP_CONFIG.username}@${SIP_CONFIG.domain}`);
-    if (!uri) return;
-
-    const ua = new UserAgent({
-      uri,
-      transportOptions: { server: SIP_CONFIG.server },
-      authorizationUsername: SIP_CONFIG.username,
-      authorizationPassword: SIP_CONFIG.password,
-      displayName: SIP_CONFIG.displayName,
-      logLevel: "warn",
-    });
-
-    uaRef.current = ua;
-
-    ua.delegate = {
-      onInvite: async (invitation: Invitation) => {
-        sessionRef.current = invitation;
-        const callerUri = invitation.remoteIdentity.uri.user || "Unknown";
-        const info = await lookupCaller(callerUri);
-        setIncoming(info);
-
-        invitation.stateChange.addListener((state: SessionState) => {
-          if (state === SessionState.Terminated) {
-            setIncoming(null);
-            setActiveCall(null);
-            sessionRef.current = null;
-          }
-        });
-      },
-    };
-
-    setStatus("connecting");
-
-    ua.start().then(() => {
-      const registerer = new Registerer(ua);
-      registerer.register().then(() => {
-        setStatus("registered");
-      }).catch(() => setStatus("error"));
-    }).catch(() => setStatus("error"));
-
-    return () => {
-      ua.stop().catch(() => {});
-    };
-  }, [lookupCaller]);
-
-  const acceptCall = async () => {
-    if (!sessionRef.current) return;
+  const setupDevice = useCallback(async () => {
     try {
-      await sessionRef.current.accept({
-        sessionDescriptionHandlerOptions: {
-          constraints: { audio: true, video: false },
-        },
-      });
+      setStatus("connecting");
+      const res = await fetch("/api/twilio/token");
+      const data = await res.json();
 
-      const sdh = sessionRef.current.sessionDescriptionHandler;
-      if (sdh && "peerConnection" in sdh) {
-        const pc = (sdh as unknown as { peerConnection: RTCPeerConnection }).peerConnection;
-        const remote = new MediaStream();
-        pc.getReceivers().forEach((r) => {
-          if (r.track) remote.addTrack(r.track);
-        });
-        if (!audioRef.current) {
-          audioRef.current = new Audio();
-        }
-        audioRef.current.srcObject = remote;
-        audioRef.current.play().catch(() => {});
+      if (!data.token) {
+        setStatus("error");
+        return;
       }
 
-      setActiveCall(incoming);
-      setIncoming(null);
+      const device = new Device(data.token, {
+        logLevel: 1,
+        codecPreferences: [Call.Codec.Opus, Call.Codec.PCMU],
+      });
+
+      device.on("registered", () => setStatus("registered"));
+      device.on("error", () => setStatus("error"));
+      device.on("unregistered", () => setStatus("disconnected"));
+
+      device.on("incoming", async (call: Call) => {
+        callRef.current = call;
+        const callerNumber = call.parameters.From || "Unknown";
+        const info = await lookupCaller(callerNumber);
+        setIncoming(info);
+
+        call.on("cancel", () => {
+          setIncoming(null);
+          callRef.current = null;
+        });
+
+        call.on("disconnect", () => {
+          setIncoming(null);
+          setActiveCall(null);
+          callRef.current = null;
+        });
+      });
+
+      device.on("tokenWillExpire", async () => {
+        const refreshRes = await fetch("/api/twilio/token");
+        const refreshData = await refreshRes.json();
+        if (refreshData.token) {
+          device.updateToken(refreshData.token);
+        }
+      });
+
+      await device.register();
+      deviceRef.current = device;
     } catch {
-      setIncoming(null);
+      setStatus("error");
     }
+  }, [lookupCaller]);
+
+  useEffect(() => {
+    setupDevice();
+    return () => {
+      deviceRef.current?.destroy();
+    };
+  }, [setupDevice]);
+
+  const acceptCall = () => {
+    if (!callRef.current) return;
+    callRef.current.accept();
+    setActiveCall(incoming);
+    setIncoming(null);
   };
 
   const rejectCall = () => {
-    sessionRef.current?.reject().catch(() => {});
+    callRef.current?.reject();
     setIncoming(null);
-    sessionRef.current = null;
+    callRef.current = null;
   };
 
   const hangup = () => {
-    try {
-      const session = sessionRef.current;
-      if (session?.state === SessionState.Established) {
-        session.bye().catch(() => {});
-      }
-    } catch {}
+    callRef.current?.disconnect();
     setActiveCall(null);
-    sessionRef.current = null;
-    if (audioRef.current) {
-      audioRef.current.srcObject = null;
-    }
+    callRef.current = null;
   };
 
   return (
     <>
-      {/* SIP Status indicator */}
       <div className="fixed bottom-4 right-4 z-50">
         <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium ${
           status === "registered" ? "bg-green-500/20 text-green-400" :
