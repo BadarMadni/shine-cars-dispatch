@@ -70,7 +70,7 @@ export default function Sidebar() {
         <div className="lg:hidden fixed inset-0 bg-black/50 z-40" onClick={() => setOpen(false)} />
       )}
 
-      <aside className={`fixed lg:static top-0 left-0 z-40 w-64 h-screen bg-navy border-r border-white/10 transition-transform lg:translate-x-0 ${
+      <aside className={`fixed top-0 left-0 z-40 w-64 h-screen bg-navy border-r border-white/10 transition-transform lg:translate-x-0 overflow-y-auto ${
         open ? "translate-x-0" : "-translate-x-full"
       }`}>
         {nav}
