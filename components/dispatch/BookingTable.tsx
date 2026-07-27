@@ -22,7 +22,7 @@ export default function BookingTable({ filter }: { filter: string }) {
   const [selected, setSelected] = useState<Booking | null>(null);
 
   const load = useCallback(() => {
-    fetch(`/api/bookings?status=${filter}&page=${page}&limit=10`)
+    fetch(`/api/bookings?status=${filter}&page=${page}&limit=5`)
       .then((r) => r.json())
       .then((d) => { setBookings(d.bookings || []); setPages(d.pages || 1); })
       .catch(() => {});
