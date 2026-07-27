@@ -17,6 +17,7 @@ model Booking {
   time      String
   distance  Float
   fare      Float
+  vehicle   String   @default("car")
   status    String   @default("pending")
   source    String   @default("website")
   notes     String?

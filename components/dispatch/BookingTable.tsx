@@ -11,6 +11,7 @@ interface Booking {
   pickup: string; dropoff: string;
   date: string; time: string;
   distance: number; fare: number;
+  vehicle?: string;
   status: string; createdAt: string; notes: string | null;
 }
 
@@ -39,7 +40,7 @@ export default function BookingTable({ filter }: { filter: string }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Customer", "Pickup", "Drop-off", "Date", "Fare", "Status", ""].map((h) => (
+              {["Customer", "Pickup", "Drop-off", "Date", "Vehicle", "Fare", "Status", ""].map((h) => (
                 <th key={h} className="text-left text-navy/40 font-medium text-xs py-3 px-4">{h}</th>
               ))}
             </tr>
@@ -67,6 +68,11 @@ export default function BookingTable({ filter }: { filter: string }) {
                   </p>
                 </td>
                 <td className="py-3.5 px-4 text-navy/60 text-xs whitespace-nowrap">{b.date} {b.time}</td>
+                <td className="py-3.5 px-4">
+                  <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                    b.vehicle === "mpv" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
+                  }`}>{(b.vehicle || "car").toUpperCase()}</span>
+                </td>
                 <td className="py-3.5 px-4 font-bold text-navy">&pound;{b.fare.toFixed(2)}</td>
                 <td className="py-3.5 px-4"><StatusBadge status={b.status} /></td>
                 <td className="py-3.5 px-4">
