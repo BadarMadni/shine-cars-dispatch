@@ -113,6 +113,7 @@ export const DriverScalarFieldEnum = {
   phone: 'phone',
   password: 'password',
   status: 'status',
+  isAvailable: 'isAvailable',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

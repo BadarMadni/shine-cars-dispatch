@@ -43,10 +43,11 @@ model Driver {
   email     String   @unique
   phone     String
   password  String
-  status    String   @default("pending")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  documents DriverDocument[]
+  status      String   @default("pending")
+  isAvailable Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  documents   DriverDocument[]
 }
 
 model DriverDocument {

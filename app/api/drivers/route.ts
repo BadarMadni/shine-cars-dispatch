@@ -17,7 +17,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       drivers: drivers.map((d) => ({
         id: d.id, name: d.name, email: d.email, phone: d.phone,
-        status: d.status, createdAt: d.createdAt, documents: d.documents,
+        status: d.status, isAvailable: d.isAvailable, createdAt: d.createdAt,
+        documents: d.documents,
       })),
     });
   } catch {

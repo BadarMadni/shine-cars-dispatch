@@ -20,6 +20,7 @@ interface Driver {
   email: string;
   phone: string;
   status: string;
+  isAvailable: boolean;
   createdAt: string;
   documents: Document[];
 }
@@ -90,7 +91,7 @@ export default function DriversTable({ filter }: { filter: string }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Driver", "Contact", "Documents", "Status", "Registered", "Actions"].map((h) => (
+              {["Driver", "Contact", "Documents", "Availability", "Status", "Registered", "Actions"].map((h) => (
                 <th key={h} className="text-left text-navy/40 font-medium text-xs py-3 px-4">{h}</th>
               ))}
             </tr>
@@ -116,6 +117,20 @@ export default function DriversTable({ filter }: { filter: string }) {
                   <span className="text-xs text-navy/60 flex items-center gap-1">
                     <FileText className="w-3 h-3" /> {d.documents.length} uploaded
                   </span>
+                </td>
+                <td className="py-3.5 px-4">
+                  {d.status === "approved" ? (
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${
+                      d.isAvailable
+                        ? "bg-green-50 text-green-600"
+                        : "bg-orange-50 text-orange-600"
+                    }`}>
+                      <span className={`w-2 h-2 rounded-full ${d.isAvailable ? "bg-green-500" : "bg-orange-400"}`} />
+                      {d.isAvailable ? "Available" : "Busy"}
+                    </span>
+                  ) : (
+                    <span className="text-xs text-navy/30">—</span>
+                  )}
                 </td>
                 <td className="py-3.5 px-4"><StatusBadge status={d.status} /></td>
                 <td className="py-3.5 px-4 text-navy/40 text-xs whitespace-nowrap">
