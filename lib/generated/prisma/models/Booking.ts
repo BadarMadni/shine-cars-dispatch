@@ -46,6 +46,7 @@ export type BookingMinAggregateOutputType = {
   time: string | null
   distance: number | null
   fare: number | null
+  vehicle: string | null
   status: string | null
   source: string | null
   notes: string | null
@@ -63,6 +64,7 @@ export type BookingMaxAggregateOutputType = {
   time: string | null
   distance: number | null
   fare: number | null
+  vehicle: string | null
   status: string | null
   source: string | null
   notes: string | null
@@ -80,6 +82,7 @@ export type BookingCountAggregateOutputType = {
   time: number
   distance: number
   fare: number
+  vehicle: number
   status: number
   source: number
   notes: number
@@ -109,6 +112,7 @@ export type BookingMinAggregateInputType = {
   time?: true
   distance?: true
   fare?: true
+  vehicle?: true
   status?: true
   source?: true
   notes?: true
@@ -126,6 +130,7 @@ export type BookingMaxAggregateInputType = {
   time?: true
   distance?: true
   fare?: true
+  vehicle?: true
   status?: true
   source?: true
   notes?: true
@@ -143,6 +148,7 @@ export type BookingCountAggregateInputType = {
   time?: true
   distance?: true
   fare?: true
+  vehicle?: true
   status?: true
   source?: true
   notes?: true
@@ -247,6 +253,7 @@ export type BookingGroupByOutputType = {
   time: string
   distance: number
   fare: number
+  vehicle: string
   status: string
   source: string
   notes: string | null
@@ -287,6 +294,7 @@ export type BookingWhereInput = {
   time?: Prisma.StringFilter<"Booking"> | string
   distance?: Prisma.FloatFilter<"Booking"> | number
   fare?: Prisma.FloatFilter<"Booking"> | number
+  vehicle?: Prisma.StringFilter<"Booking"> | string
   status?: Prisma.StringFilter<"Booking"> | string
   source?: Prisma.StringFilter<"Booking"> | string
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -304,6 +312,7 @@ export type BookingOrderByWithRelationInput = {
   time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   fare?: Prisma.SortOrder
+  vehicle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -324,6 +333,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   time?: Prisma.StringFilter<"Booking"> | string
   distance?: Prisma.FloatFilter<"Booking"> | number
   fare?: Prisma.FloatFilter<"Booking"> | number
+  vehicle?: Prisma.StringFilter<"Booking"> | string
   status?: Prisma.StringFilter<"Booking"> | string
   source?: Prisma.StringFilter<"Booking"> | string
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
@@ -341,6 +351,7 @@ export type BookingOrderByWithAggregationInput = {
   time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   fare?: Prisma.SortOrder
+  vehicle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -366,6 +377,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   time?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   distance?: Prisma.FloatWithAggregatesFilter<"Booking"> | number
   fare?: Prisma.FloatWithAggregatesFilter<"Booking"> | number
+  vehicle?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   status?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   source?: Prisma.StringWithAggregatesFilter<"Booking"> | string
   notes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
@@ -383,6 +395,7 @@ export type BookingCreateInput = {
   time: string
   distance: number
   fare: number
+  vehicle?: string
   status?: string
   source?: string
   notes?: string | null
@@ -400,6 +413,7 @@ export type BookingUncheckedCreateInput = {
   time: string
   distance: number
   fare: number
+  vehicle?: string
   status?: string
   source?: string
   notes?: string | null
@@ -417,6 +431,7 @@ export type BookingUpdateInput = {
   time?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -434,6 +449,7 @@ export type BookingUncheckedUpdateInput = {
   time?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -451,6 +467,7 @@ export type BookingCreateManyInput = {
   time: string
   distance: number
   fare: number
+  vehicle?: string
   status?: string
   source?: string
   notes?: string | null
@@ -468,6 +485,7 @@ export type BookingUpdateManyMutationInput = {
   time?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -485,6 +503,7 @@ export type BookingUncheckedUpdateManyInput = {
   time?: Prisma.StringFieldUpdateOperationsInput | string
   distance?: Prisma.FloatFieldUpdateOperationsInput | number
   fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.StringFieldUpdateOperationsInput | string
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -502,6 +521,7 @@ export type BookingCountOrderByAggregateInput = {
   time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   fare?: Prisma.SortOrder
+  vehicle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -524,6 +544,7 @@ export type BookingMaxOrderByAggregateInput = {
   time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   fare?: Prisma.SortOrder
+  vehicle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -541,6 +562,7 @@ export type BookingMinOrderByAggregateInput = {
   time?: Prisma.SortOrder
   distance?: Prisma.SortOrder
   fare?: Prisma.SortOrder
+  vehicle?: Prisma.SortOrder
   status?: Prisma.SortOrder
   source?: Prisma.SortOrder
   notes?: Prisma.SortOrder
@@ -585,6 +607,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   time?: boolean
   distance?: boolean
   fare?: boolean
+  vehicle?: boolean
   status?: boolean
   source?: boolean
   notes?: boolean
@@ -602,6 +625,7 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   time?: boolean
   distance?: boolean
   fare?: boolean
+  vehicle?: boolean
   status?: boolean
   source?: boolean
   notes?: boolean
@@ -619,6 +643,7 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   time?: boolean
   distance?: boolean
   fare?: boolean
+  vehicle?: boolean
   status?: boolean
   source?: boolean
   notes?: boolean
@@ -636,6 +661,7 @@ export type BookingSelectScalar = {
   time?: boolean
   distance?: boolean
   fare?: boolean
+  vehicle?: boolean
   status?: boolean
   source?: boolean
   notes?: boolean
@@ -643,7 +669,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "status" | "source" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 
 export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Booking"
@@ -658,6 +684,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     time: string
     distance: number
     fare: number
+    vehicle: string
     status: string
     source: string
     notes: string | null
@@ -1095,6 +1122,7 @@ export interface BookingFieldRefs {
   readonly time: Prisma.FieldRef<"Booking", 'String'>
   readonly distance: Prisma.FieldRef<"Booking", 'Float'>
   readonly fare: Prisma.FieldRef<"Booking", 'Float'>
+  readonly vehicle: Prisma.FieldRef<"Booking", 'String'>
   readonly status: Prisma.FieldRef<"Booking", 'String'>
   readonly source: Prisma.FieldRef<"Booking", 'String'>
   readonly notes: Prisma.FieldRef<"Booking", 'String'>

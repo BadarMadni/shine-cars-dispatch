@@ -27,3 +27,13 @@ export type Booking = Prisma.BookingModel
  * 
  */
 export type Operator = Prisma.OperatorModel
+/**
+ * Model Driver
+ * 
+ */
+export type Driver = Prisma.DriverModel
+/**
+ * Model DriverDocument
+ * 
+ */
+export type DriverDocument = Prisma.DriverDocumentModel

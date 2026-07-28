@@ -4,13 +4,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, ClipboardList, LogOut, Menu, X,
+  LayoutDashboard, ClipboardList, Users, LogOut, Menu, X,
 } from "lucide-react";
 import { useState } from "react";
 
 const links = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/bookings", label: "Bookings", icon: ClipboardList },
+  { href: "/drivers", label: "Drivers", icon: Users },
 ];
 
 export default function Sidebar() {

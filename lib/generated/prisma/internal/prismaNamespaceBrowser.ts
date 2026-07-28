@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   Booking: 'Booking',
-  Operator: 'Operator'
+  Operator: 'Operator',
+  Driver: 'Driver',
+  DriverDocument: 'DriverDocument'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +83,7 @@ export const BookingScalarFieldEnum = {
   time: 'time',
   distance: 'distance',
   fare: 'fare',
+  vehicle: 'vehicle',
   status: 'status',
   source: 'source',
   notes: 'notes',
@@ -101,6 +104,32 @@ export const OperatorScalarFieldEnum = {
 } as const
 
 export type OperatorScalarFieldEnum = (typeof OperatorScalarFieldEnum)[keyof typeof OperatorScalarFieldEnum]
+
+
+export const DriverScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  password: 'password',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
+
+
+export const DriverDocumentScalarFieldEnum = {
+  id: 'id',
+  driverId: 'driverId',
+  type: 'type',
+  fileUrl: 'fileUrl',
+  expiryDate: 'expiryDate',
+  createdAt: 'createdAt'
+} as const
+
+export type DriverDocumentScalarFieldEnum = (typeof DriverDocumentScalarFieldEnum)[keyof typeof DriverDocumentScalarFieldEnum]
 
 
 export const SortOrder = {
