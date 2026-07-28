@@ -22,7 +22,9 @@ const statuses = ["pending", "confirmed", "in-progress", "completed", "cancelled
 
 export default function BookingDetail({ booking, onClose }: { booking: Booking; onClose: () => void }) {
   const [status, setStatus] = useState(booking.status);
-  const [notes, setNotes] = useState(booking.notes || "");
+  const [notes, setNotes] = useState(
+    booking.notes?.startsWith("stripe:") ? "" : (booking.notes || "")
+  );
   const [saving, setSaving] = useState(false);
 
   const save = async () => {
