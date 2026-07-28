@@ -17,9 +17,11 @@ model Booking {
   time      String
   distance  Float
   fare      Float
-  vehicle   String   @default("car")
-  status    String   @default("pending")
-  source    String   @default("website")
+  vehicle       String   @default("car")
+  status        String   @default("pending")
+  source        String   @default("website")
+  paymentMethod String   @default("cash")
+  paymentStatus String   @default("unpaid")
   notes     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

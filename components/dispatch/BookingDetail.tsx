@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  X, MapPin, Navigation, Route, PoundSterling, Phone, User, Calendar, Clock, Car,
+  X, MapPin, Navigation, Route, PoundSterling, Phone, User, Calendar, Clock, Car, CreditCard,
 } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
 
@@ -13,6 +13,8 @@ interface Booking {
   date: string; time: string;
   distance: number; fare: number;
   vehicle?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   status: string; createdAt: string; notes: string | null;
 }
 
@@ -44,6 +46,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     { icon: Route, color: "text-gold", label: "Distance", value: `${booking.distance.toFixed(1)} miles` },
     { icon: Car, color: "text-blue-500", label: "Vehicle", value: (booking.vehicle || "car").toUpperCase() },
     { icon: PoundSterling, color: "text-gold", label: "Fare", value: `£${booking.fare.toFixed(2)}` },
+    { icon: CreditCard, color: "text-indigo-500", label: "Payment", value: `${(booking.paymentMethod || "cash").toUpperCase()} — ${(booking.paymentStatus || "unpaid").toUpperCase()}` },
   ];
 
   return (

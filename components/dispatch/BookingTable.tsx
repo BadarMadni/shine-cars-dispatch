@@ -12,6 +12,8 @@ interface Booking {
   date: string; time: string;
   distance: number; fare: number;
   vehicle?: string;
+  paymentMethod?: string;
+  paymentStatus?: string;
   status: string; createdAt: string; notes: string | null;
 }
 
