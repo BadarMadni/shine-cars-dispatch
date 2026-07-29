@@ -6,7 +6,7 @@ import DriverMap from "@/components/dispatch/DriverMap";
 
 export default function MapPage() {
   const [ready, setReady] = useState(
-    () => typeof window !== "undefined" && !!window.google?.maps
+    () => typeof window !== "undefined" && !!(window as unknown as Record<string, unknown>).google
   );
 
   return (
