@@ -61,11 +61,7 @@ export default function DriverMap() {
     ac.addListener("place_changed", () => {
       const place = ac.getPlace();
       if (!place.geometry?.location) return;
-      setSearchLoc({
-        lat: place.geometry.location.lat(),
-        lng: place.geometry.location.lng(),
-        address: place.formatted_address || "",
-      });
+      setSearchLoc({ lat: place.geometry.location.lat(), lng: place.geometry.location.lng(), address: place.formatted_address || "" });
     });
   }, []);
 
@@ -85,20 +81,13 @@ export default function DriverMap() {
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
     if (searchMarkerRef.current) searchMarkerRef.current.setMap(null);
-
     const visible = searchLoc ? nearbyList : drivers;
     const bounds = new google.maps.LatLngBounds();
-
     visible.forEach((d) => {
       const marker = new google.maps.Marker({
-        map: mapObj.current!, position: { lat: d.latitude, lng: d.longitude },
-        title: d.name,
+        map: mapObj.current!, position: { lat: d.latitude, lng: d.longitude }, title: d.name,
         label: { text: d.name.charAt(0).toUpperCase(), color: "#fff", fontWeight: "bold", fontSize: "12px" },
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE, scale: 18,
-          fillColor: d.isAvailable ? "#22c55e" : "#f97316",
-          fillOpacity: 1, strokeColor: "#fff", strokeWeight: 3,
-        },
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 18, fillColor: d.isAvailable ? "#22c55e" : "#f97316", fillOpacity: 1, strokeColor: "#fff", strokeWeight: 3 },
       });
       const distText = "dist" in d ? ` — ${(d as NearbyDriver).dist.toFixed(1)} mi` : "";
       const info = new google.maps.InfoWindow({
@@ -108,19 +97,13 @@ export default function DriverMap() {
       markersRef.current.push(marker);
       bounds.extend({ lat: d.latitude, lng: d.longitude });
     });
-
     if (searchLoc) {
       searchMarkerRef.current = new google.maps.Marker({
-        map: mapObj.current, position: { lat: searchLoc.lat, lng: searchLoc.lng },
-        title: "Search Location",
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE, scale: 10,
-          fillColor: "#CC2229", fillOpacity: 1, strokeColor: "#fff", strokeWeight: 3,
-        },
+        map: mapObj.current, position: { lat: searchLoc.lat, lng: searchLoc.lng }, title: "Search Location",
+        icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10, fillColor: "#CC2229", fillOpacity: 1, strokeColor: "#fff", strokeWeight: 3 },
       });
       bounds.extend({ lat: searchLoc.lat, lng: searchLoc.lng });
     }
-
     if (visible.length > 0 || searchLoc) {
       mapObj.current.fitBounds(bounds, 60);
       const listener = google.maps.event.addListener(mapObj.current, "idle", () => {
@@ -134,10 +117,7 @@ export default function DriverMap() {
     }
   }, [drivers, searchLoc, nearbyList]);
 
-  const clearSearch = () => {
-    setSearchLoc(null);
-    if (inputRef.current) inputRef.current.value = "";
-  };
+  const clearSearch = () => { setSearchLoc(null); if (inputRef.current) inputRef.current.value = ""; };
 
   return (
     <div className="space-y-4">
@@ -186,16 +166,14 @@ export default function DriverMap() {
             <div className="divide-y divide-gray-50">
               {nearbyList.map((d, i) => (
                 <div key={d.id} className="flex items-center gap-3 px-5 py-3 hover:bg-gray-50 transition-colors">
-                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm ${
-                    d.isAvailable ? "bg-green-500" : "bg-orange-400"}`}>
+                  <div className={`w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm ${d.isAvailable ? "bg-green-500" : "bg-orange-400"}`}>
                     {d.name.charAt(0)}
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
                       <span className="text-navy font-medium text-sm">{d.name}</span>
                       {i === 0 && <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">Nearest</span>}
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
-                        d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"}`}>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"}`}>
                         {d.isAvailable ? "Available" : "Busy"}
                       </span>
                     </div>

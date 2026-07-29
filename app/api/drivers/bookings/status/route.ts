@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const decoded = jwt.verify(auth.slice(7), JWT_SECRET) as { id: string };
-    const { bookingId, status } = await req.json();
+    const { bookingId, status, cashCollected } = await req.json();
 
     if (!bookingId || !VALID.includes(status)) {
       return NextResponse.json({ success: false, message: "Invalid data" }, { status: 400 });
@@ -24,9 +24,18 @@ export async function PATCH(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Not found" }, { status: 404 });
     }
 
+    const data: Record<string, unknown> = { status };
+    if (status === "completed" && booking.paymentMethod === "cash" && cashCollected != null) {
+      data.cashCollected = parseFloat(cashCollected);
+      data.paymentStatus = "paid";
+    }
+    if (status === "completed" && booking.paymentMethod === "card") {
+      data.paymentStatus = "paid";
+    }
+
     const updated = await prisma.booking.update({
       where: { id: bookingId },
-      data: { status },
+      data,
     });
 
     return NextResponse.json({ success: true, booking: updated });

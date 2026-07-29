@@ -8,34 +8,17 @@ import {
 import StatusBadge from "@/components/dispatch/StatusBadge";
 
 interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  accountType: string;
-  totalRides: number;
-  createdAt: string;
+  id: string; name: string; email: string; phone: string;
+  accountType: string; totalRides: number; createdAt: string;
 }
 
 interface Booking {
-  id: string;
-  pickup: string;
-  dropoff: string;
-  date: string;
-  time: string;
-  distance: number;
-  fare: number;
-  vehicle: string;
-  status: string;
-  paymentMethod: string;
-  paymentStatus: string;
-  createdAt: string;
+  id: string; pickup: string; dropoff: string; date: string; time: string;
+  distance: number; fare: number; vehicle: string; status: string;
+  paymentMethod: string; paymentStatus: string; createdAt: string;
 }
 
-interface Props {
-  customer: Customer;
-  onClose: () => void;
-}
+interface Props { customer: Customer; onClose: () => void }
 
 export default function CustomerDetail({ customer, onClose }: Props) {
   const [bookings, setBookings] = useState<Booking[]>([]);
@@ -86,38 +69,17 @@ export default function CustomerDetail({ customer, onClose }: Props) {
 
           {/* Info Grid */}
           <div className="grid grid-cols-2 gap-x-6 gap-y-3">
-            <div className="flex items-center gap-2.5 text-sm">
-              <Mail className="w-4 h-4 text-navy/30 shrink-0" />
-              <div>
-                <p className="text-navy/40 text-xs">Email</p>
-                <p className="text-navy/80">{customer.email}</p>
+            {[
+              { icon: <Mail className="w-4 h-4 text-navy/30 shrink-0" />, label: "Email", value: customer.email },
+              { icon: <Phone className="w-4 h-4 text-navy/30 shrink-0" />, label: "Phone", value: customer.phone },
+              { icon: <Calendar className="w-4 h-4 text-navy/30 shrink-0" />, label: "Joined", value: new Date(customer.createdAt).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) },
+              { icon: <PoundSterling className="w-4 h-4 text-navy/30 shrink-0" />, label: "Total Spent", value: `£${totalSpent.toFixed(2)}`, bold: true },
+            ].map(({ icon, label, value, bold }) => (
+              <div key={label} className="flex items-center gap-2.5 text-sm">
+                {icon}
+                <div><p className="text-navy/40 text-xs">{label}</p><p className={`text-navy/80${bold ? " font-semibold" : ""}`}>{value}</p></div>
               </div>
-            </div>
-            <div className="flex items-center gap-2.5 text-sm">
-              <Phone className="w-4 h-4 text-navy/30 shrink-0" />
-              <div>
-                <p className="text-navy/40 text-xs">Phone</p>
-                <p className="text-navy/80">{customer.phone}</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 text-sm">
-              <Calendar className="w-4 h-4 text-navy/30 shrink-0" />
-              <div>
-                <p className="text-navy/40 text-xs">Joined</p>
-                <p className="text-navy/80">
-                  {new Date(customer.createdAt).toLocaleDateString("en-GB", {
-                    day: "numeric", month: "long", year: "numeric",
-                  })}
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-2.5 text-sm">
-              <PoundSterling className="w-4 h-4 text-navy/30 shrink-0" />
-              <div>
-                <p className="text-navy/40 text-xs">Total Spent</p>
-                <p className="text-navy/80 font-semibold">£{totalSpent.toFixed(2)}</p>
-              </div>
-            </div>
+            ))}
           </div>
 
           {/* Stats */}
