@@ -11,5 +11,6 @@
 export type * from './models/Booking'
 export type * from './models/Operator'
 export type * from './models/Driver'
+export type * from './models/Customer'
 export type * from './models/DriverDocument'
 export type * from './commonInputTypes'

@@ -8,26 +8,30 @@ datasource db {
 }
 
 model Booking {
-  id        String   @id @default(cuid())
-  name      String
-  phone     String
-  pickup    String
-  dropoff   String
-  date      String
-  time      String
-  distance  Float
-  fare      Float
-  vehicle       String   @default("car")
-  status        String   @default("pending")
-  source        String   @default("website")
-  paymentMethod String   @default("cash")
-  paymentStatus String   @default("unpaid")
-  notes     String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String    @id @default(cuid())
+  name          String
+  phone         String
+  pickup        String
+  dropoff       String
+  date          String
+  time          String
+  distance      Float
+  fare          Float
+  vehicle       String    @default("car")
+  status        String    @default("pending")
+  source        String    @default("website")
+  paymentMethod String    @default("cash")
+  paymentStatus String    @default("unpaid")
+  driverId      String?
+  assignedAt    DateTime?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  driver        Driver?   @relation(fields: [driverId], references: [id])
 
   @@index([status])
   @@index([createdAt])
+  @@index([driverId])
 }
 
 model Operator {
@@ -40,16 +44,35 @@ model Operator {
 }
 
 model Driver {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  phone     String
-  password  String
-  status      String   @default("pending")
-  isAvailable Boolean  @default(false)
+  id                String    @id @default(cuid())
+  name              String
+  email             String    @unique
+  phone             String
+  password          String
+  status            String    @default("pending")
+  isAvailable       Boolean   @default(false)
+  isEnabled         Boolean   @default(true)
+  latitude          Float?
+  longitude         Float?
+  locationUpdatedAt DateTime?
+  pushToken         String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  documents         DriverDocument[]
+  bookings          Booking[]
+}
+
+model Customer {
+  id          String   @id @default(cuid())
+  name        String
+  email       String   @unique
+  phone       String
+  password    String
+  accountType String   @default("individual")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  documents   DriverDocument[]
+
+  @@index([accountType])
 }
 
 model DriverDocument {

@@ -4,25 +4,17 @@ import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Phone, Mail, Clock, CheckCircle, XCircle, Eye, X,
-  FileText, ChevronLeft, ChevronRight,
+  FileText, ChevronLeft, ChevronRight, Power,
 } from "lucide-react";
 
 interface Document {
-  id: string;
-  type: string;
-  fileUrl: string;
-  expiryDate: string;
+  id: string; type: string; fileUrl: string; expiryDate: string;
 }
 
 interface Driver {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  status: string;
-  isAvailable: boolean;
-  createdAt: string;
-  documents: Document[];
+  id: string; name: string; email: string; phone: string;
+  status: string; isAvailable: boolean; isEnabled: boolean;
+  createdAt: string; documents: Document[];
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -40,10 +32,8 @@ function StatusBadge({ status }: { status: string }) {
 
 function DocLabel({ type }: { type: string }) {
   const labels: Record<string, string> = {
-    driving_licence: "Driving Licence",
-    mot_certificate: "MOT Certificate",
-    taxi_badge: "Taxi Badge",
-    vehicle_taxi_plate: "Vehicle Taxi Plate",
+    driving_licence: "Driving Licence", mot_certificate: "MOT Certificate",
+    taxi_badge: "Taxi Badge", vehicle_taxi_plate: "Vehicle Taxi Plate",
   };
   return <>{labels[type] || type}</>;
 }
@@ -78,6 +68,19 @@ export default function DriversTable({ filter }: { filter: string }) {
     setUpdating(null);
   };
 
+  const toggleEnabled = async (id: string, isEnabled: boolean) => {
+    setUpdating(id);
+    try {
+      await fetch(`/api/drivers/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isEnabled }),
+      });
+      load();
+    } catch {}
+    setUpdating(null);
+  };
+
   const totalPages = Math.ceil(drivers.length / limit);
   const paginated = drivers.slice((page - 1) * limit, page * limit);
 
@@ -91,7 +94,7 @@ export default function DriversTable({ filter }: { filter: string }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Driver", "Contact", "Documents", "Availability", "Status", "Registered", "Actions"].map((h) => (
+              {["Driver", "Contact", "Docs", "Availability", "Enabled", "Status", "Registered", "Actions"].map((h) => (
                 <th key={h} className="text-left text-navy/40 font-medium text-xs py-3 px-4">{h}</th>
               ))}
             </tr>
@@ -115,21 +118,32 @@ export default function DriversTable({ filter }: { filter: string }) {
                 </td>
                 <td className="py-3.5 px-4">
                   <span className="text-xs text-navy/60 flex items-center gap-1">
-                    <FileText className="w-3 h-3" /> {d.documents.length} uploaded
+                    <FileText className="w-3 h-3" /> {d.documents.length}
                   </span>
                 </td>
                 <td className="py-3.5 px-4">
                   {d.status === "approved" ? (
                     <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${
-                      d.isAvailable
-                        ? "bg-green-50 text-green-600"
-                        : "bg-orange-50 text-orange-600"
+                      d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"
                     }`}>
                       <span className={`w-2 h-2 rounded-full ${d.isAvailable ? "bg-green-500" : "bg-orange-400"}`} />
                       {d.isAvailable ? "Available" : "Busy"}
                     </span>
                   ) : (
                     <span className="text-xs text-navy/30">—</span>
+                  )}
+                </td>
+                <td className="py-3.5 px-4">
+                  {d.status === "approved" && (
+                    <button
+                      onClick={() => toggleEnabled(d.id, !d.isEnabled)}
+                      disabled={updating === d.id}
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit cursor-pointer disabled:opacity-50 ${
+                        d.isEnabled ? "bg-green-50 text-green-600" : "bg-red-50 text-red-500"
+                      }`}>
+                      <Power className="w-3 h-3" />
+                      {d.isEnabled ? "Enabled" : "Disabled"}
+                    </button>
                   )}
                 </td>
                 <td className="py-3.5 px-4"><StatusBadge status={d.status} /></td>
@@ -180,7 +194,6 @@ export default function DriversTable({ filter }: { filter: string }) {
         </div>
       )}
 
-      {/* Driver Detail Modal */}
       <AnimatePresence>
         {selected && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
-  X, MapPin, Navigation, Route, PoundSterling, Phone, User, Calendar, Clock, Car, CreditCard,
+  X, MapPin, Navigation, Route, PoundSterling, Phone, User,
+  Calendar, Clock, Car, CreditCard, UserCheck,
 } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
 
@@ -16,23 +17,40 @@ interface Booking {
   paymentMethod?: string;
   paymentStatus?: string;
   status: string; createdAt: string; notes: string | null;
+  driverId?: string | null;
+  driver?: { id: string; name: string } | null;
 }
 
-const statuses = ["pending", "confirmed", "in-progress", "completed", "cancelled"];
+interface Driver { id: string; name: string; isAvailable: boolean; }
+
+const statuses = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress", "completed", "cancelled"];
 
 export default function BookingDetail({ booking, onClose }: { booking: Booking; onClose: () => void }) {
   const [status, setStatus] = useState(booking.status);
   const [notes, setNotes] = useState(
     booking.notes?.startsWith("stripe:") ? "" : (booking.notes || "")
   );
+  const [driverId, setDriverId] = useState(booking.driverId || "");
+  const [drivers, setDrivers] = useState<Driver[]>([]);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/drivers?status=approved")
+      .then((r) => r.json())
+      .then((d) => setDrivers(d.drivers || []))
+      .catch(() => {});
+  }, []);
 
   const save = async () => {
     setSaving(true);
+    const body: Record<string, unknown> = { status, notes };
+    if (driverId !== (booking.driverId || "")) {
+      body.driverId = driverId || null;
+    }
     await fetch(`/api/bookings/${booking.id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status, notes }),
+      body: JSON.stringify(body),
     });
     setSaving(false);
     onClose();
@@ -82,6 +100,21 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
                 </div>
               </div>
             ))}
+          </div>
+
+          <div>
+            <label className="block text-navy/60 text-xs font-medium mb-1.5">
+              <UserCheck className="w-3.5 h-3.5 inline mr-1" />Assign Driver
+            </label>
+            <select value={driverId} onChange={(e) => setDriverId(e.target.value)}
+              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50">
+              <option value="">Unassigned</option>
+              {drivers.map((d) => (
+                <option key={d.id} value={d.id}>
+                  {d.name} {d.isAvailable ? "(Available)" : "(Busy)"}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div>

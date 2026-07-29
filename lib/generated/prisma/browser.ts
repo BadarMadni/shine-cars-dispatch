@@ -33,6 +33,11 @@ export type Operator = Prisma.OperatorModel
  */
 export type Driver = Prisma.DriverModel
 /**
+ * Model Customer
+ * 
+ */
+export type Customer = Prisma.CustomerModel
+/**
  * Model DriverDocument
  * 
  */

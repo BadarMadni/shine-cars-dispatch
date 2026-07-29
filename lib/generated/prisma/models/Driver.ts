@@ -20,8 +20,20 @@ export type DriverModel = runtime.Types.Result.DefaultSelection<Prisma.$DriverPa
 
 export type AggregateDriver = {
   _count: DriverCountAggregateOutputType | null
+  _avg: DriverAvgAggregateOutputType | null
+  _sum: DriverSumAggregateOutputType | null
   _min: DriverMinAggregateOutputType | null
   _max: DriverMaxAggregateOutputType | null
+}
+
+export type DriverAvgAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
+}
+
+export type DriverSumAggregateOutputType = {
+  latitude: number | null
+  longitude: number | null
 }
 
 export type DriverMinAggregateOutputType = {
@@ -32,6 +44,11 @@ export type DriverMinAggregateOutputType = {
   password: string | null
   status: string | null
   isAvailable: boolean | null
+  isEnabled: boolean | null
+  latitude: number | null
+  longitude: number | null
+  locationUpdatedAt: Date | null
+  pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +61,11 @@ export type DriverMaxAggregateOutputType = {
   password: string | null
   status: string | null
   isAvailable: boolean | null
+  isEnabled: boolean | null
+  latitude: number | null
+  longitude: number | null
+  locationUpdatedAt: Date | null
+  pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,11 +78,26 @@ export type DriverCountAggregateOutputType = {
   password: number
   status: number
   isAvailable: number
+  isEnabled: number
+  latitude: number
+  longitude: number
+  locationUpdatedAt: number
+  pushToken: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type DriverAvgAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
+
+export type DriverSumAggregateInputType = {
+  latitude?: true
+  longitude?: true
+}
 
 export type DriverMinAggregateInputType = {
   id?: true
@@ -70,6 +107,11 @@ export type DriverMinAggregateInputType = {
   password?: true
   status?: true
   isAvailable?: true
+  isEnabled?: true
+  latitude?: true
+  longitude?: true
+  locationUpdatedAt?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +124,11 @@ export type DriverMaxAggregateInputType = {
   password?: true
   status?: true
   isAvailable?: true
+  isEnabled?: true
+  latitude?: true
+  longitude?: true
+  locationUpdatedAt?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +141,11 @@ export type DriverCountAggregateInputType = {
   password?: true
   status?: true
   isAvailable?: true
+  isEnabled?: true
+  latitude?: true
+  longitude?: true
+  locationUpdatedAt?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -137,6 +189,18 @@ export type DriverAggregateArgs<ExtArgs extends runtime.Types.Extensions.Interna
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: DriverAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: DriverSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: DriverMinAggregateInputType
@@ -167,6 +231,8 @@ export type DriverGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   _count?: DriverCountAggregateInputType | true
+  _avg?: DriverAvgAggregateInputType
+  _sum?: DriverSumAggregateInputType
   _min?: DriverMinAggregateInputType
   _max?: DriverMaxAggregateInputType
 }
@@ -179,9 +245,16 @@ export type DriverGroupByOutputType = {
   password: string
   status: string
   isAvailable: boolean
+  isEnabled: boolean
+  latitude: number | null
+  longitude: number | null
+  locationUpdatedAt: Date | null
+  pushToken: string | null
   createdAt: Date
   updatedAt: Date
   _count: DriverCountAggregateOutputType | null
+  _avg: DriverAvgAggregateOutputType | null
+  _sum: DriverSumAggregateOutputType | null
   _min: DriverMinAggregateOutputType | null
   _max: DriverMaxAggregateOutputType | null
 }
@@ -212,9 +285,15 @@ export type DriverWhereInput = {
   password?: Prisma.StringFilter<"Driver"> | string
   status?: Prisma.StringFilter<"Driver"> | string
   isAvailable?: Prisma.BoolFilter<"Driver"> | boolean
+  isEnabled?: Prisma.BoolFilter<"Driver"> | boolean
+  latitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
+  locationUpdatedAt?: Prisma.DateTimeNullableFilter<"Driver"> | Date | string | null
+  pushToken?: Prisma.StringNullableFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   documents?: Prisma.DriverDocumentListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
 }
 
 export type DriverOrderByWithRelationInput = {
@@ -225,9 +304,15 @@ export type DriverOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isEnabled?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   documents?: Prisma.DriverDocumentOrderByRelationAggregateInput
+  bookings?: Prisma.BookingOrderByRelationAggregateInput
 }
 
 export type DriverWhereUniqueInput = Prisma.AtLeast<{
@@ -241,9 +326,15 @@ export type DriverWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"Driver"> | string
   status?: Prisma.StringFilter<"Driver"> | string
   isAvailable?: Prisma.BoolFilter<"Driver"> | boolean
+  isEnabled?: Prisma.BoolFilter<"Driver"> | boolean
+  latitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
+  longitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
+  locationUpdatedAt?: Prisma.DateTimeNullableFilter<"Driver"> | Date | string | null
+  pushToken?: Prisma.StringNullableFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   documents?: Prisma.DriverDocumentListRelationFilter
+  bookings?: Prisma.BookingListRelationFilter
 }, "id" | "email">
 
 export type DriverOrderByWithAggregationInput = {
@@ -254,11 +345,18 @@ export type DriverOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isEnabled?: Prisma.SortOrder
+  latitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  longitude?: Prisma.SortOrderInput | Prisma.SortOrder
+  locationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DriverCountOrderByAggregateInput
+  _avg?: Prisma.DriverAvgOrderByAggregateInput
   _max?: Prisma.DriverMaxOrderByAggregateInput
   _min?: Prisma.DriverMinOrderByAggregateInput
+  _sum?: Prisma.DriverSumOrderByAggregateInput
 }
 
 export type DriverScalarWhereWithAggregatesInput = {
@@ -272,6 +370,11 @@ export type DriverScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"Driver"> | string
   status?: Prisma.StringWithAggregatesFilter<"Driver"> | string
   isAvailable?: Prisma.BoolWithAggregatesFilter<"Driver"> | boolean
+  isEnabled?: Prisma.BoolWithAggregatesFilter<"Driver"> | boolean
+  latitude?: Prisma.FloatNullableWithAggregatesFilter<"Driver"> | number | null
+  longitude?: Prisma.FloatNullableWithAggregatesFilter<"Driver"> | number | null
+  locationUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Driver"> | Date | string | null
+  pushToken?: Prisma.StringNullableWithAggregatesFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
 }
@@ -284,9 +387,15 @@ export type DriverCreateInput = {
   password: string
   status?: string
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.DriverDocumentCreateNestedManyWithoutDriverInput
+  bookings?: Prisma.BookingCreateNestedManyWithoutDriverInput
 }
 
 export type DriverUncheckedCreateInput = {
@@ -297,9 +406,15 @@ export type DriverUncheckedCreateInput = {
   password: string
   status?: string
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   documents?: Prisma.DriverDocumentUncheckedCreateNestedManyWithoutDriverInput
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDriverInput
 }
 
 export type DriverUpdateInput = {
@@ -310,9 +425,15 @@ export type DriverUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.DriverDocumentUpdateManyWithoutDriverNestedInput
+  bookings?: Prisma.BookingUpdateManyWithoutDriverNestedInput
 }
 
 export type DriverUncheckedUpdateInput = {
@@ -323,9 +444,15 @@ export type DriverUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   documents?: Prisma.DriverDocumentUncheckedUpdateManyWithoutDriverNestedInput
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutDriverNestedInput
 }
 
 export type DriverCreateManyInput = {
@@ -336,6 +463,11 @@ export type DriverCreateManyInput = {
   password: string
   status?: string
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -348,6 +480,11 @@ export type DriverUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -360,8 +497,18 @@ export type DriverUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DriverNullableScalarRelationFilter = {
+  is?: Prisma.DriverWhereInput | null
+  isNot?: Prisma.DriverWhereInput | null
 }
 
 export type DriverCountOrderByAggregateInput = {
@@ -372,8 +519,18 @@ export type DriverCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isEnabled?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  locationUpdatedAt?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type DriverAvgOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type DriverMaxOrderByAggregateInput = {
@@ -384,6 +541,11 @@ export type DriverMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isEnabled?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  locationUpdatedAt?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -396,8 +558,18 @@ export type DriverMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   status?: Prisma.SortOrder
   isAvailable?: Prisma.SortOrder
+  isEnabled?: Prisma.SortOrder
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
+  locationUpdatedAt?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type DriverSumOrderByAggregateInput = {
+  latitude?: Prisma.SortOrder
+  longitude?: Prisma.SortOrder
 }
 
 export type DriverScalarRelationFilter = {
@@ -405,8 +577,32 @@ export type DriverScalarRelationFilter = {
   isNot?: Prisma.DriverWhereInput
 }
 
+export type DriverCreateNestedOneWithoutBookingsInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutBookingsInput, Prisma.DriverUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutBookingsInput
+  connect?: Prisma.DriverWhereUniqueInput
+}
+
+export type DriverUpdateOneWithoutBookingsNestedInput = {
+  create?: Prisma.XOR<Prisma.DriverCreateWithoutBookingsInput, Prisma.DriverUncheckedCreateWithoutBookingsInput>
+  connectOrCreate?: Prisma.DriverCreateOrConnectWithoutBookingsInput
+  upsert?: Prisma.DriverUpsertWithoutBookingsInput
+  disconnect?: Prisma.DriverWhereInput | boolean
+  delete?: Prisma.DriverWhereInput | boolean
+  connect?: Prisma.DriverWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DriverUpdateToOneWithWhereWithoutBookingsInput, Prisma.DriverUpdateWithoutBookingsInput>, Prisma.DriverUncheckedUpdateWithoutBookingsInput>
+}
+
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
+}
+
+export type NullableFloatFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type DriverCreateNestedOneWithoutDocumentsInput = {
@@ -423,6 +619,94 @@ export type DriverUpdateOneRequiredWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DriverUpdateToOneWithWhereWithoutDocumentsInput, Prisma.DriverUpdateWithoutDocumentsInput>, Prisma.DriverUncheckedUpdateWithoutDocumentsInput>
 }
 
+export type DriverCreateWithoutBookingsInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  password: string
+  status?: string
+  isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  documents?: Prisma.DriverDocumentCreateNestedManyWithoutDriverInput
+}
+
+export type DriverUncheckedCreateWithoutBookingsInput = {
+  id?: string
+  name: string
+  email: string
+  phone: string
+  password: string
+  status?: string
+  isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  documents?: Prisma.DriverDocumentUncheckedCreateNestedManyWithoutDriverInput
+}
+
+export type DriverCreateOrConnectWithoutBookingsInput = {
+  where: Prisma.DriverWhereUniqueInput
+  create: Prisma.XOR<Prisma.DriverCreateWithoutBookingsInput, Prisma.DriverUncheckedCreateWithoutBookingsInput>
+}
+
+export type DriverUpsertWithoutBookingsInput = {
+  update: Prisma.XOR<Prisma.DriverUpdateWithoutBookingsInput, Prisma.DriverUncheckedUpdateWithoutBookingsInput>
+  create: Prisma.XOR<Prisma.DriverCreateWithoutBookingsInput, Prisma.DriverUncheckedCreateWithoutBookingsInput>
+  where?: Prisma.DriverWhereInput
+}
+
+export type DriverUpdateToOneWithWhereWithoutBookingsInput = {
+  where?: Prisma.DriverWhereInput
+  data: Prisma.XOR<Prisma.DriverUpdateWithoutBookingsInput, Prisma.DriverUncheckedUpdateWithoutBookingsInput>
+}
+
+export type DriverUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.DriverDocumentUpdateManyWithoutDriverNestedInput
+}
+
+export type DriverUncheckedUpdateWithoutBookingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  documents?: Prisma.DriverDocumentUncheckedUpdateManyWithoutDriverNestedInput
+}
+
 export type DriverCreateWithoutDocumentsInput = {
   id?: string
   name: string
@@ -431,8 +715,14 @@ export type DriverCreateWithoutDocumentsInput = {
   password: string
   status?: string
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bookings?: Prisma.BookingCreateNestedManyWithoutDriverInput
 }
 
 export type DriverUncheckedCreateWithoutDocumentsInput = {
@@ -443,8 +733,14 @@ export type DriverUncheckedCreateWithoutDocumentsInput = {
   password: string
   status?: string
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: number | null
+  longitude?: number | null
+  locationUpdatedAt?: Date | string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutDriverInput
 }
 
 export type DriverCreateOrConnectWithoutDocumentsInput = {
@@ -471,8 +767,14 @@ export type DriverUpdateWithoutDocumentsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUpdateManyWithoutDriverNestedInput
 }
 
 export type DriverUncheckedUpdateWithoutDocumentsInput = {
@@ -483,8 +785,14 @@ export type DriverUncheckedUpdateWithoutDocumentsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
   isAvailable?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  bookings?: Prisma.BookingUncheckedUpdateManyWithoutDriverNestedInput
 }
 
 
@@ -494,10 +802,12 @@ export type DriverUncheckedUpdateWithoutDocumentsInput = {
 
 export type DriverCountOutputType = {
   documents: number
+  bookings: number
 }
 
 export type DriverCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | DriverCountOutputTypeCountDocumentsArgs
+  bookings?: boolean | DriverCountOutputTypeCountBookingsArgs
 }
 
 /**
@@ -517,6 +827,13 @@ export type DriverCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Type
   where?: Prisma.DriverDocumentWhereInput
 }
 
+/**
+ * DriverCountOutputType without action
+ */
+export type DriverCountOutputTypeCountBookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BookingWhereInput
+}
+
 
 export type DriverSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -526,9 +843,15 @@ export type DriverSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   password?: boolean
   status?: boolean
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  locationUpdatedAt?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   documents?: boolean | Prisma.Driver$documentsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Driver$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.DriverCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["driver"]>
 
@@ -540,6 +863,11 @@ export type DriverSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   password?: boolean
   status?: boolean
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  locationUpdatedAt?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["driver"]>
@@ -552,6 +880,11 @@ export type DriverSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   password?: boolean
   status?: boolean
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  locationUpdatedAt?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["driver"]>
@@ -564,13 +897,19 @@ export type DriverSelectScalar = {
   password?: boolean
   status?: boolean
   isAvailable?: boolean
+  isEnabled?: boolean
+  latitude?: boolean
+  longitude?: boolean
+  locationUpdatedAt?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "status" | "isAvailable" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
+export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "status" | "isAvailable" | "isEnabled" | "latitude" | "longitude" | "locationUpdatedAt" | "pushToken" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
 export type DriverInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Driver$documentsArgs<ExtArgs>
+  bookings?: boolean | Prisma.Driver$bookingsArgs<ExtArgs>
   _count?: boolean | Prisma.DriverCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DriverIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -580,6 +919,7 @@ export type $DriverPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
   name: "Driver"
   objects: {
     documents: Prisma.$DriverDocumentPayload<ExtArgs>[]
+    bookings: Prisma.$BookingPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -589,6 +929,11 @@ export type $DriverPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     password: string
     status: string
     isAvailable: boolean
+    isEnabled: boolean
+    latitude: number | null
+    longitude: number | null
+    locationUpdatedAt: Date | null
+    pushToken: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["driver"]>
@@ -986,6 +1331,7 @@ readonly fields: DriverFieldRefs;
 export interface Prisma__DriverClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   documents<T extends Prisma.Driver$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Driver$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DriverDocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bookings<T extends Prisma.Driver$bookingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Driver$bookingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1022,6 +1368,11 @@ export interface DriverFieldRefs {
   readonly password: Prisma.FieldRef<"Driver", 'String'>
   readonly status: Prisma.FieldRef<"Driver", 'String'>
   readonly isAvailable: Prisma.FieldRef<"Driver", 'Boolean'>
+  readonly isEnabled: Prisma.FieldRef<"Driver", 'Boolean'>
+  readonly latitude: Prisma.FieldRef<"Driver", 'Float'>
+  readonly longitude: Prisma.FieldRef<"Driver", 'Float'>
+  readonly locationUpdatedAt: Prisma.FieldRef<"Driver", 'DateTime'>
+  readonly pushToken: Prisma.FieldRef<"Driver", 'String'>
   readonly createdAt: Prisma.FieldRef<"Driver", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Driver", 'DateTime'>
 }
@@ -1438,6 +1789,30 @@ export type Driver$documentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.DriverDocumentScalarFieldEnum | Prisma.DriverDocumentScalarFieldEnum[]
+}
+
+/**
+ * Driver.bookings
+ */
+export type Driver$bookingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Booking
+   */
+  select?: Prisma.BookingSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Booking
+   */
+  omit?: Prisma.BookingOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BookingInclude<ExtArgs> | null
+  where?: Prisma.BookingWhereInput
+  orderBy?: Prisma.BookingOrderByWithRelationInput | Prisma.BookingOrderByWithRelationInput[]
+  cursor?: Prisma.BookingWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BookingScalarFieldEnum | Prisma.BookingScalarFieldEnum[]
 }
 
 /**

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, ClipboardList, Users, LogOut, Menu, X,
+  LayoutDashboard, ClipboardList, Users, MapPin, LogOut, Menu, X, UserCheck,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -12,6 +12,8 @@ const links = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/bookings", label: "Bookings", icon: ClipboardList },
   { href: "/drivers", label: "Drivers", icon: Users },
+  { href: "/map", label: "Driver Map", icon: MapPin },
+  { href: "/customers", label: "Customers", icon: UserCheck },
 ];
 
 export default function Sidebar() {

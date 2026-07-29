@@ -54,6 +54,7 @@ export const ModelName = {
   Booking: 'Booking',
   Operator: 'Operator',
   Driver: 'Driver',
+  Customer: 'Customer',
   DriverDocument: 'DriverDocument'
 } as const
 
@@ -88,6 +89,8 @@ export const BookingScalarFieldEnum = {
   source: 'source',
   paymentMethod: 'paymentMethod',
   paymentStatus: 'paymentStatus',
+  driverId: 'driverId',
+  assignedAt: 'assignedAt',
   notes: 'notes',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -116,11 +119,30 @@ export const DriverScalarFieldEnum = {
   password: 'password',
   status: 'status',
   isAvailable: 'isAvailable',
+  isEnabled: 'isEnabled',
+  latitude: 'latitude',
+  longitude: 'longitude',
+  locationUpdatedAt: 'locationUpdatedAt',
+  pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
+
+
+export const CustomerScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  phone: 'phone',
+  password: 'password',
+  accountType: 'accountType',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
 export const DriverDocumentScalarFieldEnum = {
