@@ -597,14 +597,6 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
-export type NullableFloatFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type DriverCreateNestedOneWithoutDocumentsInput = {
   create?: Prisma.XOR<Prisma.DriverCreateWithoutDocumentsInput, Prisma.DriverUncheckedCreateWithoutDocumentsInput>
   connectOrCreate?: Prisma.DriverCreateOrConnectWithoutDocumentsInput
