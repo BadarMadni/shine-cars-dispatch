@@ -10,7 +10,9 @@ export async function GET(req: NextRequest) {
 
     const drivers = await prisma.driver.findMany({
       where,
-      include: { documents: true },
+      include: {
+        documents: { select: { id: true, type: true, expiryDate: true } },
+      },
       orderBy: { createdAt: "desc" },
     });
 

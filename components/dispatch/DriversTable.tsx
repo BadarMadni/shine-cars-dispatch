@@ -23,7 +23,7 @@ function StatusBadge({ status }: { status: string }) {
 
 export default function DriversTable({ filter }: { filter: string }) {
   const [drivers, setDrivers] = useState<Driver[]>([]);
-  const [selected, setSelected] = useState<Driver | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const limit = 5;
@@ -46,7 +46,7 @@ export default function DriversTable({ filter }: { filter: string }) {
         body: JSON.stringify({ status }),
       });
       load();
-      if (selected?.id === id) setSelected(null);
+      if (selectedId === id) setSelectedId(null);
     } catch {}
     setUpdating(null);
   };
@@ -135,7 +135,7 @@ export default function DriversTable({ filter }: { filter: string }) {
                 </td>
                 <td className="py-3.5 px-4">
                   <div className="flex items-center gap-2">
-                    <button onClick={() => setSelected(d)}
+                    <button onClick={() => setSelectedId(d.id)}
                       className="text-crimson text-xs font-medium hover:underline cursor-pointer flex items-center gap-1">
                       <Eye className="w-3 h-3" /> View
                     </button>
@@ -178,9 +178,9 @@ export default function DriversTable({ filter }: { filter: string }) {
       )}
 
       <DriverDetail
-        driver={selected}
+        driverId={selectedId}
         updating={updating}
-        onClose={() => setSelected(null)}
+        onClose={() => setSelectedId(null)}
         onUpdateStatus={updateStatus}
       />
     </>
