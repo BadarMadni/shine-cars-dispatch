@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
+import { uploadToR2 } from "@/lib/r2";
 
 const JWT_SECRET = process.env.JWT_SECRET || "shine-cars-dispatch-secret-2024";
 
@@ -22,13 +23,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, message: "Missing fields" }, { status: 400 });
     }
 
-    // Store as base64 data URL for now (production would use S3/R2)
-    const buffer = await file.arrayBuffer();
-    const base64 = Buffer.from(buffer).toString("base64");
-    const fileUrl = `data:${file.type};base64,${base64}`;
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const ext = file.name?.split(".").pop() || "jpg";
+    const key = `drivers/${decoded.id}/${type}_${Date.now()}.${ext}`;
+    await uploadToR2(key, buffer, file.type || "image/jpeg");
 
     const doc = await prisma.driverDocument.create({
-      data: { driverId: decoded.id, type, fileUrl, expiryDate },
+      data: { driverId: decoded.id, type, fileUrl: key, expiryDate },
     });
 
     return NextResponse.json({ success: true, document: { id: doc.id, type: doc.type, expiryDate: doc.expiryDate } });

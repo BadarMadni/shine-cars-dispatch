@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, FileText, X, Loader2 } from "lucide-react";
+import { Clock, X, Loader2 } from "lucide-react";
 
 interface Document {
   id: string; type: string; fileUrl?: string; expiryDate: string;
@@ -111,14 +111,7 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                               <p className="text-sm font-semibold text-navy">{docLabels[doc.type] || doc.type}</p>
                               <p className="text-xs text-navy/40">Expires: {doc.expiryDate}</p>
                             </div>
-                            {doc.fileUrl.startsWith("data:image") ? (
-                              <img src={doc.fileUrl} alt={doc.type} className="w-full h-40 object-cover rounded-lg" />
-                            ) : (
-                              <a href={doc.fileUrl} target="_blank" rel="noopener noreferrer"
-                                className="text-crimson text-xs font-medium hover:underline flex items-center gap-1">
-                                <FileText className="w-3 h-3" /> View Document
-                              </a>
-                            )}
+                            <img src={doc.fileUrl} alt={doc.type} className="w-full h-40 object-cover rounded-lg" />
                           </div>
                         ))}
                       </div>
