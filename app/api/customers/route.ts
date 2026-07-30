@@ -26,17 +26,17 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const phones = customers.map((c) => c.phone);
+    const ids = customers.map((c) => c.id);
     const bookingCounts = await prisma.booking.groupBy({
-      by: ["phone"],
-      where: { phone: { in: phones } },
+      by: ["customerId"],
+      where: { customerId: { in: ids } },
       _count: { id: true },
     });
 
-    const countMap = new Map(bookingCounts.map((b) => [b.phone, b._count.id]));
+    const countMap = new Map(bookingCounts.map((b) => [b.customerId, b._count.id]));
     const result = customers.map((c) => ({
       ...c,
-      totalRides: countMap.get(c.phone) || 0,
+      totalRides: countMap.get(c.id) || 0,
     }));
 
     return NextResponse.json({ customers: result });

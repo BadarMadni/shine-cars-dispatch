@@ -7,17 +7,8 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const customer = await prisma.customer.findUnique({
-      where: { id },
-      select: { phone: true },
-    });
-
-    if (!customer) {
-      return NextResponse.json({ error: "Customer not found" }, { status: 404 });
-    }
-
     const bookings = await prisma.booking.findMany({
-      where: { phone: customer.phone },
+      where: { customerId: id },
       orderBy: { createdAt: "desc" },
       select: {
         id: true, pickup: true, dropoff: true, date: true,

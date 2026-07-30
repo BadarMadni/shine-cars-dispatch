@@ -23,16 +23,19 @@ model Booking {
   paymentMethod String    @default("cash")
   paymentStatus String    @default("unpaid")
   driverId      String?
+  customerId    String?
   assignedAt    DateTime?
   cashCollected Float?
   notes         String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   driver        Driver?   @relation(fields: [driverId], references: [id])
+  customer      Customer? @relation(fields: [customerId], references: [id])
 
   @@index([status])
   @@index([createdAt])
   @@index([driverId])
+  @@index([customerId])
 }
 
 model Operator {
@@ -64,14 +67,15 @@ model Driver {
 }
 
 model Customer {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   name        String
-  email       String   @unique
+  email       String    @unique
   phone       String
   password    String
-  accountType String   @default("individual")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  accountType String    @default("individual")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  bookings    Booking[]
 
   @@index([accountType])
 }
