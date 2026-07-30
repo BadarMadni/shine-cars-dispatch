@@ -7,14 +7,19 @@ const JWT_SECRET = process.env.JWT_SECRET || "shine-cars-dispatch-secret-2024";
 
 export async function POST(req: NextRequest) {
   try {
+    const formData = await req.formData();
+
+    // Accept token from Authorization header OR FormData body (Android OkHttp bug workaround)
     const auth = req.headers.get("authorization");
-    if (!auth?.startsWith("Bearer ")) {
+    const bodyToken = formData.get("token") as string | null;
+    const rawToken = auth?.startsWith("Bearer ") ? auth.slice(7) : bodyToken;
+
+    if (!rawToken) {
       return NextResponse.json({ success: false, message: "Unauthorized" }, { status: 401 });
     }
 
-    const decoded = jwt.verify(auth.slice(7), JWT_SECRET) as { id: string };
+    const decoded = jwt.verify(rawToken, JWT_SECRET) as { id: string };
 
-    const formData = await req.formData();
     const type = formData.get("type") as string;
     const expiryDate = formData.get("expiryDate") as string;
     const file = formData.get("file") as File | null;
