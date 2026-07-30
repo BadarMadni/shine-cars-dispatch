@@ -33,7 +33,9 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ success: true, document: { id: doc.id, type: doc.type, expiryDate: doc.expiryDate } });
-  } catch {
-    return NextResponse.json({ success: false, message: "Upload failed" }, { status: 500 });
+  } catch (error) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error("Document upload error:", msg);
+    return NextResponse.json({ success: false, message: msg }, { status: 500 });
   }
 }

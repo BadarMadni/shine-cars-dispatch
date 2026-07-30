@@ -32,8 +32,9 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 const docLabels: Record<string, string> = {
-  driving_licence: "Driving Licence", mot_certificate: "MOT Certificate",
-  taxi_badge: "Taxi Badge", vehicle_taxi_plate: "Vehicle Taxi Plate",
+  driver_licence: "Driver Licence", driving_licence: "Driving Licence",
+  mot_certificate: "MOT Certificate", taxi_badge: "Taxi Badge",
+  vehicle_taxi_plate: "Vehicle Taxi Plate",
 };
 
 interface DriverDetailProps {

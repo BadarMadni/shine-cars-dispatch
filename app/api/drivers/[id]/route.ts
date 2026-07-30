@@ -39,6 +39,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
     if (body.status && ["approved", "rejected"].includes(body.status)) {
       data.status = body.status;
+      if (body.status === "rejected") {
+        await prisma.driverDocument.deleteMany({ where: { driverId: id } });
+      }
     }
     if (typeof body.isEnabled === "boolean") {
       data.isEnabled = body.isEnabled;
