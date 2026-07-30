@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, X, Loader2 } from "lucide-react";
+import { Clock, X, Loader2, FileText, Shield, Car, CreditCard, Calendar, ZoomIn } from "lucide-react";
 
 interface Document {
   id: string; type: string; fileUrl?: string; expiryDate: string;
@@ -37,6 +37,18 @@ const docLabels: Record<string, string> = {
   vehicle_taxi_plate: "Vehicle Taxi Plate",
 };
 
+const docIcons: Record<string, typeof FileText> = {
+  driver_licence: CreditCard, driving_licence: CreditCard,
+  mot_certificate: FileText, taxi_badge: Shield,
+  vehicle_taxi_plate: Car,
+};
+
+const docColors: Record<string, string> = {
+  driver_licence: "from-blue-500 to-blue-600", driving_licence: "from-blue-500 to-blue-600",
+  mot_certificate: "from-emerald-500 to-emerald-600", taxi_badge: "from-purple-500 to-purple-600",
+  vehicle_taxi_plate: "from-amber-500 to-amber-600",
+};
+
 interface DriverDetailProps {
   driverId: string | null;
   updating: string | null;
@@ -47,6 +59,7 @@ interface DriverDetailProps {
 export default function DriverDetail({ driverId, updating, onClose, onUpdateStatus }: DriverDetailProps) {
   const [driver, setDriver] = useState<FullDriver | null>(null);
   const [loading, setLoading] = useState(false);
+  const [lightbox, setLightbox] = useState<{ url: string; label: string } | null>(null);
 
   useEffect(() => {
     if (!driverId) { setDriver(null); return; }
@@ -59,6 +72,7 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
   }, [driverId]);
 
   return (
+    <>
     <AnimatePresence>
       {driverId && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -105,16 +119,36 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                     {driver.documents.length === 0 ? (
                       <p className="text-navy/40 text-xs">No documents uploaded yet.</p>
                     ) : (
-                      <div className="space-y-3">
-                        {driver.documents.map((doc) => (
-                          <div key={doc.id} className="border border-gray-100 rounded-xl p-3">
-                            <div className="flex items-center justify-between mb-2">
-                              <p className="text-sm font-semibold text-navy">{docLabels[doc.type] || doc.type}</p>
-                              <p className="text-xs text-navy/40">Expires: {doc.expiryDate}</p>
+                      <div className="grid grid-cols-2 gap-3">
+                        {driver.documents.map((doc) => {
+                          const Icon = docIcons[doc.type] || FileText;
+                          const gradient = docColors[doc.type] || "from-gray-500 to-gray-600";
+                          return (
+                            <div key={doc.id}
+                              className="group relative border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 hover:shadow-md transition-all cursor-pointer"
+                              onClick={() => setLightbox({ url: doc.fileUrl, label: docLabels[doc.type] || doc.type })}>
+                              <div className="relative h-32 overflow-hidden bg-gray-50">
+                                <img src={doc.fileUrl} alt={doc.type}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                  <ZoomIn className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </div>
+                              </div>
+                              <div className="p-2.5">
+                                <div className="flex items-center gap-1.5 mb-1">
+                                  <div className={`w-5 h-5 rounded-md bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                                    <Icon className="w-3 h-3 text-white" />
+                                  </div>
+                                  <p className="text-xs font-semibold text-navy truncate">{docLabels[doc.type] || doc.type}</p>
+                                </div>
+                                <div className="flex items-center gap-1 text-navy/40">
+                                  <Calendar className="w-3 h-3" />
+                                  <p className="text-[10px]">Exp: {doc.expiryDate}</p>
+                                </div>
+                              </div>
                             </div>
-                            <img src={doc.fileUrl} alt={doc.type} className="w-full h-40 object-cover rounded-lg" />
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     )}
                   </div>
@@ -139,5 +173,28 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
         </motion.div>
       )}
     </AnimatePresence>
+
+    {/* Fullscreen Lightbox */}
+    <AnimatePresence>
+      {lightbox && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4"
+          onClick={() => setLightbox(null)}>
+          <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} exit={{ scale: 0.9 }}
+            className="relative max-w-4xl w-full max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-white font-semibold text-lg">{lightbox.label}</h3>
+              <button onClick={() => setLightbox(null)}
+                className="text-white/60 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-2 transition-colors cursor-pointer">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <img src={lightbox.url} alt={lightbox.label}
+              className="w-full max-h-[80vh] object-contain rounded-xl" />
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+    </>
   );
 }
