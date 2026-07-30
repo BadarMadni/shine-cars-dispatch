@@ -30,7 +30,11 @@ export default function BookingTable({ filter }: { filter: string }) {
       .catch(() => {});
   }, [filter, page]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+    const iv = setInterval(load, 10000);
+    return () => clearInterval(iv);
+  }, [load]);
 
   if (!bookings.length) {
     return <p className="text-center text-navy/40 py-12 text-sm">No bookings found.</p>;
