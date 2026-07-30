@@ -37,6 +37,12 @@ export async function POST(req: NextRequest) {
       data: { driverId: decoded.id, type, fileUrl: key, expiryDate },
     });
 
+    // Set driver status back to "pending" when uploading docs (handles resubmit after rejection)
+    await prisma.driver.update({
+      where: { id: decoded.id },
+      data: { status: "pending" },
+    });
+
     return NextResponse.json({ success: true, document: { id: doc.id, type: doc.type, expiryDate: doc.expiryDate } });
   } catch (error) {
     const msg = error instanceof Error ? error.message : String(error);
