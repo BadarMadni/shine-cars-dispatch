@@ -3,8 +3,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { MapPin, Navigation, Phone, ChevronLeft, ChevronRight } from "lucide-react";
+import { Plus } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
 import BookingDetail from "@/components/dispatch/BookingDetail";
+import CreateBookingModal from "@/components/dispatch/CreateBookingModal";
 
 interface Booking {
   id: string; name: string; phone: string;
@@ -22,6 +24,7 @@ export default function BookingTable({ filter }: { filter: string }) {
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [selected, setSelected] = useState<Booking | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
 
   const load = useCallback(() => {
     fetch(`/api/bookings?status=${filter}&page=${page}&limit=5`)
@@ -36,12 +39,26 @@ export default function BookingTable({ filter }: { filter: string }) {
     return () => clearInterval(iv);
   }, [load]);
 
+  const createBtn = (
+    <button onClick={() => setShowCreate(true)}
+      className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-crimson to-crimson-dark text-white text-xs font-bold cursor-pointer hover:shadow-lg transition-shadow">
+      <Plus className="w-4 h-4" />New Booking
+    </button>
+  );
+
   if (!bookings.length) {
-    return <p className="text-center text-navy/40 py-12 text-sm">No bookings found.</p>;
+    return (
+      <div className="text-center py-12">
+        <div className="mb-4">{createBtn}</div>
+        <p className="text-navy/40 text-sm">No bookings found.</p>
+        {showCreate && <CreateBookingModal onClose={() => { setShowCreate(false); load(); }} />}
+      </div>
+    );
   }
 
   return (
     <>
+      <div className="flex justify-end mb-3">{createBtn}</div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
@@ -110,6 +127,7 @@ export default function BookingTable({ filter }: { filter: string }) {
       )}
 
       {selected && <BookingDetail booking={selected} onClose={() => { setSelected(null); load(); }} />}
+      {showCreate && <CreateBookingModal onClose={() => { setShowCreate(false); load(); }} />}
     </>
   );
 }

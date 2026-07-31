@@ -1,21 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import {
-  X, MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard, UserCheck,
-} from "lucide-react";
+import { X, UserCheck, Pencil } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
+import BookingInfoRows from "@/components/dispatch/BookingInfoRows";
+import BookingEditFields, { BookingEdits } from "@/components/dispatch/BookingEditFields";
+import { PlaceData } from "@/components/dispatch/DispatchAddressInput";
+import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface Booking {
   id: string; name: string; phone: string;
   pickup: string; dropoff: string;
   date: string; time: string;
   distance: number; fare: number;
-  vehicle?: string;
-  paymentMethod?: string;
-  paymentStatus?: string;
+  vehicle?: string; paymentMethod?: string; paymentStatus?: string;
   status: string; createdAt: string; notes: string | null;
   driverId?: string | null;
   driver?: { id: string; name: string } | null;
@@ -25,49 +24,64 @@ interface Driver { id: string; name: string; isAvailable: boolean; }
 
 const statuses = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress", "completed", "cancelled"];
 
+function toISODate(d: string) { const p = d.split("/"); return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : d; }
+function toDisplayDate(d: string) { const p = d.split("-"); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d; }
+
 export default function BookingDetail({ booking, onClose }: { booking: Booking; onClose: () => void }) {
   const [status, setStatus] = useState(booking.status);
-  const [notes, setNotes] = useState(
-    booking.notes?.startsWith("stripe:") ? "" : (booking.notes || "")
-  );
+  const [notes, setNotes] = useState(booking.notes?.startsWith("stripe:") ? "" : (booking.notes || ""));
   const [driverId, setDriverId] = useState(booking.driverId || "");
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [saving, setSaving] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [calculating, setCalculating] = useState(false);
+  const places = useRef<{ pickup?: PlaceData; dropoff?: PlaceData }>({});
+  const [edits, setEdits] = useState<BookingEdits>({
+    pickup: booking.pickup, dropoff: booking.dropoff,
+    date: toISODate(booking.date), time: booking.time,
+    fare: booking.fare.toFixed(2), distance: booking.distance.toFixed(1),
+    vehicle: booking.vehicle || "car",
+    paymentMethod: booking.paymentMethod || "cash",
+    paymentStatus: booking.paymentStatus || "unpaid",
+  });
 
   useEffect(() => {
-    fetch("/api/drivers?status=approved")
-      .then((r) => r.json())
-      .then((d) => setDrivers(d.drivers || []))
-      .catch(() => {});
+    fetch("/api/drivers?status=approved").then((r) => r.json()).then((d) => setDrivers(d.drivers || [])).catch(() => {});
   }, []);
+
+  const handlePlaceChange = (type: "pickup" | "dropoff", place: PlaceData) => {
+    places.current[type] = place;
+    const p = places.current.pickup, d = places.current.dropoff;
+    if (!p || !d || !window.google?.maps) return;
+    setCalculating(true);
+    new google.maps.DistanceMatrixService().getDistanceMatrix(
+      { origins: [{ lat: p.lat, lng: p.lng }], destinations: [{ lat: d.lat, lng: d.lng }], travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.IMPERIAL },
+      (res, st) => {
+        setCalculating(false);
+        if (st !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
+        const miles = metersToMiles(res.rows[0].elements[0].distance.value);
+        const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType);
+        setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
+      }
+    );
+  };
 
   const save = async () => {
     setSaving(true);
     const body: Record<string, unknown> = { status, notes };
-    if (driverId !== (booking.driverId || "")) {
-      body.driverId = driverId || null;
+    if (driverId !== (booking.driverId || "")) body.driverId = driverId || null;
+    if (editing) {
+      body.pickup = edits.pickup; body.dropoff = edits.dropoff;
+      body.date = toDisplayDate(edits.date); body.time = edits.time;
+      body.fare = parseFloat(edits.fare) || booking.fare;
+      body.distance = parseFloat(edits.distance) || booking.distance;
+      body.vehicle = edits.vehicle; body.paymentMethod = edits.paymentMethod; body.paymentStatus = edits.paymentStatus;
     }
-    await fetch(`/api/bookings/${booking.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    setSaving(false);
-    onClose();
+    await fetch(`/api/bookings/${booking.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    setSaving(false); onClose();
   };
 
-  const rows = [
-    { icon: User, color: "text-blue-500", label: "Customer", value: booking.name },
-    { icon: Phone, color: "text-navy/40", label: "Phone", value: booking.phone },
-    { icon: MapPin, color: "text-green-500", label: "Pickup", value: booking.pickup },
-    { icon: Navigation, color: "text-crimson", label: "Drop-off", value: booking.dropoff },
-    { icon: Calendar, color: "text-purple-500", label: "Date", value: booking.date },
-    { icon: Clock, color: "text-purple-500", label: "Time", value: booking.time },
-    { icon: Route, color: "text-gold", label: "Distance", value: `${booking.distance.toFixed(1)} miles` },
-    { icon: Car, color: "text-blue-500", label: "Vehicle", value: (booking.vehicle || "car").toUpperCase() },
-    { icon: PoundSterling, color: "text-gold", label: "Fare", value: `£${booking.fare.toFixed(2)}` },
-    { icon: CreditCard, color: "text-indigo-500", label: "Payment", value: `${(booking.paymentMethod || "cash").toUpperCase()} — ${(booking.paymentStatus || "unpaid").toUpperCase()}` },
-  ];
+  const selectClass = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50";
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" onClick={onClose}>
@@ -79,9 +93,15 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
             <h3 className="font-bold text-navy">Booking Details</h3>
             <p className="text-navy/40 text-xs mt-0.5">ID: {booking.id.slice(0, 8)}</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100 text-navy/40 cursor-pointer">
-            <X className="w-5 h-5" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setEditing(!editing)}
+              className={`p-2 rounded-lg cursor-pointer transition-colors ${editing ? "bg-crimson/10 text-crimson" : "hover:bg-gray-100 text-navy/40"}`}>
+              <Pencil className="w-4 h-4" />
+            </button>
+            <button onClick={onClose} className="p-2 rounded-lg hover:bg-gray-100 text-navy/40 cursor-pointer">
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         <div className="p-5 space-y-4">
@@ -90,40 +110,30 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
             <StatusBadge status={booking.status} />
           </div>
 
-          <div className="space-y-3">
-            {rows.map(({ icon: Icon, color, label, value }) => (
-              <div key={label} className="flex items-start gap-3">
-                <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${color}`} />
-                <div>
-                  <p className="text-navy/40 text-xs">{label}</p>
-                  <p className="text-navy text-sm font-medium">{value}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+          {editing ? (
+            <BookingEditFields edits={edits} calculating={calculating}
+              onChange={(k, v) => setEdits((p) => ({ ...p, [k]: v }))}
+              onPlaceChange={handlePlaceChange} />
+          ) : (
+            <BookingInfoRows booking={booking} />
+          )}
 
           <div>
             <label className="block text-navy/60 text-xs font-medium mb-1.5">
               <UserCheck className="w-3.5 h-3.5 inline mr-1" />Assign Driver
             </label>
-            <select value={driverId} onChange={(e) => setDriverId(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50">
+            <select value={driverId} onChange={(e) => setDriverId(e.target.value)} className={selectClass}>
               <option value="">Unassigned</option>
               {drivers.map((d) => (
-                <option key={d.id} value={d.id}>
-                  {d.name} {d.isAvailable ? "(Available)" : "(Busy)"}
-                </option>
+                <option key={d.id} value={d.id}>{d.name} {d.isAvailable ? "(Available)" : "(Busy)"}</option>
               ))}
             </select>
           </div>
 
           <div>
             <label className="block text-navy/60 text-xs font-medium mb-1.5">Update Status</label>
-            <select value={status} onChange={(e) => setStatus(e.target.value)}
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50">
-              {statuses.map((s) => (
-                <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>
-              ))}
+            <select value={status} onChange={(e) => setStatus(e.target.value)} className={selectClass}>
+              {statuses.map((s) => (<option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>))}
             </select>
           </div>
 
@@ -131,7 +141,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
             <label className="block text-navy/60 text-xs font-medium mb-1.5">Notes</label>
             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={3}
               placeholder="Add notes about this booking..."
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50 resize-none" />
+              className={`${selectClass} resize-none`} />
           </div>
         </div>
 
