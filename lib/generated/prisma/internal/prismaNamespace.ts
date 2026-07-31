@@ -401,6 +401,7 @@ export const ModelName = {
   Operator: 'Operator',
   Driver: 'Driver',
   Customer: 'Customer',
+  DriverNotification: 'DriverNotification',
   DriverDocument: 'DriverDocument'
 } as const
 
@@ -417,7 +418,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "booking" | "operator" | "driver" | "customer" | "driverDocument"
+    modelProps: "booking" | "operator" | "driver" | "customer" | "driverNotification" | "driverDocument"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -717,6 +718,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DriverNotification: {
+      payload: Prisma.$DriverNotificationPayload<ExtArgs>
+      fields: Prisma.DriverNotificationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DriverNotificationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DriverNotificationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        findFirst: {
+          args: Prisma.DriverNotificationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DriverNotificationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        findMany: {
+          args: Prisma.DriverNotificationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>[]
+        }
+        create: {
+          args: Prisma.DriverNotificationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        createMany: {
+          args: Prisma.DriverNotificationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DriverNotificationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>[]
+        }
+        delete: {
+          args: Prisma.DriverNotificationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        update: {
+          args: Prisma.DriverNotificationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        deleteMany: {
+          args: Prisma.DriverNotificationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DriverNotificationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DriverNotificationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>[]
+        }
+        upsert: {
+          args: Prisma.DriverNotificationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverNotificationPayload>
+        }
+        aggregate: {
+          args: Prisma.DriverNotificationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDriverNotification>
+        }
+        groupBy: {
+          args: Prisma.DriverNotificationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverNotificationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DriverNotificationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverNotificationCountAggregateOutputType> | number
+        }
+      }
+    }
     DriverDocument: {
       payload: Prisma.$DriverDocumentPayload<ExtArgs>
       fields: Prisma.DriverDocumentFieldRefs
@@ -901,6 +976,20 @@ export const CustomerScalarFieldEnum = {
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const DriverNotificationScalarFieldEnum = {
+  id: 'id',
+  driverId: 'driverId',
+  title: 'title',
+  body: 'body',
+  type: 'type',
+  isRead: 'isRead',
+  data: 'data',
+  createdAt: 'createdAt'
+} as const
+
+export type DriverNotificationScalarFieldEnum = (typeof DriverNotificationScalarFieldEnum)[keyof typeof DriverNotificationScalarFieldEnum]
 
 
 export const DriverDocumentScalarFieldEnum = {
@@ -1162,6 +1251,7 @@ export type GlobalOmitConfig = {
   operator?: Prisma.OperatorOmit
   driver?: Prisma.DriverOmit
   customer?: Prisma.CustomerOmit
+  driverNotification?: Prisma.DriverNotificationOmit
   driverDocument?: Prisma.DriverDocumentOmit
 }
 

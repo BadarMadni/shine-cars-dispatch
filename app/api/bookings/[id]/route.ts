@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/pushNotification";
+import { createDriverNotification } from "@/lib/notify";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -62,6 +63,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
           { bookingId: booking.id }
         );
       }
+      createDriverNotification(
+        driverId,
+        "New Booking Assigned",
+        `${booking.pickup} → ${booking.dropoff} | £${booking.fare.toFixed(2)}`,
+        "booking",
+        JSON.stringify({ bookingId: booking.id })
+      );
     }
 
     return NextResponse.json({ booking });

@@ -38,6 +38,11 @@ export type Driver = Prisma.DriverModel
  */
 export type Customer = Prisma.CustomerModel
 /**
+ * Model DriverNotification
+ * 
+ */
+export type DriverNotification = Prisma.DriverNotificationModel
+/**
  * Model DriverDocument
  * 
  */

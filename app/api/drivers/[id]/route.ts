@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getR2Url, isR2Key } from "@/lib/r2";
+import { createDriverNotification } from "@/lib/notify";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -55,6 +56,12 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       where: { id },
       data,
     });
+
+    if (body.status === "approved") {
+      createDriverNotification(id, "Account Approved", "Your account has been approved. You can now receive bookings!", "approval");
+    } else if (body.status === "rejected") {
+      createDriverNotification(id, "Account Rejected", "Your account was not approved. Please resubmit your documents.", "rejection");
+    }
 
     return NextResponse.json({
       success: true,
