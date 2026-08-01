@@ -6,8 +6,8 @@ import { Device, Call } from "@twilio/voice-sdk";
 import IncomingCall from "@/components/dispatch/IncomingCall";
 import ActiveCall from "@/components/dispatch/ActiveCall";
 
-interface ActiveBooking {
-  id: string; pickup: string; dropoff: string; date: string; time: string; status: string;
+interface BookingSummary {
+  id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare: number;
 }
 
 interface CallerInfo {
@@ -15,7 +15,9 @@ interface CallerInfo {
   name?: string;
   lastPickup?: string;
   totalTrips?: number;
-  activeBooking?: ActiveBooking;
+  activeBookings?: BookingSummary[];
+  customerId?: string;
+  accountType?: string;
 }
 
 export default function SIPPhone() {
@@ -38,15 +40,24 @@ export default function SIPPhone() {
         const customerBookings = data.bookings.filter((b: { phone: string }) =>
           b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10))
         );
-        const active = customerBookings.find((b: { status: string }) =>
-          ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress"].includes(b.status)
-        );
+        const activeStatuses = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress"];
+        const actives = customerBookings
+          .filter((b: { status: string }) => activeStatuses.includes(b.status))
+          .map((b: { id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare: number }) => ({
+            id: b.id, pickup: b.pickup, dropoff: b.dropoff, date: b.date, time: b.time, status: b.status, fare: b.fare,
+          }));
+        let customerId: string | undefined;
+        let accountType: string | undefined;
+        try {
+          const custRes = await fetch(`/api/customers?search=${encodeURIComponent(clean.slice(-10))}`);
+          const custData = await custRes.json();
+          const cust = custData.customers?.[0];
+          if (cust) { customerId = cust.id; accountType = cust.accountType; }
+        } catch {}
         return {
-          number: clean,
-          name: match.name,
-          lastPickup: match.pickup,
-          totalTrips: customerBookings.length,
-          activeBooking: active ? { id: active.id, pickup: active.pickup, dropoff: active.dropoff, date: active.date, time: active.time, status: active.status } : undefined,
+          number: clean, name: match.name, lastPickup: match.pickup,
+          totalTrips: customerBookings.length, activeBookings: actives.length ? actives : undefined,
+          customerId, accountType,
         };
       }
       return { number: clean };
