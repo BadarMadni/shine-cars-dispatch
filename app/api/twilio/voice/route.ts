@@ -11,14 +11,14 @@ export async function POST(request: NextRequest) {
 
   const response = new VoiceResponse();
 
-  if (to && to !== "client:dispatch-operator") {
+  if (to === TWILIO_NUMBER || to === "client:dispatch-operator" || !to) {
+    // Incoming call — connect to browser client
+    const dial = response.dial({ callerId: from || TWILIO_NUMBER });
+    dial.client("dispatch-operator");
+  } else {
     // Outbound call from dispatcher to customer/driver
     const dial = response.dial({ callerId: TWILIO_NUMBER });
     dial.number(to);
-  } else {
-    // Incoming call — connect to browser client
-    const dial = response.dial({ callerId: from });
-    dial.client("dispatch-operator");
   }
 
   return new NextResponse(response.toString(), {
