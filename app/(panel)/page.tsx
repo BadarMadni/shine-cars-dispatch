@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import StatsCards from "@/components/dispatch/StatsCards";
 import BookingTable from "@/components/dispatch/BookingTable";
 
@@ -17,7 +18,7 @@ export default function DashboardPage() {
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <h2 className="text-lg font-bold text-navy mb-4">Recent Bookings</h2>
-        <BookingTable filter="all" />
+        <Suspense><BookingTable filter="all" /></Suspense>
       </div>
     </div>
   );

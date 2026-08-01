@@ -40,9 +40,7 @@ export default function SIPPhone() {
         const customerBookings = data.bookings.filter((b: { phone: string }) =>
           b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10))
         );
-        const activeStatuses = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress"];
-        const actives = customerBookings
-          .filter((b: { status: string }) => activeStatuses.includes(b.status))
+        const allBookings = customerBookings
           .map((b: { id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare: number }) => ({
             id: b.id, pickup: b.pickup, dropoff: b.dropoff, date: b.date, time: b.time, status: b.status, fare: b.fare,
           }));
@@ -56,7 +54,7 @@ export default function SIPPhone() {
         } catch {}
         return {
           number: clean, name: match.name, lastPickup: match.pickup,
-          totalTrips: customerBookings.length, activeBookings: actives.length ? actives : undefined,
+          totalTrips: customerBookings.length, activeBookings: allBookings.length ? allBookings : undefined,
           customerId, accountType,
         };
       }

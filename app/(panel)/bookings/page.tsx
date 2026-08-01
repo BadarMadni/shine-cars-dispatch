@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import BookingTable from "@/components/dispatch/BookingTable";
 
 const tabs = [
@@ -36,7 +36,7 @@ export default function BookingsPage() {
           ))}
         </div>
         <div className="p-4">
-          <BookingTable filter={filter} />
+          <Suspense><BookingTable filter={filter} /></Suspense>
         </div>
       </div>
     </div>

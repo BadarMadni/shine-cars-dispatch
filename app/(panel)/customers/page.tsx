@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import CustomersTable from "@/components/dispatch/CustomersTable";
 
 const tabs = [
@@ -33,7 +33,7 @@ export default function CustomersPage() {
           ))}
         </div>
         <div className="p-4">
-          <CustomersTable filter={filter} />
+          <Suspense><CustomersTable filter={filter} /></Suspense>
         </div>
       </div>
     </div>

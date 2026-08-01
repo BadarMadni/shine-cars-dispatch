@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { MapPin, Navigation, Phone, ChevronLeft, ChevronRight } from "lucide-react";
 import { Plus } from "lucide-react";
@@ -20,6 +21,7 @@ interface Booking {
 }
 
 export default function BookingTable({ filter }: { filter: string }) {
+  const searchParams = useSearchParams();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
@@ -38,6 +40,15 @@ export default function BookingTable({ filter }: { filter: string }) {
     const iv = setInterval(load, 10000);
     return () => clearInterval(iv);
   }, [load]);
+
+  useEffect(() => {
+    const openId = searchParams.get("open");
+    if (!openId || selected) return;
+    fetch(`/api/bookings/${openId}`)
+      .then((r) => r.json())
+      .then((d) => { if (d.booking) setSelected(d.booking); })
+      .catch(() => {});
+  }, [searchParams, selected]);
 
   const createBtn = (
     <button onClick={() => setShowCreate(true)}

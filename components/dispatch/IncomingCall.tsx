@@ -59,7 +59,7 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
 
         <h3 className="text-white text-2xl font-bold mb-1 flex items-center justify-center gap-2">
           {caller.customerId ? (
-            <button onClick={() => router.push(`/customers`)} className="hover:text-amber-400 transition-colors cursor-pointer underline decoration-white/20 hover:decoration-amber-400">
+            <button onClick={() => router.push(`/customers?open=${caller.customerId}`)} className="hover:text-amber-400 transition-colors cursor-pointer underline decoration-white/20 hover:decoration-amber-400">
               {caller.name || "Unknown Caller"}
             </button>
           ) : (caller.name || "Unknown Caller")}
@@ -80,23 +80,32 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
           </div>
         )}
 
-        {/* Active bookings */}
+        {/* Bookings */}
         {caller.activeBookings && caller.activeBookings.length > 0 && (
           <div className="mx-6 mb-2 max-h-40 overflow-y-auto space-y-2">
             {caller.activeBookings.map((b) => (
-              <button key={b.id} onClick={() => router.push(`/bookings`)}
+              <button key={b.id} onClick={() => router.push(`/bookings?open=${b.id}`)}
                 className="w-full p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left hover:bg-amber-500/20 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-amber-400 text-[10px] font-bold uppercase tracking-wider">{b.status}</p>
                   <p className="text-amber-400 text-[11px] font-bold">£{b.fare.toFixed(2)}</p>
                 </div>
-                <div className="flex items-start gap-2 text-xs text-white/70">
-                  <Navigation className="w-3 h-3 mt-0.5 text-amber-400 shrink-0" />
-                  <div>
-                    <p>{b.pickup}</p>
-                    <p className="text-white/40">→ {b.dropoff}</p>
-                    <p className="text-white/30 mt-1">{b.date} at {b.time}</p>
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="w-3 h-3 mt-0.5 text-green-400 shrink-0" />
+                    <div>
+                      <p className="text-white/40 text-[10px]">Pickup</p>
+                      <p className="text-white/70">{b.pickup}</p>
+                    </div>
                   </div>
+                  <div className="flex items-start gap-2">
+                    <Navigation className="w-3 h-3 mt-0.5 text-red-400 shrink-0" />
+                    <div>
+                      <p className="text-white/40 text-[10px]">Drop-off</p>
+                      <p className="text-white/70">{b.dropoff}</p>
+                    </div>
+                  </div>
+                  <p className="text-white/30 text-[10px] mt-1">{b.date} at {b.time}</p>
                 </div>
               </button>
             ))}

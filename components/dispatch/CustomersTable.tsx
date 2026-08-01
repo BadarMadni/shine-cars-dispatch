@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Search, Building2, UserRound, Mail, Phone, Calendar, Car } from "lucide-react";
 import CustomerDetail from "@/components/dispatch/CustomerDetail";
 
@@ -17,6 +18,7 @@ interface Customer {
 const PER_PAGE = 5;
 
 export default function CustomersTable({ filter }: { filter: string }) {
+  const searchParams = useSearchParams();
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -34,6 +36,18 @@ export default function CustomersTable({ filter }: { filter: string }) {
       .catch(() => setCustomers([]))
       .finally(() => setLoading(false));
   }, [filter, search]);
+
+  useEffect(() => {
+    const openId = searchParams.get("open");
+    if (!openId || selected) return;
+    fetch(`/api/customers?search=`)
+      .then((r) => r.json())
+      .then((d) => {
+        const c = (d.customers || []).find((c: Customer) => c.id === openId);
+        if (c) setSelected(c);
+      })
+      .catch(() => {});
+  }, [searchParams, selected]);
 
   const total = customers.length;
   const pages = Math.ceil(total / PER_PAGE);
