@@ -6,11 +6,16 @@ import { Device, Call } from "@twilio/voice-sdk";
 import IncomingCall from "@/components/dispatch/IncomingCall";
 import ActiveCall from "@/components/dispatch/ActiveCall";
 
+interface ActiveBooking {
+  id: string; pickup: string; dropoff: string; date: string; time: string; status: string;
+}
+
 interface CallerInfo {
   number: string;
   name?: string;
   lastPickup?: string;
   totalTrips?: number;
+  activeBooking?: ActiveBooking;
 }
 
 export default function SIPPhone() {
@@ -30,13 +35,18 @@ export default function SIPPhone() {
         clean.includes(b.phone.replace(/[^0-9+]/g, "").slice(-10))
       );
       if (match) {
+        const customerBookings = data.bookings.filter((b: { phone: string }) =>
+          b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10))
+        );
+        const active = customerBookings.find((b: { status: string }) =>
+          ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress"].includes(b.status)
+        );
         return {
           number: clean,
           name: match.name,
           lastPickup: match.pickup,
-          totalTrips: data.bookings.filter((b: { phone: string }) =>
-            b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10))
-          ).length,
+          totalTrips: customerBookings.length,
+          activeBooking: active ? { id: active.id, pickup: active.pickup, dropoff: active.dropoff, date: active.date, time: active.time, status: active.status } : undefined,
         };
       }
       return { number: clean };

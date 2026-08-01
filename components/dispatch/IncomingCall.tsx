@@ -1,15 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Phone, PhoneOff, User, MapPin } from "lucide-react";
+import { Phone, PhoneOff, User, MapPin, Navigation } from "lucide-react";
 import { playNotificationSound } from "@/components/dispatch/NotificationSound";
 import { useEffect } from "react";
+
+interface ActiveBooking {
+  id: string; pickup: string; dropoff: string; date: string; time: string; status: string;
+}
 
 interface CallerInfo {
   number: string;
   name?: string;
   lastPickup?: string;
   totalTrips?: number;
+  activeBooking?: ActiveBooking;
 }
 
 interface Props {
@@ -70,6 +75,20 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
                 <MapPin className="w-3 h-3" /> {caller.lastPickup}
               </span>
             )}
+          </div>
+        )}
+
+        {caller.activeBooking && (
+          <div className="mx-6 mb-2 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left">
+            <p className="text-amber-400 text-[10px] font-bold uppercase tracking-wider mb-1.5">Active Booking — {caller.activeBooking.status}</p>
+            <div className="flex items-start gap-2 text-xs text-white/70">
+              <Navigation className="w-3 h-3 mt-0.5 text-amber-400 shrink-0" />
+              <div>
+                <p>{caller.activeBooking.pickup}</p>
+                <p className="text-white/40">→ {caller.activeBooking.dropoff}</p>
+                <p className="text-white/30 mt-1">{caller.activeBooking.date} at {caller.activeBooking.time}</p>
+              </div>
+            </div>
           </div>
         )}
 
