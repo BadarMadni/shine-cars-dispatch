@@ -3,10 +3,10 @@ import twilio from "twilio";
 
 export async function GET() {
   try {
-    const accountSid = process.env.TWILIO_ACCOUNT_SID!;
-    const apiKeySid = process.env.TWILIO_API_KEY_SID!;
-    const apiKeySecret = process.env.TWILIO_API_KEY_SECRET!;
-    const twimlAppSid = process.env.TWILIO_TWIML_APP_SID!;
+    const accountSid = process.env.TWILIO_ACCOUNT_SID!.trim();
+    const apiKeySid = process.env.TWILIO_API_KEY_SID!.trim();
+    const apiKeySecret = process.env.TWILIO_API_KEY_SECRET!.trim();
+    const twimlAppSid = process.env.TWILIO_TWIML_APP_SID!.trim();
 
     const AccessToken = twilio.jwt.AccessToken;
     const VoiceGrant = AccessToken.VoiceGrant;
