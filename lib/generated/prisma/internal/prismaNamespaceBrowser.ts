@@ -56,6 +56,7 @@ export const ModelName = {
   Driver: 'Driver',
   Customer: 'Customer',
   DriverNotification: 'DriverNotification',
+  ChatMessage: 'ChatMessage',
   DriverDocument: 'DriverDocument'
 } as const
 
@@ -160,6 +161,18 @@ export const DriverNotificationScalarFieldEnum = {
 } as const
 
 export type DriverNotificationScalarFieldEnum = (typeof DriverNotificationScalarFieldEnum)[keyof typeof DriverNotificationScalarFieldEnum]
+
+
+export const ChatMessageScalarFieldEnum = {
+  id: 'id',
+  driverId: 'driverId',
+  message: 'message',
+  sender: 'sender',
+  isRead: 'isRead',
+  createdAt: 'createdAt'
+} as const
+
+export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
 
 
 export const DriverDocumentScalarFieldEnum = {

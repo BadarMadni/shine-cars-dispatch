@@ -43,6 +43,11 @@ export type Customer = Prisma.CustomerModel
  */
 export type DriverNotification = Prisma.DriverNotificationModel
 /**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = Prisma.ChatMessageModel
+/**
  * Model DriverDocument
  * 
  */
