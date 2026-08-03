@@ -9,7 +9,7 @@ import StatusBadge from "@/components/dispatch/StatusBadge";
 
 interface Customer {
   id: string; name: string; email: string; phone: string;
-  accountType: string; totalRides: number; createdAt: string;
+  accountType: string; companyName?: string; totalRides: number; createdAt: string;
 }
 
 interface Booking {
@@ -54,6 +54,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
               </div>
               <div>
                 <h3 className="text-navy font-bold text-xl">{customer.name}</h3>
+                {customer.companyName && <p className="text-navy/50 text-sm">{customer.companyName}</p>}
                 <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
                   customer.accountType === "company"
                     ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"

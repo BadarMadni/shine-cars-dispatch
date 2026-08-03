@@ -11,6 +11,7 @@ interface Customer {
   email: string;
   phone: string;
   accountType: string;
+  companyName?: string;
   totalRides: number;
   createdAt: string;
 }
@@ -87,7 +88,10 @@ export default function CustomersTable({ filter }: { filter: string }) {
             ) : visible.map((c) => (
               <tr key={c.id} onClick={() => setSelected(c)}
                 className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors">
-                <td className="px-4 py-3 text-navy font-medium">{c.name}</td>
+                <td className="px-4 py-3">
+                  <p className="text-navy font-medium">{c.name}</p>
+                  {c.companyName && <p className="text-navy/40 text-xs">{c.companyName}</p>}
+                </td>
                 <td className="px-4 py-3 text-navy/60">{c.email}</td>
                 <td className="px-4 py-3 text-navy/60">{c.phone}</td>
                 <td className="px-4 py-3">

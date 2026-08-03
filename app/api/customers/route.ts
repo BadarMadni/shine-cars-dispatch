@@ -22,7 +22,7 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: "desc" },
       select: {
         id: true, name: true, email: true, phone: true,
-        accountType: true, createdAt: true,
+        accountType: true, companyName: true, createdAt: true,
       },
     });
 
