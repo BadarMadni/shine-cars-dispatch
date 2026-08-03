@@ -124,6 +124,8 @@ export default function SIPPhone() {
     };
   }, [setupDevice]);
 
+  const dismissIncoming = () => setIncoming(null);
+
   const acceptCall = () => {
     if (!callRef.current) return;
     callRef.current.accept();
@@ -171,6 +173,7 @@ export default function SIPPhone() {
             caller={incoming}
             onAccept={acceptCall}
             onReject={rejectCall}
+            onDismiss={dismissIncoming}
           />
         )}
       </AnimatePresence>

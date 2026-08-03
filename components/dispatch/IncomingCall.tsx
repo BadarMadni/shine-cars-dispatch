@@ -24,9 +24,10 @@ interface Props {
   caller: CallerInfo;
   onAccept: () => void;
   onReject: () => void;
+  onDismiss?: () => void;
 }
 
-export default function IncomingCall({ caller, onAccept, onReject }: Props) {
+export default function IncomingCall({ caller, onAccept, onReject, onDismiss }: Props) {
   const router = useRouter();
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
 
         <h3 className="text-white text-2xl font-bold mb-1 flex items-center justify-center gap-2">
           {caller.customerId ? (
-            <button onClick={() => router.push(`/customers?open=${caller.customerId}`)} className="hover:text-amber-400 transition-colors cursor-pointer underline decoration-white/20 hover:decoration-amber-400">
+            <button onClick={() => { onDismiss?.(); router.push(`/customers?open=${caller.customerId}`); }} className="hover:text-amber-400 transition-colors cursor-pointer underline decoration-white/20 hover:decoration-amber-400">
               {caller.name || "Unknown Caller"}
             </button>
           ) : (caller.name || "Unknown Caller")}
@@ -84,7 +85,7 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
         {caller.activeBookings && caller.activeBookings.length > 0 && (
           <div className="mx-6 mb-2 max-h-40 overflow-y-auto space-y-2">
             {caller.activeBookings.map((b) => (
-              <button key={b.id} onClick={() => router.push(`/bookings?open=${b.id}`)}
+              <button key={b.id} onClick={() => { onDismiss?.(); router.push(`/bookings?open=${b.id}`); }}
                 className="w-full p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-left hover:bg-amber-500/20 transition-colors cursor-pointer">
                 <div className="flex items-center justify-between mb-1.5">
                   <p className="text-amber-400 text-[10px] font-bold uppercase tracking-wider">{b.status}</p>
