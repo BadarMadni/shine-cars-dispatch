@@ -5,15 +5,18 @@ import {
 
 interface Booking {
   name: string; phone: string; pickup: string; dropoff: string;
+  stops?: string | null;
   date: string; time: string; distance: number; fare: number;
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
 }
 
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
+  const parsedStops: string[] = b.stops ? (() => { try { return JSON.parse(b.stops); } catch { return []; } })() : [];
   const rows = [
     { icon: User, color: "text-blue-500", label: "Customer", value: b.name },
     { icon: Phone, color: "text-navy/40", label: "Phone", value: b.phone },
     { icon: MapPin, color: "text-green-500", label: "Pickup", value: b.pickup },
+    ...parsedStops.map((s: string, i: number) => ({ icon: MapPin, color: "text-amber-500", label: `Stop ${i + 1}`, value: s })),
     { icon: Navigation, color: "text-crimson", label: "Drop-off", value: b.dropoff },
     { icon: Calendar, color: "text-purple-500", label: "Date", value: b.date },
     { icon: Clock, color: "text-purple-500", label: "Time", value: b.time },

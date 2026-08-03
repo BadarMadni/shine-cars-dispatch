@@ -21,13 +21,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   try {
     const { id } = await params;
     const body = await req.json();
-    const { status, notes, driverId, pickup, dropoff, date, time, fare, distance, vehicle, paymentMethod, paymentStatus, name, phone } = body;
+    const { status, notes, driverId, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, paymentStatus, name, phone } = body;
 
     const data: Record<string, unknown> = {};
     if (status) data.status = status;
     if (notes !== undefined) data.notes = notes;
     if (pickup !== undefined) data.pickup = pickup;
     if (dropoff !== undefined) data.dropoff = dropoff;
+    if (stops !== undefined) data.stops = stops;
     if (date !== undefined) data.date = date;
     if (time !== undefined) data.time = time;
     if (fare !== undefined) data.fare = parseFloat(fare);

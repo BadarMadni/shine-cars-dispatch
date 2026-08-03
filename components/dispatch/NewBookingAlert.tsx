@@ -9,7 +9,7 @@ import { playNotificationSound } from "@/components/dispatch/NotificationSound";
 
 interface Booking {
   id: string; name: string; phone: string;
-  pickup: string; dropoff: string;
+  pickup: string; dropoff: string; stops?: string | null;
   date: string; time: string;
   distance: number; fare: number;
   status: string; createdAt: string;
@@ -96,12 +96,13 @@ export default function NewBookingAlert() {
                 { icon: User, color: "text-blue-500", label: "Customer", val: booking.name },
                 { icon: Phone, color: "text-navy/40", label: "Phone", val: booking.phone },
                 { icon: MapPin, color: "text-green-500", label: "Pickup", val: booking.pickup },
+                ...(() => { try { const s: string[] = booking.stops ? JSON.parse(booking.stops) : []; return s.map((addr, i) => ({ icon: MapPin, color: "text-amber-500", label: `Stop ${i + 1}`, val: addr })); } catch { return []; } })(),
                 { icon: Navigation, color: "text-crimson", label: "Drop-off", val: booking.dropoff },
                 { icon: Calendar, color: "text-purple-500", label: "Date & Time", val: `${booking.date} at ${booking.time}` },
                 { icon: Route, color: "text-gold", label: "Distance", val: `${booking.distance.toFixed(1)} miles` },
                 { icon: PoundSterling, color: "text-gold", label: "Fare", val: `£${booking.fare.toFixed(2)}` },
               ].map(({ icon: Icon, color, label, val }, i) => (
-                <motion.div key={label}
+                <motion.div key={`${label}-${i}`}
                   initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + i * 0.05 }}
                   className="flex items-start gap-3"

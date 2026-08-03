@@ -11,7 +11,7 @@ export async function GET(
       where: { customerId: id },
       orderBy: { createdAt: "desc" },
       select: {
-        id: true, pickup: true, dropoff: true, date: true,
+        id: true, pickup: true, dropoff: true, stops: true, date: true,
         time: true, distance: true, fare: true, vehicle: true,
         status: true, paymentMethod: true, paymentStatus: true,
         createdAt: true,

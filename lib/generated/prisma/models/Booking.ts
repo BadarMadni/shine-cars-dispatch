@@ -57,6 +57,7 @@ export type BookingMinAggregateOutputType = {
   customerId: string | null
   assignedAt: Date | null
   cashCollected: number | null
+  stops: string | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -81,6 +82,7 @@ export type BookingMaxAggregateOutputType = {
   customerId: string | null
   assignedAt: Date | null
   cashCollected: number | null
+  stops: string | null
   notes: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -105,6 +107,7 @@ export type BookingCountAggregateOutputType = {
   customerId: number
   assignedAt: number
   cashCollected: number
+  stops: number
   notes: number
   createdAt: number
   updatedAt: number
@@ -143,6 +146,7 @@ export type BookingMinAggregateInputType = {
   customerId?: true
   assignedAt?: true
   cashCollected?: true
+  stops?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -167,6 +171,7 @@ export type BookingMaxAggregateInputType = {
   customerId?: true
   assignedAt?: true
   cashCollected?: true
+  stops?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -191,6 +196,7 @@ export type BookingCountAggregateInputType = {
   customerId?: true
   assignedAt?: true
   cashCollected?: true
+  stops?: true
   notes?: true
   createdAt?: true
   updatedAt?: true
@@ -302,6 +308,7 @@ export type BookingGroupByOutputType = {
   customerId: string | null
   assignedAt: Date | null
   cashCollected: number | null
+  stops: string | null
   notes: string | null
   createdAt: Date
   updatedAt: Date
@@ -349,6 +356,7 @@ export type BookingWhereInput = {
   customerId?: Prisma.StringNullableFilter<"Booking"> | string | null
   assignedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   cashCollected?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  stops?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -375,6 +383,7 @@ export type BookingOrderByWithRelationInput = {
   customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cashCollected?: Prisma.SortOrderInput | Prisma.SortOrder
+  stops?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -404,6 +413,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   customerId?: Prisma.StringNullableFilter<"Booking"> | string | null
   assignedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   cashCollected?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  stops?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -430,6 +440,7 @@ export type BookingOrderByWithAggregationInput = {
   customerId?: Prisma.SortOrderInput | Prisma.SortOrder
   assignedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   cashCollected?: Prisma.SortOrderInput | Prisma.SortOrder
+  stops?: Prisma.SortOrderInput | Prisma.SortOrder
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -462,6 +473,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   customerId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   assignedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
   cashCollected?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  stops?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Booking"> | Date | string
@@ -484,6 +496,7 @@ export type BookingCreateInput = {
   paymentStatus?: string
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -510,6 +523,7 @@ export type BookingUncheckedCreateInput = {
   customerId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -532,6 +546,7 @@ export type BookingUpdateInput = {
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -558,6 +573,7 @@ export type BookingUncheckedUpdateInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -582,6 +598,7 @@ export type BookingCreateManyInput = {
   customerId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -604,6 +621,7 @@ export type BookingUpdateManyMutationInput = {
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -628,6 +646,7 @@ export type BookingUncheckedUpdateManyInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -652,6 +671,7 @@ export type BookingCountOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
   cashCollected?: Prisma.SortOrder
+  stops?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -682,6 +702,7 @@ export type BookingMaxOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
   cashCollected?: Prisma.SortOrder
+  stops?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -706,6 +727,7 @@ export type BookingMinOrderByAggregateInput = {
   customerId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
   cashCollected?: Prisma.SortOrder
+  stops?: Prisma.SortOrder
   notes?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -860,6 +882,7 @@ export type BookingCreateWithoutDriverInput = {
   paymentStatus?: string
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -884,6 +907,7 @@ export type BookingUncheckedCreateWithoutDriverInput = {
   customerId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -937,6 +961,7 @@ export type BookingScalarWhereInput = {
   customerId?: Prisma.StringNullableFilter<"Booking"> | string | null
   assignedAt?: Prisma.DateTimeNullableFilter<"Booking"> | Date | string | null
   cashCollected?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  stops?: Prisma.StringNullableFilter<"Booking"> | string | null
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Booking"> | Date | string
@@ -959,6 +984,7 @@ export type BookingCreateWithoutCustomerInput = {
   paymentStatus?: string
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -983,6 +1009,7 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   driverId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1032,6 +1059,7 @@ export type BookingCreateManyDriverInput = {
   customerId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1054,6 +1082,7 @@ export type BookingUpdateWithoutDriverInput = {
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1078,6 +1107,7 @@ export type BookingUncheckedUpdateWithoutDriverInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1101,6 +1131,7 @@ export type BookingUncheckedUpdateManyWithoutDriverInput = {
   customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1124,6 +1155,7 @@ export type BookingCreateManyCustomerInput = {
   driverId?: string | null
   assignedAt?: Date | string | null
   cashCollected?: number | null
+  stops?: string | null
   notes?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1146,6 +1178,7 @@ export type BookingUpdateWithoutCustomerInput = {
   paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1170,6 +1203,7 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   driverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1193,6 +1227,7 @@ export type BookingUncheckedUpdateManyWithoutCustomerInput = {
   driverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1219,6 +1254,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   customerId?: boolean
   assignedAt?: boolean
   cashCollected?: boolean
+  stops?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1245,6 +1281,7 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   assignedAt?: boolean
   cashCollected?: boolean
+  stops?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1271,6 +1308,7 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   customerId?: boolean
   assignedAt?: boolean
   cashCollected?: boolean
+  stops?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1297,12 +1335,13 @@ export type BookingSelectScalar = {
   customerId?: boolean
   assignedAt?: boolean
   cashCollected?: boolean
+  stops?: boolean
   notes?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "cashCollected" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "cashCollected" | "stops" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   driver?: boolean | Prisma.Booking$driverArgs<ExtArgs>
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
@@ -1341,6 +1380,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     customerId: string | null
     assignedAt: Date | null
     cashCollected: number | null
+    stops: string | null
     notes: string | null
     createdAt: Date
     updatedAt: Date
@@ -1787,6 +1827,7 @@ export interface BookingFieldRefs {
   readonly customerId: Prisma.FieldRef<"Booking", 'String'>
   readonly assignedAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly cashCollected: Prisma.FieldRef<"Booking", 'Float'>
+  readonly stops: Prisma.FieldRef<"Booking", 'String'>
   readonly notes: Prisma.FieldRef<"Booking", 'String'>
   readonly createdAt: Prisma.FieldRef<"Booking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Booking", 'DateTime'>

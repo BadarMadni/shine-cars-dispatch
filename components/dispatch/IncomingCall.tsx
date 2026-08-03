@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface BookingSummary {
-  id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare: number;
+  id: string; pickup: string; dropoff: string; stops?: string | null; date: string; time: string; status: string; fare: number;
 }
 
 interface CallerInfo {
@@ -98,6 +98,15 @@ export default function IncomingCall({ caller, onAccept, onReject }: Props) {
                       <p className="text-white/70">{b.pickup}</p>
                     </div>
                   </div>
+                  {b.stops && (() => { try { const s: string[] = JSON.parse(b.stops); return s.map((addr, i) => (
+                    <div key={i} className="flex items-start gap-2">
+                      <MapPin className="w-3 h-3 mt-0.5 text-amber-400 shrink-0" />
+                      <div>
+                        <p className="text-white/40 text-[10px]">Stop {i + 1}</p>
+                        <p className="text-white/70">{addr}</p>
+                      </div>
+                    </div>
+                  )); } catch { return null; } })()}
                   <div className="flex items-start gap-2">
                     <Navigation className="w-3 h-3 mt-0.5 text-red-400 shrink-0" />
                     <div>

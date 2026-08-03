@@ -13,7 +13,7 @@ interface Customer {
 }
 
 interface Booking {
-  id: string; pickup: string; dropoff: string; date: string; time: string;
+  id: string; pickup: string; dropoff: string; stops?: string | null; date: string; time: string;
   distance: number; fare: number; vehicle: string; status: string;
   paymentMethod: string; paymentStatus: string; createdAt: string;
 }
@@ -145,6 +145,15 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                         <p className="text-navy/70">{b.pickup}</p>
                       </div>
                     </div>
+                    {b.stops && (() => { try { const s: string[] = JSON.parse(b.stops); return s.map((addr, i) => (
+                      <div key={i} className="flex items-start gap-2.5">
+                        <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
+                        <div>
+                          <p className="text-navy/40 text-xs">Stop {i + 1}</p>
+                          <p className="text-navy/70">{addr}</p>
+                        </div>
+                      </div>
+                    )); } catch { return null; } })()}
                     <div className="flex items-start gap-2.5">
                       <Navigation className="w-4 h-4 text-crimson mt-0.5 shrink-0" />
                       <div>

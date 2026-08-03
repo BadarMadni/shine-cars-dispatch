@@ -1,13 +1,14 @@
 "use client";
 
 import {
-  Clock, PoundSterling, Car, CreditCard, Loader2,
+  Clock, PoundSterling, Car, CreditCard, Loader2, Plus, X,
 } from "lucide-react";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
 
 export interface BookingEdits {
   pickup: string;
   dropoff: string;
+  stops: string[];
   date: string;
   time: string;
   fare: string;
@@ -23,11 +24,13 @@ const inputClass =
 export default function BookingEditFields({
   edits,
   onChange,
+  onStopsChange,
   onPlaceChange,
   calculating,
 }: {
   edits: BookingEdits;
   onChange: (key: keyof BookingEdits, value: string) => void;
+  onStopsChange?: (stops: string[]) => void;
   onPlaceChange?: (type: "pickup" | "dropoff", place: PlaceData) => void;
   calculating?: boolean;
 }) {
@@ -38,6 +41,29 @@ export default function BookingEditFields({
         onChange={(v, place) => { onChange("pickup", v); if (place && onPlaceChange) onPlaceChange("pickup", place); }}
         label="Pickup" placeholder="Search pickup address..."
       />
+      {edits.stops.map((stop, i) => (
+        <div key={i} className="relative">
+          <DispatchAddressInput
+            value={stop}
+            onChange={(v) => {
+              const next = [...edits.stops];
+              next[i] = v;
+              onStopsChange?.(next);
+            }}
+            label={`Stop ${i + 1}`} placeholder={`Search stop ${i + 1} address...`}
+          />
+          <button type="button" onClick={() => onStopsChange?.(edits.stops.filter((_, j) => j !== i))}
+            className="absolute top-0 right-0 p-1 text-navy/30 hover:text-crimson cursor-pointer">
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      ))}
+      {edits.stops.length < 5 && (
+        <button type="button" onClick={() => onStopsChange?.([...edits.stops, ""])}
+          className="flex items-center gap-1.5 text-xs text-crimson/70 hover:text-crimson font-medium cursor-pointer py-0.5">
+          <Plus className="w-3.5 h-3.5" /> Add a stop
+        </button>
+      )}
       <DispatchAddressInput
         value={edits.dropoff}
         onChange={(v, place) => { onChange("dropoff", v); if (place && onPlaceChange) onPlaceChange("dropoff", place); }}

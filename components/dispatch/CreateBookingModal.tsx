@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, MapPin, Navigation, Loader2 } from "lucide-react";
+import { X, MapPin, Navigation, Loader2, Plus, CircleDot } from "lucide-react";
 import CustomerPicker from "@/components/dispatch/CustomerPicker";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
 import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
@@ -15,6 +15,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
   const [dropoff, setDropoff] = useState<PlaceData | null>(null);
   const [pickupText, setPickupText] = useState("");
   const [dropoffText, setDropoffText] = useState("");
+  const [stops, setStops] = useState<string[]>([]);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [vehicle, setVehicle] = useState<VehicleType>("car");
@@ -67,6 +68,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
           customerId: customer.id || null,
           name: customer.name, phone: customer.phone, email: customer.email,
           pickup: pickupText, dropoff: dropoffText,
+          stops: stops.filter(Boolean),
           date: formattedDate, time, fare, distance,
           vehicle, paymentMethod, notes,
         }),
@@ -102,6 +104,19 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
             </div>
           </div>
 
+          {stops.map((s, i) => (
+            <div key={i} className="flex items-start gap-3">
+              <CircleDot className="w-4 h-4 mt-7 shrink-0 text-amber-500" />
+              <div className="flex-1 relative">
+                <DispatchAddressInput value={s} onChange={(addr) => { const n = [...stops]; n[i] = addr; setStops(n); }} label={`Stop ${i + 1}`} placeholder={`Stop ${i + 1} address...`} />
+                <button type="button" onClick={() => setStops((prev) => prev.filter((_, j) => j !== i))} className="absolute top-0 right-0 p-1 text-navy/30 hover:text-crimson cursor-pointer"><X className="w-3.5 h-3.5" /></button>
+              </div>
+            </div>))}
+
+          {stops.length < 5 && (
+            <button type="button" onClick={() => setStops((s) => [...s, ""])}
+              className="flex items-center gap-1.5 text-xs text-crimson/70 hover:text-crimson font-medium cursor-pointer py-0.5 ml-7"><Plus className="w-3.5 h-3.5" /> Add a stop</button>
+          )}
           <div className="flex items-start gap-3">
             <Navigation className="w-4 h-4 mt-7 shrink-0 text-crimson" />
             <div className="flex-1">

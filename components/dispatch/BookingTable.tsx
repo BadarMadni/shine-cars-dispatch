@@ -11,7 +11,7 @@ import CreateBookingModal from "@/components/dispatch/CreateBookingModal";
 
 interface Booking {
   id: string; name: string; phone: string;
-  pickup: string; dropoff: string;
+  pickup: string; dropoff: string; stops?: string | null;
   date: string; time: string;
   distance: number; fare: number;
   vehicle?: string;
@@ -95,6 +95,7 @@ export default function BookingTable({ filter }: { filter: string }) {
                   <p className="text-navy/70 text-xs flex items-center gap-1 max-w-[200px] truncate">
                     <MapPin className="w-3 h-3 text-green-500 shrink-0" /> {b.pickup}
                   </p>
+                  {b.stops && (() => { try { const s = JSON.parse(b.stops); return s.length > 0 ? <span className="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full font-medium mt-0.5 inline-block">{s.length} stop{s.length > 1 ? "s" : ""}</span> : null; } catch { return null; } })()}
                 </td>
                 <td className="py-3.5 px-4">
                   <p className="text-navy/70 text-xs flex items-center gap-1 max-w-[200px] truncate">

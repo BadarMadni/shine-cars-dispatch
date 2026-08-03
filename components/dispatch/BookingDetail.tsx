@@ -11,7 +11,7 @@ import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface Booking {
   id: string; name: string; phone: string;
-  pickup: string; dropoff: string;
+  pickup: string; dropoff: string; stops?: string | null;
   date: string; time: string;
   distance: number; fare: number;
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
@@ -36,8 +36,10 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
   const [editing, setEditing] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const places = useRef<{ pickup?: PlaceData; dropoff?: PlaceData }>({});
+  const parsedStops: string[] = booking.stops ? (() => { try { return JSON.parse(booking.stops); } catch { return []; } })() : [];
   const [edits, setEdits] = useState<BookingEdits>({
     pickup: booking.pickup, dropoff: booking.dropoff,
+    stops: parsedStops,
     date: toISODate(booking.date), time: booking.time,
     fare: booking.fare.toFixed(2), distance: booking.distance.toFixed(1),
     vehicle: booking.vehicle || "car",
@@ -72,6 +74,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     if (driverId !== (booking.driverId || "")) body.driverId = driverId || null;
     if (editing) {
       body.pickup = edits.pickup; body.dropoff = edits.dropoff;
+      body.stops = edits.stops.filter(Boolean).length ? JSON.stringify(edits.stops.filter(Boolean)) : null;
       body.date = toDisplayDate(edits.date); body.time = edits.time;
       body.fare = parseFloat(edits.fare) || booking.fare;
       body.distance = parseFloat(edits.distance) || booking.distance;
@@ -113,6 +116,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
           {editing ? (
             <BookingEditFields edits={edits} calculating={calculating}
               onChange={(k, v) => setEdits((p) => ({ ...p, [k]: v }))}
+              onStopsChange={(s) => setEdits((p) => ({ ...p, stops: s }))}
               onPlaceChange={handlePlaceChange} />
           ) : (
             <BookingInfoRows booking={booking} />
