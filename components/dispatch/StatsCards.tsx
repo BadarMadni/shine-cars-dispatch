@@ -28,17 +28,17 @@ export default function StatsCards() {
   }, []);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
       {cards.map(({ key, label, icon: Icon, color, ...rest }, i) => (
         <motion.div key={key}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
           transition={{ delay: i * 0.05 }}
-          className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-3`}>
-            <Icon className="w-5 h-5 text-white" />
+          className="bg-white rounded-2xl p-3.5 sm:p-5 border border-gray-100 shadow-sm">
+          <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${color} flex items-center justify-center mb-2 sm:mb-3`}>
+            <Icon className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
-          <p className="text-navy/50 text-xs font-medium mb-1">{label}</p>
-          <p className="text-2xl font-bold text-navy">
+          <p className="text-navy/50 text-[10px] sm:text-xs font-medium mb-0.5 sm:mb-1">{label}</p>
+          <p className="text-lg sm:text-2xl font-bold text-navy">
             {"isCurrency" in rest && rest.isCurrency ? "£" : ""}
             {stats ? (stats[key as keyof Stats] as number).toLocaleString() : "—"}
           </p>

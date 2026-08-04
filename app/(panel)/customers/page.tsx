@@ -13,10 +13,10 @@ export default function CustomersPage() {
   const [filter, setFilter] = useState("all");
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-navy">Customers</h1>
-        <p className="text-navy/50 text-sm mt-1">Manage website customer accounts.</p>
+        <h1 className="text-xl sm:text-2xl font-bold text-navy">Customers</h1>
+        <p className="text-navy/50 text-xs sm:text-sm mt-1">Manage website customer accounts.</p>
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm">

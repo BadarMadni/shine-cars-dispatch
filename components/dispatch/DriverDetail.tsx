@@ -31,22 +31,12 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-const docLabels: Record<string, string> = {
-  driver_licence: "Driver Licence", driving_licence: "Driving Licence",
-  mot_certificate: "MOT Certificate", taxi_badge: "Taxi Badge",
-  vehicle_taxi_plate: "Vehicle Taxi Plate",
-};
-
-const docIcons: Record<string, typeof FileText> = {
-  driver_licence: CreditCard, driving_licence: CreditCard,
-  mot_certificate: FileText, taxi_badge: Shield,
-  vehicle_taxi_plate: Car,
-};
-
-const docColors: Record<string, string> = {
-  driver_licence: "from-blue-500 to-blue-600", driving_licence: "from-blue-500 to-blue-600",
-  mot_certificate: "from-emerald-500 to-emerald-600", taxi_badge: "from-purple-500 to-purple-600",
-  vehicle_taxi_plate: "from-amber-500 to-amber-600",
+const DOC_META: Record<string, { label: string; icon: typeof FileText; color: string }> = {
+  driver_licence: { label: "Driver Licence", icon: CreditCard, color: "from-blue-500 to-blue-600" },
+  driving_licence: { label: "Driving Licence", icon: CreditCard, color: "from-blue-500 to-blue-600" },
+  mot_certificate: { label: "MOT Certificate", icon: FileText, color: "from-emerald-500 to-emerald-600" },
+  taxi_badge: { label: "Taxi Badge", icon: Shield, color: "from-purple-500 to-purple-600" },
+  vehicle_taxi_plate: { label: "Vehicle Taxi Plate", icon: Car, color: "from-amber-500 to-amber-600" },
 };
 
 interface DriverDetailProps {
@@ -121,12 +111,12 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                     ) : (
                       <div className="grid grid-cols-2 gap-3">
                         {driver.documents.map((doc) => {
-                          const Icon = docIcons[doc.type] || FileText;
-                          const gradient = docColors[doc.type] || "from-gray-500 to-gray-600";
+                          const meta = DOC_META[doc.type] || { label: doc.type, icon: FileText, color: "from-gray-500 to-gray-600" };
+                          const Icon = meta.icon;
                           return (
                             <div key={doc.id}
                               className="group relative border border-gray-100 rounded-xl overflow-hidden hover:border-gray-200 hover:shadow-md transition-all cursor-pointer"
-                              onClick={() => setLightbox({ url: doc.fileUrl, label: docLabels[doc.type] || doc.type })}>
+                              onClick={() => setLightbox({ url: doc.fileUrl, label: meta.label })}>
                               <div className="relative h-32 overflow-hidden bg-gray-50">
                                 <img src={doc.fileUrl} alt={doc.type}
                                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
@@ -136,10 +126,10 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                               </div>
                               <div className="p-2.5">
                                 <div className="flex items-center gap-1.5 mb-1">
-                                  <div className={`w-5 h-5 rounded-md bg-gradient-to-br ${gradient} flex items-center justify-center`}>
+                                  <div className={`w-5 h-5 rounded-md bg-gradient-to-br ${meta.color} flex items-center justify-center`}>
                                     <Icon className="w-3 h-3 text-white" />
                                   </div>
-                                  <p className="text-xs font-semibold text-navy truncate">{docLabels[doc.type] || doc.type}</p>
+                                  <p className="text-xs font-semibold text-navy truncate">{meta.label}</p>
                                 </div>
                                 <div className="flex items-center gap-1 text-navy/40">
                                   <Calendar className="w-3 h-3" />

@@ -69,14 +69,19 @@ export default function BookingTable({ filter }: { filter: string }) {
 
   return (
     <>
-      <div className="flex justify-end mb-3">{createBtn}</div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="flex justify-end mb-3 px-1">{createBtn}</div>
+      <div className="overflow-x-auto scrollbar-thin">
+        <table className="w-full text-sm min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Customer", "Pickup", "Drop-off", "Date", "Vehicle", "Fare", "Status", ""].map((h) => (
-                <th key={h} className="text-left text-navy/40 font-medium text-xs py-3 px-4">{h}</th>
-              ))}
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4">Customer</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4 hidden md:table-cell">Pickup</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4 hidden md:table-cell">Drop-off</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4">Date</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4 hidden sm:table-cell">Vehicle</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4">Fare</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4">Status</th>
+              <th className="text-left text-navy/40 font-medium text-xs py-3 px-2 sm:px-4"></th>
             </tr>
           </thead>
           <tbody>
@@ -85,32 +90,32 @@ export default function BookingTable({ filter }: { filter: string }) {
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.03 }}
                 className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4">
                   <p className="font-semibold text-navy">{b.name}</p>
                   <p className="text-navy/40 text-xs flex items-center gap-1">
                     <Phone className="w-3 h-3" /> {b.phone}
                   </p>
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   <p className="text-navy/70 text-xs flex items-center gap-1 max-w-[200px] truncate">
                     <MapPin className="w-3 h-3 text-green-500 shrink-0" /> {b.pickup}
                   </p>
                   {b.stops && (() => { try { const s = JSON.parse(b.stops); return s.length > 0 ? <span className="text-[10px] text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full font-medium mt-0.5 inline-block">{s.length} stop{s.length > 1 ? "s" : ""}</span> : null; } catch { return null; } })()}
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   <p className="text-navy/70 text-xs flex items-center gap-1 max-w-[200px] truncate">
                     <Navigation className="w-3 h-3 text-crimson shrink-0" /> {b.dropoff}
                   </p>
                 </td>
-                <td className="py-3.5 px-4 text-navy/60 text-xs whitespace-nowrap">{b.date} {b.time}</td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 text-navy/60 text-xs whitespace-nowrap">{b.date} {b.time}</td>
+                <td className="py-3.5 px-2 sm:px-4 hidden sm:table-cell">
                   <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                     b.vehicle === "mpv" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
                   }`}>{(b.vehicle || "car").toUpperCase()}</span>
                 </td>
-                <td className="py-3.5 px-4 font-bold text-navy">&pound;{b.fare.toFixed(2)}</td>
-                <td className="py-3.5 px-4"><StatusBadge status={b.status} /></td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 font-bold text-navy">&pound;{b.fare.toFixed(2)}</td>
+                <td className="py-3.5 px-2 sm:px-4"><StatusBadge status={b.status} /></td>
+                <td className="py-3.5 px-2 sm:px-4">
                   <button onClick={() => setSelected(b)}
                     className="text-crimson text-xs font-medium hover:underline cursor-pointer">
                     View

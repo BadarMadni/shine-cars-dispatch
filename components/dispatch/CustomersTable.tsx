@@ -67,17 +67,16 @@ export default function CustomersTable({ filter }: { filter: string }) {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto scrollbar-thin">
+        <table className="w-full text-sm min-w-[500px]">
           <thead>
             <tr className="border-b border-gray-100">
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Name</th>
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Email</th>
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Phone</th>
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Type</th>
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Rides</th>
-              <th className="text-left px-4 py-3 text-navy/40 font-medium">Joined</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium">Name</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium hidden md:table-cell">Email</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium hidden sm:table-cell">Phone</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium">Type</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium">Rides</th>
+              <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium hidden sm:table-cell">Joined</th>
             </tr>
           </thead>
           <tbody>
@@ -88,13 +87,13 @@ export default function CustomersTable({ filter }: { filter: string }) {
             ) : visible.map((c) => (
               <tr key={c.id} onClick={() => setSelected(c)}
                 className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors">
-                <td className="px-4 py-3">
+                <td className="px-2 sm:px-4 py-3">
                   <p className="text-navy font-medium">{c.name}</p>
                   {c.companyName && <p className="text-navy/40 text-xs">{c.companyName}</p>}
                 </td>
-                <td className="px-4 py-3 text-navy/60">{c.email}</td>
-                <td className="px-4 py-3 text-navy/60">{c.phone}</td>
-                <td className="px-4 py-3">
+                <td className="px-2 sm:px-4 py-3 text-navy/60 hidden md:table-cell">{c.email}</td>
+                <td className="px-2 sm:px-4 py-3 text-navy/60 hidden sm:table-cell">{c.phone}</td>
+                <td className="px-2 sm:px-4 py-3">
                   <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${
                     c.accountType === "company"
                       ? "bg-amber-100 text-amber-700" : "bg-blue-100 text-blue-700"
@@ -102,12 +101,12 @@ export default function CustomersTable({ filter }: { filter: string }) {
                     {c.accountType === "company" ? "Company" : "Individual"}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td className="px-2 sm:px-4 py-3">
                   <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
                     {c.totalRides}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-navy/40 text-xs">
+                <td className="px-2 sm:px-4 py-3 text-navy/40 text-xs hidden sm:table-cell">
                   {new Date(c.createdAt).toLocaleDateString("en-GB")}
                 </td>
               </tr>

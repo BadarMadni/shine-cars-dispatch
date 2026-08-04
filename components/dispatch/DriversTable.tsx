@@ -6,20 +6,8 @@ import {
   Phone, Mail, FileText, ChevronLeft, ChevronRight,
   Eye, CheckCircle, XCircle, Power,
 } from "lucide-react";
+import StatusBadge from "./StatusBadge";
 import DriverDetail, { Driver } from "./DriverDetail";
-
-function StatusBadge({ status }: { status: string }) {
-  const styles: Record<string, string> = {
-    pending: "bg-amber-50 text-amber-600",
-    approved: "bg-green-50 text-green-600",
-    rejected: "bg-red-50 text-red-600",
-  };
-  return (
-    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${styles[status] || "bg-gray-50 text-gray-600"}`}>
-      {status.charAt(0).toUpperCase() + status.slice(1)}
-    </span>
-  );
-}
 
 export default function DriversTable({ filter }: { filter: string }) {
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -73,12 +61,15 @@ export default function DriversTable({ filter }: { filter: string }) {
 
   return (
     <>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+      <div className="overflow-x-auto scrollbar-thin">
+        <table className="w-full text-sm min-w-[600px]">
           <thead>
             <tr className="border-b border-gray-100">
-              {["Driver", "Contact", "Docs", "Availability", "Enabled", "Status", "Registered", "Actions"].map((h) => (
-                <th key={h} className="text-left text-navy/40 font-medium text-xs py-3 px-4">{h}</th>
+              {[{ h: "Driver" }, { h: "Contact", c: "hidden sm:table-cell" }, { h: "Docs", c: "hidden lg:table-cell" },
+                { h: "Availability", c: "hidden md:table-cell" }, { h: "Enabled", c: "hidden md:table-cell" },
+                { h: "Status" }, { h: "Registered", c: "hidden lg:table-cell" }, { h: "Actions" },
+              ].map(({ h, c }) => (
+                <th key={h} className={`text-left text-navy/40 font-medium text-xs py-3 px-4 ${c || ""}`}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -88,10 +79,10 @@ export default function DriversTable({ filter }: { filter: string }) {
                 initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 transition={{ delay: i * 0.03 }}
                 className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4">
                   <p className="font-semibold text-navy">{d.name}</p>
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden sm:table-cell">
                   <p className="text-navy/60 text-xs flex items-center gap-1">
                     <Mail className="w-3 h-3" /> {d.email}
                   </p>
@@ -99,24 +90,20 @@ export default function DriversTable({ filter }: { filter: string }) {
                     <Phone className="w-3 h-3" /> {d.phone}
                   </p>
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden lg:table-cell">
                   <span className="text-xs text-navy/60 flex items-center gap-1">
                     <FileText className="w-3 h-3" /> {d.documents.length}
                   </span>
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   {d.status === "approved" ? (
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${
-                      d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"
-                    }`}>
+                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"}`}>
                       <span className={`w-2 h-2 rounded-full ${d.isAvailable ? "bg-green-500" : "bg-orange-400"}`} />
                       {d.isAvailable ? "Available" : "Busy"}
                     </span>
-                  ) : (
-                    <span className="text-xs text-navy/30">—</span>
-                  )}
+                  ) : <span className="text-xs text-navy/30">—</span>}
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   {d.status === "approved" && (
                     <button
                       onClick={() => toggleEnabled(d.id, !d.isEnabled)}
@@ -129,11 +116,11 @@ export default function DriversTable({ filter }: { filter: string }) {
                     </button>
                   )}
                 </td>
-                <td className="py-3.5 px-4"><StatusBadge status={d.status} /></td>
-                <td className="py-3.5 px-4 text-navy/40 text-xs whitespace-nowrap">
+                <td className="py-3.5 px-2 sm:px-4"><StatusBadge status={d.status} /></td>
+                <td className="py-3.5 px-2 sm:px-4 text-navy/40 text-xs whitespace-nowrap hidden lg:table-cell">
                   {new Date(d.createdAt).toLocaleDateString("en-GB")}
                 </td>
-                <td className="py-3.5 px-4">
+                <td className="py-3.5 px-2 sm:px-4">
                   <div className="flex items-center gap-2">
                     <button onClick={() => setSelectedId(d.id)}
                       className="text-crimson text-xs font-medium hover:underline cursor-pointer flex items-center gap-1">

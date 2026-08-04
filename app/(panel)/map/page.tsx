@@ -20,7 +20,7 @@ export default function MapPage() {
   }, []);
 
   return (
-    <div className="p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       {ready ? <DriverMap /> : (
         <div className="flex items-center justify-center h-[60vh] text-navy/30 text-sm">
           Loading map...

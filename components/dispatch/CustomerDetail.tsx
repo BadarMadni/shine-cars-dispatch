@@ -69,7 +69,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
           </div>
 
           {/* Info Grid */}
-          <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
             {[
               { icon: <Mail className="w-4 h-4 text-navy/30 shrink-0" />, label: "Email", value: customer.email },
               { icon: <Phone className="w-4 h-4 text-navy/30 shrink-0" />, label: "Phone", value: customer.phone },
@@ -115,8 +115,8 @@ export default function CustomerDetail({ customer, onClose }: Props) {
               {bookings.map((b) => (
                 <div key={b.id} className="bg-gray-50 rounded-xl p-5 border border-gray-100">
                   {/* Top row: status + vehicle + fare */}
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                    <div className="flex flex-wrap items-center gap-2">
                       <StatusBadge status={b.status} />
                       <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         b.vehicle === "mpv"

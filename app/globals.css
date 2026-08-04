@@ -14,6 +14,18 @@ body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
 .gradient-text {
   background: linear-gradient(135deg, #CC2229 0%, #F5A623 100%);
   -webkit-background-clip: text;

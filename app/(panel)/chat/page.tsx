@@ -23,7 +23,7 @@ export default function ChatPage() {
   }, [selectedId]);
 
   return (
-    <div className="h-[calc(100vh-0px)] flex">
+    <div className="h-[calc(100vh-3.5rem)] lg:h-screen flex">
       {/* Sidebar — hidden on mobile when chat is open */}
       <div className={`w-full lg:w-80 lg:shrink-0 lg:block ${selectedId ? "hidden" : "block"}`}>
         <ChatSidebar selected={selectedId} onSelect={(id) => setSelectedId(id)} />
