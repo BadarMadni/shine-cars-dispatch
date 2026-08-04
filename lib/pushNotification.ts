@@ -1,23 +1,29 @@
+import { getMessaging } from "firebase-admin/messaging";
+import { getApps } from "firebase-admin/app";
+import "@/lib/firebase";
+
 export async function sendPushNotification(
-  pushToken: string,
+  deviceToken: string,
   title: string,
   body: string,
-  data?: Record<string, unknown>
+  data?: Record<string, string>
 ) {
+  if (!getApps().length) return;
+
   try {
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
+    await getMessaging().send({
+      token: deviceToken,
+      notification: { title, body },
+      data: data || {},
+      android: {
+        priority: "high",
+        notification: { sound: "default", channelId: "default" },
       },
-      body: JSON.stringify({
-        to: pushToken,
-        sound: "default",
-        title,
-        body,
-        data,
-      }),
+      apns: {
+        payload: { aps: { sound: "default", badge: 1 } },
+      },
     });
-  } catch {}
+  } catch (e) {
+    console.error("FCM send failed:", e);
+  }
 }
