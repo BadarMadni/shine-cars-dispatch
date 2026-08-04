@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { X, MapPin, Navigation, Loader2, Plus, CircleDot } from "lucide-react";
 import CustomerPicker from "@/components/dispatch/CustomerPicker";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface CustomerData { id?: string; name: string; phone: string; email: string; }
 
@@ -44,7 +44,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
         if (status !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
         const miles = metersToMiles(res.rows[0].elements[0].distance.value);
         setDistance(miles);
-        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle));
+        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date)));
       }
     );
   }, [pickup, dropoff, vehicle]);

@@ -7,7 +7,7 @@ import StatusBadge from "@/components/dispatch/StatusBadge";
 import BookingInfoRows from "@/components/dispatch/BookingInfoRows";
 import BookingEditFields, { BookingEdits } from "@/components/dispatch/BookingEditFields";
 import { PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface Booking {
   id: string; name: string; phone: string;
@@ -62,7 +62,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
         setCalculating(false);
         if (st !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
         const miles = metersToMiles(res.rows[0].elements[0].distance.value);
-        const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType);
+        const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
         setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
       }
     );

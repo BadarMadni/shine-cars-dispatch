@@ -2,63 +2,112 @@
 const OFFICE_LAT = 52.6646;
 const OFFICE_LNG = 0.1601;
 const SURCHARGE_RADIUS_MILES = 3;
-const SURCHARGE_AMOUNT = 2;
+const SURCHARGE_PER_MILE = 1;
 
 export type VehicleType = "car" | "mpv";
 
 export const VEHICLES = {
-  car: { label: "Car", passengers: 4, baseFare: 5 },
-  mpv: { label: "MPV", passengers: 6, baseFare: 7 },
+  car: { label: "Car", passengers: 4, baseFare: 4 },
+  mpv: { label: "MPV", passengers: 6, baseFare: 6 },
+} as const;
+
+const RATES = {
+  car: { base: 4, baseMiles: 1, midRate: 2.0, midLimit: 30, highRate: 1.4 },
+  mpv: { base: 6, baseMiles: 1, midRate: 2.3, midLimit: 30, highRate: 1.5 },
+} as const;
+
+const SUNDAY_RATES = {
+  car: { minFare: 5, minMiles: 1.4, surchargePercent: 1.5 },
+  mpv: { minFare: 7, minMiles: 1.4, surchargePercent: 1.5 },
 } as const;
 
 /**
- * Shine Cars fare calculator
- * - Car base fare: £5 | MPV base fare: £7 (covers first 1.5 miles)
- * - 1.5 to 10 miles: £2.30 per mile
- * - Over 10 miles: £1.80 per mile
- * - Extra £2 if pickup is more than 3 miles from office (PE13 1AU)
+ * Shine Cars fare calculator (Mon-Sat)
+ * Car: £4 base (1mi), £2.00/mi (1-30mi), £1.40/mi (30+mi)
+ * MPV: £6 base (1mi), £2.30/mi (1-30mi), £1.50/mi (30+mi)
+ * Sunday/Bank Holiday: Car £5/MPV £7 min (1.4mi), then normal + 1.5%
+ * Pickup surcharge: £1/mi beyond 3mi from office
  */
-export function calculateFare(distanceMiles: number, pickupLat?: number, pickupLng?: number, vehicle: VehicleType = "car"): number {
+export function calculateFare(
+  distanceMiles: number,
+  pickupLat?: number,
+  pickupLng?: number,
+  vehicle: VehicleType = "car",
+  isSunday = false,
+): number {
   if (distanceMiles <= 0) return 0;
 
-  const BASE_FARE = VEHICLES[vehicle].baseFare;
-  const BASE_MILES = 1.5;
-  const MID_RATE = 2.3;
-  const MID_LIMIT = 10;
-  const HIGH_RATE = 1.8;
-
+  const r = RATES[vehicle];
   let fare: number;
 
-  if (distanceMiles <= BASE_MILES) {
-    fare = BASE_FARE;
-  } else if (distanceMiles <= MID_LIMIT) {
-    fare = BASE_FARE + (distanceMiles - BASE_MILES) * MID_RATE;
+  if (isSunday) {
+    const s = SUNDAY_RATES[vehicle];
+    if (distanceMiles <= s.minMiles) {
+      fare = s.minFare;
+    } else {
+      const normalFare = calcNormal(distanceMiles, r);
+      fare = normalFare * (1 + s.surchargePercent / 100);
+    }
   } else {
-    const midCharge = (MID_LIMIT - BASE_MILES) * MID_RATE;
-    const highCharge = (distanceMiles - MID_LIMIT) * HIGH_RATE;
-    fare = BASE_FARE + midCharge + highCharge;
+    fare = calcNormal(distanceMiles, r);
   }
 
   if (pickupLat !== undefined && pickupLng !== undefined) {
     const distFromOffice = haversineDistance(OFFICE_LAT, OFFICE_LNG, pickupLat, pickupLng);
     if (distFromOffice > SURCHARGE_RADIUS_MILES) {
-      fare += SURCHARGE_AMOUNT;
+      fare += (distFromOffice - SURCHARGE_RADIUS_MILES) * SURCHARGE_PER_MILE;
     }
   }
 
-  return fare;
+  return Math.round(fare * 100) / 100;
+}
+
+function calcNormal(dist: number, r: { base: number; baseMiles: number; midRate: number; midLimit: number; highRate: number }): number {
+  if (dist <= r.baseMiles) return r.base;
+  if (dist <= r.midLimit) return r.base + (dist - r.baseMiles) * r.midRate;
+  const midCharge = (r.midLimit - r.baseMiles) * r.midRate;
+  const highCharge = (dist - r.midLimit) * r.highRate;
+  return r.base + midCharge + highCharge;
+}
+
+/** Check if a date is Sunday or bank holiday */
+export function isSundayOrHoliday(dateStr: string): boolean {
+  const d = parseDate(dateStr);
+  if (!d) return false;
+  if (d.getDay() === 0) return true;
+  const key = `${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  return UK_BANK_HOLIDAYS.has(key);
+}
+
+const UK_BANK_HOLIDAYS = new Set([
+  "01-01", "03-29", "04-01", "05-06", "05-27",
+  "08-25", "12-25", "12-26",
+]);
+
+function parseDate(s: string): Date | null {
+  if (s.includes("/")) {
+    const [d, m, y] = s.split("/");
+    return new Date(+y, +m - 1, +d);
+  }
+  const d = new Date(s);
+  return isNaN(d.getTime()) ? null : d;
 }
 
 /** Check if pickup is outside the 3-mile office radius */
-export function isOutsideOfficeRadius(pickupLat: number, pickupLng: number): boolean {
-  return haversineDistance(OFFICE_LAT, OFFICE_LNG, pickupLat, pickupLng) > SURCHARGE_RADIUS_MILES;
+export function isOutsideOfficeRadius(lat: number, lng: number): boolean {
+  return haversineDistance(OFFICE_LAT, OFFICE_LNG, lat, lng) > SURCHARGE_RADIUS_MILES;
 }
 
-export const SURCHARGE = SURCHARGE_AMOUNT;
+export function pickupSurcharge(lat: number, lng: number): number {
+  const dist = haversineDistance(OFFICE_LAT, OFFICE_LNG, lat, lng);
+  if (dist <= SURCHARGE_RADIUS_MILES) return 0;
+  return Math.round((dist - SURCHARGE_RADIUS_MILES) * SURCHARGE_PER_MILE * 100) / 100;
+}
 
-/** Haversine distance in miles between two lat/lng points */
+export const SURCHARGE = SURCHARGE_PER_MILE;
+
 function haversineDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
-  const R = 3958.8; // Earth radius in miles
+  const R = 3958.8;
   const dLat = toRad(lat2 - lat1);
   const dLng = toRad(lng2 - lng1);
   const a =
