@@ -16,6 +16,7 @@ interface Booking {
   id: string; pickup: string; dropoff: string; stops?: string | null; date: string; time: string;
   distance: number; fare: number; vehicle: string; status: string;
   paymentMethod: string; paymentStatus: string; createdAt: string;
+  fareType?: string; meterFare?: number | null; cashCollected?: number | null;
 }
 
 interface Props { customer: Customer; onClose: () => void }
@@ -132,8 +133,15 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                       }`}>
                         {b.paymentMethod.toUpperCase()} — {b.paymentStatus.toUpperCase()}
                       </span>
+                      {b.fareType === "meter" && (
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-600">METER</span>
+                      )}
                     </div>
-                    <span className="text-navy font-bold">£{b.fare.toFixed(2)}</span>
+                    <span className="text-navy font-bold">
+                      {b.fareType === "meter" && !b.meterFare
+                        ? `£${(b.fare * 0.9).toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
+                        : `£${(b.meterFare ?? b.fare).toFixed(2)}`}
+                    </span>
                   </div>
 
                   {/* Pickup & Dropoff */}
@@ -178,6 +186,12 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                       <span>{b.distance.toFixed(1)} miles</span>
                     </div>
                   </div>
+                  {b.cashCollected != null && b.status === "completed" && (
+                    <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-600">
+                      <PoundSterling className="w-3.5 h-3.5" />
+                      <span>Cash Collected: £{b.cashCollected.toFixed(2)}</span>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
