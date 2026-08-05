@@ -116,7 +116,14 @@ export default function BookingTable({ filter, search }: { filter: string; searc
                     b.vehicle === "mpv" ? "bg-purple-100 text-purple-700" : "bg-blue-100 text-blue-700"
                   }`}>{(b.vehicle || "car").toUpperCase()}</span>
                 </td>
-                <td className="py-3.5 px-2 sm:px-4 font-bold text-navy">&pound;{b.fare.toFixed(2)}</td>
+                <td className="py-3.5 px-2 sm:px-4 font-bold text-navy">
+                  {(b as unknown as Record<string, unknown>).fareType === "meter"
+                    ? <>&pound;{(b.fare * 0.9).toFixed(2)} – £{(b.fare * 1.1).toFixed(2)}</>
+                    : <>&pound;{b.fare.toFixed(2)}</>}
+                  {(b as unknown as Record<string, unknown>).fareType === "meter" && (
+                    <span className="ml-1 text-[10px] font-semibold bg-orange-50 text-orange-600 px-1.5 py-0.5 rounded-full">METER</span>
+                  )}
+                </td>
                 <td className="py-3.5 px-2 sm:px-4"><StatusBadge status={b.status} /></td>
                 <td className="py-3.5 px-2 sm:px-4">
                   <button onClick={() => setSelected(b)}

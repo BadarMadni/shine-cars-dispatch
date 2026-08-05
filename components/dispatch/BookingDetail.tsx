@@ -43,6 +43,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     date: toISODate(booking.date), time: booking.time,
     fare: booking.fare.toFixed(2), distance: booking.distance.toFixed(1),
     vehicle: booking.vehicle || "car",
+    fareType: (booking as unknown as Record<string, unknown>).fareType as string || "fixed",
     paymentMethod: booking.paymentMethod || "cash",
     paymentStatus: booking.paymentStatus || "unpaid",
   });
@@ -78,7 +79,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
       body.date = toDisplayDate(edits.date); body.time = edits.time;
       body.fare = parseFloat(edits.fare) || booking.fare;
       body.distance = parseFloat(edits.distance) || booking.distance;
-      body.vehicle = edits.vehicle; body.paymentMethod = edits.paymentMethod; body.paymentStatus = edits.paymentStatus;
+      body.vehicle = edits.vehicle; body.fareType = edits.fareType; body.paymentMethod = edits.paymentMethod; body.paymentStatus = edits.paymentStatus;
     }
     await fetch(`/api/bookings/${booking.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     setSaving(false); onClose();

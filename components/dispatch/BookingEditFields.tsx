@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Clock, PoundSterling, Car, CreditCard, Loader2, Plus, X,
+  Clock, PoundSterling, Car, CreditCard, Loader2, Plus, X, Gauge,
 } from "lucide-react";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
 
@@ -14,6 +14,7 @@ export interface BookingEdits {
   fare: string;
   distance: string;
   vehicle: string;
+  fareType: string;
   paymentMethod: string;
   paymentStatus: string;
 }
@@ -106,7 +107,7 @@ export default function BookingEditFields({
         )}
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <div>
           <p className="text-navy/40 text-xs mb-1"><Car className="w-3 h-3 inline" /> Vehicle</p>
           <select value={edits.vehicle} onChange={(e) => onChange("vehicle", e.target.value)} className={inputClass}>
@@ -115,8 +116,17 @@ export default function BookingEditFields({
           </select>
         </div>
         <div>
+          <p className="text-navy/40 text-xs mb-1"><Gauge className="w-3 h-3 inline" /> Fare Type</p>
+          <select value={edits.fareType} onChange={(e) => { onChange("fareType", e.target.value); if (e.target.value === "meter") onChange("paymentMethod", "cash"); }} className={inputClass}>
+            <option value="fixed">FIXED</option>
+            <option value="meter">METER</option>
+          </select>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        <div>
           <p className="text-navy/40 text-xs mb-1"><CreditCard className="w-3 h-3 inline" /> Payment</p>
-          <select value={edits.paymentMethod} onChange={(e) => onChange("paymentMethod", e.target.value)} className={inputClass}>
+          <select value={edits.paymentMethod} onChange={(e) => onChange("paymentMethod", e.target.value)} disabled={edits.fareType === "meter"} className={`${inputClass} disabled:opacity-50`}>
             <option value="cash">CASH</option>
             <option value="card">CARD</option>
           </select>

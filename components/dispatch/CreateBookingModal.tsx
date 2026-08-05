@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { X, MapPin, Navigation, Loader2, Plus, CircleDot } from "lucide-react";
 import CustomerPicker from "@/components/dispatch/CustomerPicker";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, calculateFareRange, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface CustomerData { id?: string; name: string; phone: string; email: string; }
 
@@ -22,6 +22,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
   const [fare, setFare] = useState(0);
   const [distance, setDistance] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("cash");
+  const [fareType, setFareType] = useState<"fixed" | "meter">("fixed");
   const [notes, setNotes] = useState("");
   const [saving, setSaving] = useState(false);
   const [calculating, setCalculating] = useState(false);
@@ -70,7 +71,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
           pickup: pickupText, dropoff: dropoffText,
           stops: stops.filter(Boolean),
           date: formattedDate, time, fare, distance,
-          vehicle, paymentMethod, notes,
+          vehicle, paymentMethod, fareType, notes,
         }),
       });
       if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setSaving(false); return; }
@@ -99,11 +100,8 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
 
           <div className="flex items-start gap-3">
             <MapPin className="w-4 h-4 mt-7 shrink-0 text-green-500" />
-            <div className="flex-1">
-              <DispatchAddressInput value="" onChange={(addr, place) => { setPickupText(addr); if (place) setPickup(place); }} label="Pickup" placeholder="Enter pickup address..." />
-            </div>
+            <div className="flex-1"><DispatchAddressInput value="" onChange={(addr, place) => { setPickupText(addr); if (place) setPickup(place); }} label="Pickup" placeholder="Enter pickup address..." /></div>
           </div>
-
           {stops.map((s, i) => (
             <div key={i} className="flex items-start gap-3">
               <CircleDot className="w-4 h-4 mt-7 shrink-0 text-amber-500" />
@@ -112,30 +110,21 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
                 <button type="button" onClick={() => setStops((prev) => prev.filter((_, j) => j !== i))} className="absolute top-0 right-0 p-1 text-navy/30 hover:text-crimson cursor-pointer"><X className="w-3.5 h-3.5" /></button>
               </div>
             </div>))}
-
           {stops.length < 5 && (
             <button type="button" onClick={() => setStops((s) => [...s, ""])}
               className="flex items-center gap-1.5 text-xs text-crimson/70 hover:text-crimson font-medium cursor-pointer py-0.5 ml-7"><Plus className="w-3.5 h-3.5" /> Add a stop</button>
           )}
           <div className="flex items-start gap-3">
             <Navigation className="w-4 h-4 mt-7 shrink-0 text-crimson" />
-            <div className="flex-1">
-              <DispatchAddressInput value="" onChange={(addr, place) => { setDropoffText(addr); if (place) setDropoff(place); }} label="Drop-off" placeholder="Enter drop-off address..." />
-            </div>
+            <div className="flex-1"><DispatchAddressInput value="" onChange={(addr, place) => { setDropoffText(addr); if (place) setDropoff(place); }} label="Drop-off" placeholder="Enter drop-off address..." /></div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <div>
-              <p className="text-navy/40 text-xs mb-1">Date</p>
-              <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} />
-            </div>
-            <div>
-              <p className="text-navy/40 text-xs mb-1">Time</p>
-              <input type="time" value={time} onChange={(e) => setTime(e.target.value)} className={inputClass} />
-            </div>
+            <div><p className="text-navy/40 text-xs mb-1">Date</p><input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} /></div>
+            <div><p className="text-navy/40 text-xs mb-1">Time</p><input type="time" value={time} onChange={(e) => setTime(e.target.value)} className={inputClass} /></div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <div>
               <p className="text-navy/40 text-xs mb-1">Vehicle</p>
               <select value={vehicle} onChange={(e) => setVehicle(e.target.value as VehicleType)} className={inputClass}>
@@ -144,8 +133,15 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
               </select>
             </div>
             <div>
+              <p className="text-navy/40 text-xs mb-1">Fare Type</p>
+              <select value={fareType} onChange={(e) => { const v = e.target.value as "fixed" | "meter"; setFareType(v); if (v === "meter") setPaymentMethod("cash"); }} className={inputClass}>
+                <option value="fixed">FIXED</option>
+                <option value="meter">METER</option>
+              </select>
+            </div>
+            <div>
               <p className="text-navy/40 text-xs mb-1">Payment</p>
-              <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} className={inputClass}>
+              <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)} disabled={fareType === "meter"} className={`${inputClass} disabled:opacity-50`}>
                 <option value="cash">CASH</option>
                 <option value="card">CARD</option>
               </select>
@@ -165,8 +161,12 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
                   <p className="text-navy font-bold">{distance.toFixed(1)} miles</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-navy/40 text-xs">Estimated Fare</p>
-                  <p className="text-crimson font-bold text-xl">&pound;{fare.toFixed(2)}</p>
+                  <p className="text-navy/40 text-xs">{fareType === "meter" ? "Estimated Range" : "Estimated Fare"}</p>
+                  {fareType === "meter" ? (
+                    <p className="text-crimson font-bold text-xl">&pound;{(fare * 0.9).toFixed(2)} – £{(fare * 1.1).toFixed(2)}</p>
+                  ) : (
+                    <p className="text-crimson font-bold text-xl">&pound;{fare.toFixed(2)}</p>
+                  )}
                 </div>
               </div>
             ) : (

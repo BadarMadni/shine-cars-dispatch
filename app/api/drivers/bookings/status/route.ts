@@ -13,7 +13,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const decoded = jwt.verify(auth.slice(7), JWT_SECRET) as { id: string };
-    const { bookingId, status, cashCollected } = await req.json();
+    const { bookingId, status, cashCollected, meterDistance, meterFare } = await req.json();
 
     if (!bookingId || !VALID.includes(status)) {
       return NextResponse.json({ success: false, message: "Invalid data" }, { status: 400 });
@@ -25,6 +25,8 @@ export async function PATCH(req: NextRequest) {
     }
 
     const data: Record<string, unknown> = { status };
+    if (meterDistance != null) data.meterDistance = parseFloat(meterDistance);
+    if (meterFare != null) data.meterFare = parseFloat(meterFare);
     if (status === "completed" && booking.paymentMethod === "cash" && cashCollected != null) {
       data.cashCollected = parseFloat(cashCollected);
       data.paymentStatus = "paid";

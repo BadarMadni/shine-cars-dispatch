@@ -123,3 +123,18 @@ function toRad(deg: number): number {
 export function metersToMiles(meters: number): number {
   return meters * 0.000621371;
 }
+
+/** Estimated fare range for meter bookings (±10%) */
+export function calculateFareRange(
+  distanceMiles: number,
+  pickupLat?: number,
+  pickupLng?: number,
+  vehicle: VehicleType = "car",
+  isSunday = false,
+): { min: number; max: number } {
+  const fare = calculateFare(distanceMiles, pickupLat, pickupLng, vehicle, isSunday);
+  return {
+    min: Math.round(fare * 0.9 * 100) / 100,
+    max: Math.round(fare * 1.1 * 100) / 100,
+  };
+}

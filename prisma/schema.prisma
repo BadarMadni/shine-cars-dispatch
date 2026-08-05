@@ -25,6 +25,9 @@ model Booking {
   driverId      String?
   customerId    String?
   assignedAt    DateTime?
+  fareType      String    @default("fixed")
+  meterDistance Float?
+  meterFare     Float?
   cashCollected Float?
   stops         String?
   notes         String?

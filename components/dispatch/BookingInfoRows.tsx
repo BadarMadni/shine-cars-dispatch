@@ -1,6 +1,6 @@
 import {
   MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard,
+  Calendar, Clock, Car, CreditCard, Gauge,
 } from "lucide-react";
 
 interface Booking {
@@ -8,6 +8,7 @@ interface Booking {
   stops?: string | null;
   date: string; time: string; distance: number; fare: number;
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
+  fareType?: string; meterDistance?: number | null; meterFare?: number | null;
 }
 
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
@@ -22,7 +23,15 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     { icon: Clock, color: "text-purple-500", label: "Time", value: b.time },
     { icon: Route, color: "text-gold", label: "Distance", value: `${b.distance.toFixed(1)} miles` },
     { icon: Car, color: "text-blue-500", label: "Vehicle", value: (b.vehicle || "car").toUpperCase() },
-    { icon: PoundSterling, color: "text-gold", label: "Fare", value: `£${b.fare.toFixed(2)}` },
+    { icon: Gauge, color: "text-orange-500", label: "Fare Type", value: (b.fareType || "fixed").toUpperCase() },
+    { icon: PoundSterling, color: "text-gold", label: b.fareType === "meter" ? "Estimated Fare" : "Fare",
+      value: b.fareType === "meter" && !b.meterFare
+        ? `£${(b.fare * 0.9).toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
+        : `£${b.fare.toFixed(2)}` },
+    ...(b.fareType === "meter" && b.meterFare ? [
+      { icon: Gauge, color: "text-green-500", label: "Meter Fare (Final)", value: `£${b.meterFare.toFixed(2)}` },
+      { icon: Route, color: "text-green-500", label: "Meter Distance", value: `${b.meterDistance?.toFixed(1) || "—"} mi` },
+    ] : []),
     { icon: CreditCard, color: "text-indigo-500", label: "Payment", value: `${(b.paymentMethod || "cash").toUpperCase()} — ${(b.paymentStatus || "unpaid").toUpperCase()}` },
   ];
 
