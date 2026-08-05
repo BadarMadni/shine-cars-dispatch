@@ -20,7 +20,7 @@ interface Booking {
   status: string; createdAt: string; notes: string | null;
 }
 
-export default function BookingTable({ filter }: { filter: string }) {
+export default function BookingTable({ filter, search }: { filter: string; search?: string }) {
   const searchParams = useSearchParams();
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [page, setPage] = useState(1);
@@ -29,11 +29,14 @@ export default function BookingTable({ filter }: { filter: string }) {
   const [showCreate, setShowCreate] = useState(false);
 
   const load = useCallback(() => {
-    fetch(`/api/bookings?status=${filter}&page=${page}&limit=5`)
+    const q = search ? `&search=${encodeURIComponent(search)}` : "";
+    fetch(`/api/bookings?status=${filter}&page=${page}&limit=5${q}`)
       .then((r) => r.json())
       .then((d) => { setBookings(d.bookings || []); setPages(d.pages || 1); })
       .catch(() => {});
-  }, [filter, page]);
+  }, [filter, page, search]);
+
+  useEffect(() => { setPage(1); }, [search]);
 
   useEffect(() => {
     load();

@@ -5,8 +5,17 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
+    const search = searchParams.get("search")?.trim();
 
-    const where = status && status !== "all" ? { status } : {};
+    const where: Record<string, unknown> = {};
+    if (status && status !== "all") where.status = status;
+    if (search) {
+      where.OR = [
+        { name: { contains: search, mode: "insensitive" } },
+        { email: { contains: search, mode: "insensitive" } },
+        { phone: { contains: search } },
+      ];
+    }
 
     const drivers = await prisma.driver.findMany({
       where,

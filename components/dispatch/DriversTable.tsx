@@ -9,7 +9,7 @@ import {
 import StatusBadge from "./StatusBadge";
 import DriverDetail, { Driver } from "./DriverDetail";
 
-export default function DriversTable({ filter }: { filter: string }) {
+export default function DriversTable({ filter, search }: { filter: string; search?: string }) {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [updating, setUpdating] = useState<string | null>(null);
@@ -17,11 +17,12 @@ export default function DriversTable({ filter }: { filter: string }) {
   const limit = 5;
 
   const load = useCallback(() => {
-    fetch(`/api/drivers?status=${filter}`)
+    const q = search ? `&search=${encodeURIComponent(search)}` : "";
+    fetch(`/api/drivers?status=${filter}${q}`)
       .then((r) => r.json())
       .then((d) => setDrivers(d.drivers || []))
       .catch(() => {});
-  }, [filter]);
+  }, [filter, search]);
 
   useEffect(() => { load(); setPage(1); }, [load]);
 
