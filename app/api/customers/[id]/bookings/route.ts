@@ -14,6 +14,7 @@ export async function GET(
         id: true, pickup: true, dropoff: true, stops: true, date: true,
         time: true, distance: true, fare: true, vehicle: true,
         status: true, paymentMethod: true, paymentStatus: true,
+        fareType: true, meterFare: true, cashCollected: true,
         createdAt: true,
       },
     });
