@@ -1,6 +1,6 @@
 import {
   MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard, Gauge,
+  Calendar, Clock, Car, CreditCard, Gauge, Banknote,
 } from "lucide-react";
 
 interface Booking {
@@ -9,6 +9,7 @@ interface Booking {
   date: string; time: string; distance: number; fare: number;
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
   fareType?: string; meterDistance?: number | null; meterFare?: number | null;
+  cashCollected?: number | null; status?: string;
 }
 
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
@@ -33,6 +34,9 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
       { icon: Route, color: "text-green-500", label: "Meter Distance", value: `${b.meterDistance?.toFixed(1) || "—"} mi` },
     ] : []),
     { icon: CreditCard, color: "text-indigo-500", label: "Payment", value: `${(b.paymentMethod || "cash").toUpperCase()} — ${(b.paymentStatus || "unpaid").toUpperCase()}` },
+    ...(b.cashCollected != null && b.status === "completed" ? [
+      { icon: Banknote, color: "text-green-500", label: "Cash Collected by Driver", value: `£${b.cashCollected.toFixed(2)}` },
+    ] : []),
   ];
 
   return (
