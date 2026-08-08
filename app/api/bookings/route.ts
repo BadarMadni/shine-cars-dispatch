@@ -56,7 +56,7 @@ export async function GET(req: NextRequest) {
     if (status && status !== "all") where.status = status;
     const recurring = searchParams.get("recurring");
     if (recurring === "true") where.isRecurring = true;
-    else if (recurring === "false") where.isRecurring = false;
+    else where.isRecurring = false;
     if (search) {
       where.OR = [
         { name: { contains: search, mode: "insensitive" } },

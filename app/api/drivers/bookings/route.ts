@@ -21,10 +21,13 @@ export async function GET(req: NextRequest) {
       where.isRecurring = true;
       where.status = { in: ["pending", "assigned", "accepted", "arrived", "in-progress"] };
     } else if (filter === "active") {
+      where.isRecurring = false;
       where.status = { in: ["assigned", "accepted", "arrived", "in-progress"] };
     } else if (filter === "completed") {
+      where.isRecurring = false;
       where.status = { in: ["completed", "cancelled"] };
     } else {
+      where.isRecurring = false;
       where.status = { in: ["assigned"] };
     }
 
