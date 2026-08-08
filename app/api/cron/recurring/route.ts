@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendPushNotification } from "@/lib/pushNotification";
+import { createDriverNotification } from "@/lib/notify";
 
 const DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
 
@@ -25,7 +27,7 @@ export async function POST(req: NextRequest) {
     });
     if (exists) continue;
 
-    await prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
         name: rb.name, phone: rb.phone, pickup: rb.pickup, dropoff: rb.dropoff,
         date: dateStr, time: rb.time, distance: rb.distance, fare: rb.fare,
@@ -36,6 +38,18 @@ export async function POST(req: NextRequest) {
         isRecurring: true, recurringId: rb.id,
       },
     });
+
+    if (rb.driverId) {
+      const driver = await prisma.driver.findUnique({ where: { id: rb.driverId }, select: { pushToken: true } });
+      if (driver?.pushToken) {
+        sendPushNotification(driver.pushToken, "Recurring Ride Today",
+          `Booking at ${rb.time} — ${rb.pickup} → ${rb.dropoff} | £${rb.fare.toFixed(2)}`,
+          { bookingId: booking.id, type: "upcoming-booking" });
+      }
+      createDriverNotification(rb.driverId, "Recurring Ride Today",
+        `Booking at ${rb.time} from ${rb.pickup} | £${rb.fare.toFixed(2)}`,
+        "upcoming-booking", booking.id);
+    }
     created++;
   }
 
