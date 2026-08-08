@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const today = new Date();
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
   const dayName = DAY_NAMES[today.getDay()];
   const dateStr = today.toISOString().split("T")[0];
 
