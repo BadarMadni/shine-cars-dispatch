@@ -8,14 +8,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const now = new Date();
+  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
   const in30 = new Date(now.getTime() + 30 * 60 * 1000);
   const in45 = new Date(now.getTime() + 45 * 60 * 1000);
   const today = now.toISOString().split("T")[0];
 
   const bookings = await prisma.booking.findMany({
     where: {
-      date: today, status: { in: ["pending", "confirmed", "accepted"] },
+      date: today, status: { in: ["pending", "confirmed", "assigned", "accepted"] },
       driverId: { not: null },
       driver: { pushToken: { not: null } },
     },

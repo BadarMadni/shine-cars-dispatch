@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/cron/notify-drivers",
-      "schedule": "0 6 * * *"
+      "schedule": "*/5 * * * *"
     }
   ]
 }
