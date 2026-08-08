@@ -35,7 +35,11 @@ export default function RecurringTable({ filter, search }: { filter: string; sea
   }, [filter, page, search]);
 
   useEffect(() => { setPage(1); }, [filter, search]);
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    load();
+    const iv = setInterval(load, 8000);
+    return () => clearInterval(iv);
+  }, [load]);
 
   const toggleActive = async (id: string, isActive: boolean) => {
     await fetch(`/api/recurring/${id}`, {
