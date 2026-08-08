@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getSession } from "@/lib/auth";
+import { sendPushNotification } from "@/lib/pushNotification";
+import { createDriverNotification } from "@/lib/notify";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const session = await getSession();
@@ -41,7 +43,29 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (stops !== undefined) data.stops = stops?.length ? JSON.stringify(stops) : null;
   if (driverId !== undefined) data.driverId = driverId || null;
 
+  const oldRecurring = await prisma.recurringBooking.findUnique({ where: { id }, select: { driverId: true } });
   const recurring = await prisma.recurringBooking.update({ where: { id }, data });
+
+  // Send notification when driver is newly assigned
+  if (driverId && driverId !== oldRecurring?.driverId) {
+    const driver = await prisma.driver.findUnique({ where: { id: driverId }, select: { pushToken: true } });
+    if (driver?.pushToken) {
+      sendPushNotification(
+        driver.pushToken,
+        "Recurring Booking Assigned",
+        `${recurring.pickup} → ${recurring.dropoff} | £${recurring.fare.toFixed(2)}`,
+        { recurringId: recurring.id, type: "recurring" }
+      );
+    }
+    createDriverNotification(
+      driverId,
+      "Recurring Booking Assigned",
+      `${recurring.name} | ${recurring.pickup} → ${recurring.dropoff} | £${recurring.fare.toFixed(2)}`,
+      "recurring",
+      JSON.stringify({ recurringId: recurring.id })
+    );
+  }
+
   return NextResponse.json({ recurring });
 }
 
