@@ -15,17 +15,21 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const filter = searchParams.get("filter") || "assigned";
 
-    let statusFilter: string[];
-    if (filter === "active") {
-      statusFilter = ["assigned", "accepted", "arrived", "in-progress"];
+    let where: Record<string, unknown> = { driverId: decoded.id };
+
+    if (filter === "recurring") {
+      where.isRecurring = true;
+      where.status = { in: ["pending", "assigned", "accepted", "arrived", "in-progress"] };
+    } else if (filter === "active") {
+      where.status = { in: ["assigned", "accepted", "arrived", "in-progress"] };
     } else if (filter === "completed") {
-      statusFilter = ["completed", "cancelled"];
+      where.status = { in: ["completed", "cancelled"] };
     } else {
-      statusFilter = ["assigned"];
+      where.status = { in: ["assigned"] };
     }
 
     const bookings = await prisma.booking.findMany({
-      where: { driverId: decoded.id, status: { in: statusFilter } },
+      where,
       orderBy: { assignedAt: "desc" },
     });
 

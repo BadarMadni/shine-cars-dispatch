@@ -55,6 +55,9 @@ export const ModelName = {
   Operator: 'Operator',
   Driver: 'Driver',
   Customer: 'Customer',
+  RecurringBooking: 'RecurringBooking',
+  Invoice: 'Invoice',
+  InvoiceItem: 'InvoiceItem',
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
   DriverDocument: 'DriverDocument'
@@ -100,6 +103,8 @@ export const BookingScalarFieldEnum = {
   cashCollected: 'cashCollected',
   stops: 'stops',
   notes: 'notes',
+  isRecurring: 'isRecurring',
+  recurringId: 'recurringId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -152,6 +157,58 @@ export const CustomerScalarFieldEnum = {
 } as const
 
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+export const RecurringBookingScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  driverId: 'driverId',
+  pickup: 'pickup',
+  dropoff: 'dropoff',
+  stops: 'stops',
+  time: 'time',
+  vehicle: 'vehicle',
+  fare: 'fare',
+  distance: 'distance',
+  days: 'days',
+  name: 'name',
+  phone: 'phone',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RecurringBookingScalarFieldEnum = (typeof RecurringBookingScalarFieldEnum)[keyof typeof RecurringBookingScalarFieldEnum]
+
+
+export const InvoiceScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  weekStart: 'weekStart',
+  weekEnd: 'weekEnd',
+  total: 'total',
+  status: 'status',
+  stripeId: 'stripeId',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type InvoiceScalarFieldEnum = (typeof InvoiceScalarFieldEnum)[keyof typeof InvoiceScalarFieldEnum]
+
+
+export const InvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  bookingId: 'bookingId',
+  fare: 'fare',
+  date: 'date',
+  pickup: 'pickup',
+  dropoff: 'dropoff',
+  createdAt: 'createdAt'
+} as const
+
+export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
 
 
 export const DriverNotificationScalarFieldEnum = {

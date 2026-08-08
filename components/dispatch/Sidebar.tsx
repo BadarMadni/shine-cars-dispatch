@@ -4,13 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
-  LayoutDashboard, ClipboardList, Users, MapPin, LogOut, Menu, X, UserCheck, MessageCircle,
+  LayoutDashboard, ClipboardList, Users, MapPin, LogOut, Menu, X, UserCheck, MessageCircle, Receipt, Repeat,
 } from "lucide-react";
 import { useState } from "react";
 
 const links = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/bookings", label: "Bookings", icon: ClipboardList },
+  { href: "/recurring", label: "Recurring", icon: Repeat },
+  { href: "/invoices", label: "Invoices", icon: Receipt },
   { href: "/drivers", label: "Drivers", icon: Users },
   { href: "/map", label: "Driver Map", icon: MapPin },
   { href: "/customers", label: "Customers", icon: UserCheck },

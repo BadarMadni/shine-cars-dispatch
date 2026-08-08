@@ -31,15 +31,20 @@ model Booking {
   cashCollected Float?
   stops         String?
   notes         String?
+  isRecurring   Boolean   @default(false)
+  recurringId   String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   driver        Driver?   @relation(fields: [driverId], references: [id])
   customer      Customer? @relation(fields: [customerId], references: [id])
+  recurring     RecurringBooking? @relation(fields: [recurringId], references: [id])
+  invoiceItems  InvoiceItem[]
 
   @@index([status])
   @@index([createdAt])
   @@index([driverId])
   @@index([customerId])
+  @@index([recurringId])
 }
 
 model Operator {
@@ -68,6 +73,7 @@ model Driver {
   updatedAt         DateTime  @updatedAt
   documents         DriverDocument[]
   bookings          Booking[]
+  recurringBookings RecurringBooking[]
   notifications     DriverNotification[]
   chatMessages      ChatMessage[]
 }
@@ -83,8 +89,71 @@ model Customer {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   bookings    Booking[]
+  recurringBookings RecurringBooking[]
+  invoices    Invoice[]
 
   @@index([accountType])
+}
+
+model RecurringBooking {
+  id         String   @id @default(cuid())
+  customerId String
+  driverId   String?
+  pickup     String
+  dropoff    String
+  stops      String?
+  time       String
+  vehicle    String   @default("car")
+  fare       Float
+  distance   Float
+  days       String
+  name       String
+  phone      String
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  customer   Customer @relation(fields: [customerId], references: [id])
+  driver     Driver?  @relation(fields: [driverId], references: [id])
+  bookings   Booking[]
+
+  @@index([customerId])
+  @@index([driverId])
+  @@index([isActive])
+}
+
+model Invoice {
+  id         String   @id @default(cuid())
+  customerId String
+  weekStart  String
+  weekEnd    String
+  total      Float    @default(0)
+  status     String   @default("unpaid")
+  stripeId   String?
+  paidAt     DateTime?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  customer   Customer @relation(fields: [customerId], references: [id])
+  items      InvoiceItem[]
+
+  @@unique([customerId, weekStart])
+  @@index([customerId])
+  @@index([status])
+}
+
+model InvoiceItem {
+  id        String   @id @default(cuid())
+  invoiceId String
+  bookingId String
+  fare      Float
+  date      String
+  pickup    String
+  dropoff   String
+  createdAt DateTime @default(now())
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  booking   Booking  @relation(fields: [bookingId], references: [id])
+
+  @@index([invoiceId])
+  @@index([bookingId])
 }
 
 model DriverNotification {

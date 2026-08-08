@@ -62,6 +62,21 @@ export type Driver = Prisma.DriverModel
  */
 export type Customer = Prisma.CustomerModel
 /**
+ * Model RecurringBooking
+ * 
+ */
+export type RecurringBooking = Prisma.RecurringBookingModel
+/**
+ * Model Invoice
+ * 
+ */
+export type Invoice = Prisma.InvoiceModel
+/**
+ * Model InvoiceItem
+ * 
+ */
+export type InvoiceItem = Prisma.InvoiceItemModel
+/**
  * Model DriverNotification
  * 
  */

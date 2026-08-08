@@ -17,6 +17,7 @@ interface Booking {
   vehicle?: string;
   paymentMethod?: string;
   paymentStatus?: string;
+  isRecurring?: boolean;
   status: string; createdAt: string; notes: string | null;
 }
 
@@ -30,7 +31,9 @@ export default function BookingTable({ filter, search }: { filter: string; searc
 
   const load = useCallback(() => {
     const q = search ? `&search=${encodeURIComponent(search)}` : "";
-    fetch(`/api/bookings?status=${filter}&page=${page}&limit=5${q}`)
+    const recurring = filter === "recurring" ? "&recurring=true" : "";
+    const status = filter === "recurring" ? "all" : filter;
+    fetch(`/api/bookings?status=${status}&page=${page}&limit=5${q}${recurring}`)
       .then((r) => r.json())
       .then((d) => { setBookings(d.bookings || []); setPages(d.pages || 1); })
       .catch(() => {});
@@ -94,7 +97,10 @@ export default function BookingTable({ filter, search }: { filter: string; searc
                 transition={{ delay: i * 0.03 }}
                 className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors">
                 <td className="py-3.5 px-2 sm:px-4">
-                  <p className="font-semibold text-navy">{b.name}</p>
+                  <div className="flex items-center gap-1.5">
+                    <p className="font-semibold text-navy">{b.name}</p>
+                    {b.isRecurring && <span className="text-[9px] font-bold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">RECURRING</span>}
+                  </div>
                   <p className="text-navy/40 text-xs flex items-center gap-1">
                     <Phone className="w-3 h-3" /> {b.phone}
                   </p>
