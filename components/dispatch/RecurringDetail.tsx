@@ -2,19 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { X, UserCheck, MapPin, Navigation, Clock, Car, Calendar, Phone, User } from "lucide-react";
+import { X, UserCheck, MapPin, Navigation, Clock, Car, Calendar, Phone, User, CheckCircle } from "lucide-react";
 
-interface LatestBooking { id: string; status: string; date: string }
+interface RideRecord { id: string; status: string; date: string; time: string; fare: number }
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;
   customer: { companyName: string | null; accountType: string };
   driver?: { id: string; name: string } | null;
-  bookings?: LatestBooking[];
+  bookings?: RideRecord[];
 }
 interface Driver { id: string; name: string; isAvailable: boolean }
 const ALL_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
-const STATUSES = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress", "completed", "cancelled"];
 const statusCls: Record<string, string> = {
   pending: "bg-yellow-50 text-yellow-600", confirmed: "bg-blue-50 text-blue-600", assigned: "bg-purple-50 text-purple-600",
   accepted: "bg-indigo-50 text-indigo-600", arrived: "bg-cyan-50 text-cyan-600", "in-progress": "bg-orange-50 text-orange-600",
@@ -25,13 +24,13 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
   const [driverId, setDriverId] = useState(item.driver?.id || "");
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [saving, setSaving] = useState(false);
-  const [bookingStatus, setBookingStatus] = useState(item.bookings?.[0]?.status || "");
-  const latestBooking = item.bookings?.[0];
+  const [rides, setRides] = useState<RideRecord[]>([]);
   const days: string[] = (() => { try { return JSON.parse(item.days); } catch { return []; } })();
 
   useEffect(() => {
     fetch("/api/drivers?status=approved").then((r) => r.json()).then((d) => setDrivers(d.drivers || [])).catch(() => {});
-  }, []);
+    fetch(`/api/recurring/${item.id}`).then((r) => r.json()).then((d) => setRides(d.recurring?.bookings || [])).catch(() => {});
+  }, [item.id]);
 
   const save = async () => {
     setSaving(true);
@@ -39,15 +38,15 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
       method: "PATCH", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ driverId: driverId || null }),
     });
-    if (latestBooking && bookingStatus !== latestBooking.status) {
-      await fetch(`/api/bookings/${latestBooking.id}`, {
-        method: "PATCH", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: bookingStatus, driverId: driverId || undefined }),
-      });
-    }
     setSaving(false);
     onClose();
   };
+
+  const completedRides = rides.filter((r) => r.status === "completed").length;
+  const thisWeekStart = new Date(); thisWeekStart.setDate(thisWeekStart.getDate() - thisWeekStart.getDay() + 1);
+  const weekStr = thisWeekStart.toISOString().split("T")[0];
+  const thisWeekRides = rides.filter((r) => r.date >= weekStr);
+  const thisWeekCompleted = thisWeekRides.filter((r) => r.status === "completed").length;
 
   const selectCls = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50";
   const infoCls = "flex items-start gap-2.5 text-sm text-navy/70";
@@ -60,7 +59,7 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
         <div className="flex items-center justify-between p-5 border-b border-gray-100">
           <div>
             <h3 className="font-bold text-navy">Recurring Booking</h3>
-            <p className="text-navy/40 text-xs mt-0.5">{item.customer.companyName || "Company"}</p>
+            <p className="text-navy/40 text-xs mt-0.5">{item.customer.companyName || "Individual"}</p>
           </div>
           <div className="flex items-center gap-2">
             <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${item.isActive ? "bg-green-100 text-green-600" : "bg-red-100 text-red-500"}`}>
@@ -75,12 +74,10 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             <div className={infoCls}><User className="w-4 h-4 text-navy/30 mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Passenger</p><p className="font-medium text-navy">{item.name}</p></div></div>
             <div className={infoCls}><Phone className="w-4 h-4 text-navy/30 mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Phone</p><p className="font-medium text-navy">{item.phone}</p></div></div>
           </div>
-
           <div className="space-y-2">
             <div className={infoCls}><MapPin className="w-4 h-4 text-green-500 mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Pickup</p><p className="font-medium text-navy">{item.pickup}</p></div></div>
             <div className={infoCls}><Navigation className="w-4 h-4 text-crimson mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Drop-off</p><p className="font-medium text-navy">{item.dropoff}</p></div></div>
           </div>
-
           <div className="grid grid-cols-3 gap-3">
             <div className={infoCls}><Clock className="w-4 h-4 text-navy/30 mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Time</p><p className="font-medium text-navy">{item.time}</p></div></div>
             <div className={infoCls}><Car className="w-4 h-4 text-navy/30 mt-0.5 shrink-0" /><div><p className="text-navy/40 text-xs">Vehicle</p><p className="font-medium text-navy uppercase">{item.vehicle}</p></div></div>
@@ -91,12 +88,41 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             <p className="text-navy/40 text-xs font-medium mb-2">Schedule</p>
             <div className="flex flex-wrap gap-1.5">
               {ALL_DAYS.map((d) => (
-                <span key={d} className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
-                  days.includes(d) ? "bg-crimson/10 text-crimson border border-crimson/30" : "bg-gray-100 text-navy/20"
-                }`}>{d.slice(0, 3).toUpperCase()}</span>
+                <span key={d} className={`px-2.5 py-1 rounded-lg text-xs font-bold ${days.includes(d) ? "bg-crimson/10 text-crimson border border-crimson/30" : "bg-gray-100 text-navy/20"}`}>{d.slice(0, 3).toUpperCase()}</span>
               ))}
             </div>
           </div>
+
+          {/* Weekly Stats */}
+          <div className="bg-gray-50 rounded-xl p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle className="w-4 h-4 text-green-500" />
+              <p className="text-navy text-sm font-semibold">Completion Stats</p>
+            </div>
+            <div className="grid grid-cols-2 gap-3 text-center">
+              <div><p className="text-2xl font-bold text-navy">{thisWeekCompleted}/{thisWeekRides.length}</p><p className="text-navy/40 text-xs">This Week</p></div>
+              <div><p className="text-2xl font-bold text-navy">{completedRides}/{rides.length}</p><p className="text-navy/40 text-xs">All Time</p></div>
+            </div>
+          </div>
+
+          {/* Ride History */}
+          {rides.length > 0 && (
+            <div>
+              <p className="text-navy/40 text-xs font-medium mb-2"><Calendar className="w-3.5 h-3.5 inline mr-1" />Recent Rides</p>
+              <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
+                {rides.slice(0, 10).map((r) => (
+                  <div key={r.id} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg text-xs">
+                    <span className="text-navy/60">{r.date}</span>
+                    <span className="text-navy/40">{r.time}</span>
+                    <span className="font-bold text-navy">&pound;{r.fare.toFixed(2)}</span>
+                    <span className={`font-semibold px-2 py-0.5 rounded-md ${statusCls[r.status] || "bg-gray-100 text-gray-500"}`}>
+                      {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className="pt-2 border-t border-gray-100">
             <label className="block text-navy/60 text-xs font-medium mb-1.5">
@@ -110,28 +136,10 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             </select>
             {item.driver && <p className="text-xs text-navy/40 mt-1">Currently: {item.driver.name}</p>}
           </div>
-
-          {latestBooking && (
-            <div className="pt-2 border-t border-gray-100">
-              <label className="block text-navy/60 text-xs font-medium mb-1.5">
-                <Calendar className="w-3.5 h-3.5 inline mr-1" />Latest Ride Status
-                <span className="text-navy/30 ml-1">({latestBooking.date})</span>
-              </label>
-              <select value={bookingStatus} onChange={(e) => setBookingStatus(e.target.value)} className={selectCls}>
-                {STATUSES.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
-              </select>
-              <span className={`inline-block mt-1.5 text-xs font-semibold px-2 py-0.5 rounded-lg ${statusCls[bookingStatus] || ""}`}>
-                {bookingStatus.charAt(0).toUpperCase() + bookingStatus.slice(1)}
-              </span>
-            </div>
-          )}
         </div>
 
         <div className="p-5 border-t border-gray-100 flex gap-3">
-          <button onClick={onClose}
-            className="flex-1 py-3 rounded-xl border border-gray-200 text-navy/60 font-medium text-sm hover:bg-gray-50 cursor-pointer">
-            Cancel
-          </button>
+          <button onClick={onClose} className="flex-1 py-3 rounded-xl border border-gray-200 text-navy/60 font-medium text-sm hover:bg-gray-50 cursor-pointer">Cancel</button>
           <button onClick={save} disabled={saving}
             className="flex-1 py-3 rounded-xl bg-gradient-to-r from-crimson to-crimson-dark text-white font-bold text-sm cursor-pointer disabled:opacity-60">
             {saving ? "Saving..." : "Save Changes"}

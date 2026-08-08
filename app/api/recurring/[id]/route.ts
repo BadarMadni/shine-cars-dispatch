@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     where: { id },
     include: {
       customer: { select: { companyName: true, email: true, accountType: true } },
-      bookings: { orderBy: { createdAt: "desc" }, take: 20 },
+      bookings: { orderBy: { date: "desc" }, take: 30, select: { id: true, status: true, date: true, time: true, fare: true, driverId: true } },
     },
   });
 

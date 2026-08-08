@@ -8,7 +8,7 @@ import EditRecurringModal from "@/components/dispatch/EditRecurringModal";
 import RecurringDetail from "@/components/dispatch/RecurringDetail";
 
 interface Driver { id: string; name: string }
-interface LatestBooking { id: string; status: string; date: string }
+interface LatestBooking { id: string; status: string; date: string; time: string; fare: number }
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;

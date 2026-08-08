@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       include: {
         customer: { select: { companyName: true, accountType: true } },
         driver: { select: { id: true, name: true } },
-        bookings: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, status: true, date: true } },
+        bookings: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, status: true, date: true, time: true, fare: true } },
       },
     }),
     prisma.recurringBooking.count({ where }),
