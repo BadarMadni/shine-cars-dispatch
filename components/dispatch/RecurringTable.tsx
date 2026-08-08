@@ -114,6 +114,8 @@ export default function RecurringTable({ filter, search }: { filter: string; sea
                 <td className="py-3 px-4">
                   {rb.driverStatus === "rejected" ? (
                     <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-red-50 text-red-500">Rejected</span>
+                  ) : rb.driverStatus === "accepted" ? (
+                    <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-green-50 text-green-600">Accepted</span>
                   ) : rb.bookings?.[0] ? (
                     <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${statusStyle[rb.bookings[0].status] || "bg-gray-50 text-gray-500"}`}>
                       {rb.bookings[0].status.charAt(0).toUpperCase() + rb.bookings[0].status.slice(1)}
