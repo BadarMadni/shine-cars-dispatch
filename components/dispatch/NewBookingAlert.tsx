@@ -13,6 +13,7 @@ interface Booking {
   date: string; time: string;
   distance: number; fare: number;
   status: string; createdAt: string;
+  isRecurring?: boolean;
 }
 
 export default function NewBookingAlert() {
@@ -86,8 +87,8 @@ export default function NewBookingAlert() {
               >
                 <Bell className="w-10 h-10 mx-auto mb-2" />
               </motion.div>
-              <h3 className="text-xl font-bold">New Booking!</h3>
-              <p className="text-white/70 text-sm mt-1">A new ride has been requested</p>
+              <h3 className="text-xl font-bold">{booking.isRecurring ? "Recurring Booking!" : "New Booking!"}</h3>
+              <p className="text-white/70 text-sm mt-1">{booking.isRecurring ? "A recurring ride has been generated" : "A new ride has been requested"}</p>
             </motion.div>
 
             {/* Booking details */}
