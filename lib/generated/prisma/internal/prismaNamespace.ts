@@ -1300,6 +1300,7 @@ export const RecurringBookingScalarFieldEnum = {
   name: 'name',
   phone: 'phone',
   isActive: 'isActive',
+  driverStatus: 'driverStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const

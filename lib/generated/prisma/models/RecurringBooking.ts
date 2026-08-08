@@ -51,6 +51,7 @@ export type RecurringBookingMinAggregateOutputType = {
   name: string | null
   phone: string | null
   isActive: boolean | null
+  driverStatus: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -70,6 +71,7 @@ export type RecurringBookingMaxAggregateOutputType = {
   name: string | null
   phone: string | null
   isActive: boolean | null
+  driverStatus: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -89,6 +91,7 @@ export type RecurringBookingCountAggregateOutputType = {
   name: number
   phone: number
   isActive: number
+  driverStatus: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -120,6 +123,7 @@ export type RecurringBookingMinAggregateInputType = {
   name?: true
   phone?: true
   isActive?: true
+  driverStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -139,6 +143,7 @@ export type RecurringBookingMaxAggregateInputType = {
   name?: true
   phone?: true
   isActive?: true
+  driverStatus?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -158,6 +163,7 @@ export type RecurringBookingCountAggregateInputType = {
   name?: true
   phone?: true
   isActive?: true
+  driverStatus?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -264,6 +270,7 @@ export type RecurringBookingGroupByOutputType = {
   name: string
   phone: string
   isActive: boolean
+  driverStatus: string | null
   createdAt: Date
   updatedAt: Date
   _count: RecurringBookingCountAggregateOutputType | null
@@ -306,6 +313,7 @@ export type RecurringBookingWhereInput = {
   name?: Prisma.StringFilter<"RecurringBooking"> | string
   phone?: Prisma.StringFilter<"RecurringBooking"> | string
   isActive?: Prisma.BoolFilter<"RecurringBooking"> | boolean
+  driverStatus?: Prisma.StringNullableFilter<"RecurringBooking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
@@ -328,6 +336,7 @@ export type RecurringBookingOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  driverStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   customer?: Prisma.CustomerOrderByWithRelationInput
@@ -353,6 +362,7 @@ export type RecurringBookingWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"RecurringBooking"> | string
   phone?: Prisma.StringFilter<"RecurringBooking"> | string
   isActive?: Prisma.BoolFilter<"RecurringBooking"> | boolean
+  driverStatus?: Prisma.StringNullableFilter<"RecurringBooking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
   customer?: Prisma.XOR<Prisma.CustomerScalarRelationFilter, Prisma.CustomerWhereInput>
@@ -375,6 +385,7 @@ export type RecurringBookingOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  driverStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.RecurringBookingCountOrderByAggregateInput
@@ -402,6 +413,7 @@ export type RecurringBookingScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"RecurringBooking"> | string
   phone?: Prisma.StringWithAggregatesFilter<"RecurringBooking"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"RecurringBooking"> | boolean
+  driverStatus?: Prisma.StringNullableWithAggregatesFilter<"RecurringBooking"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"RecurringBooking"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"RecurringBooking"> | Date | string
 }
@@ -419,6 +431,7 @@ export type RecurringBookingCreateInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutRecurringBookingsInput
@@ -441,6 +454,7 @@ export type RecurringBookingUncheckedCreateInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutRecurringInput
@@ -459,6 +473,7 @@ export type RecurringBookingUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutRecurringBookingsNestedInput
@@ -481,6 +496,7 @@ export type RecurringBookingUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutRecurringNestedInput
@@ -501,6 +517,7 @@ export type RecurringBookingCreateManyInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -518,6 +535,7 @@ export type RecurringBookingUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -537,6 +555,7 @@ export type RecurringBookingUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -571,6 +590,7 @@ export type RecurringBookingCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  driverStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -595,6 +615,7 @@ export type RecurringBookingMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  driverStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -614,6 +635,7 @@ export type RecurringBookingMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  driverStatus?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -736,6 +758,7 @@ export type RecurringBookingCreateWithoutBookingsInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutRecurringBookingsInput
@@ -757,6 +780,7 @@ export type RecurringBookingUncheckedCreateWithoutBookingsInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -790,6 +814,7 @@ export type RecurringBookingUpdateWithoutBookingsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutRecurringBookingsNestedInput
@@ -811,6 +836,7 @@ export type RecurringBookingUncheckedUpdateWithoutBookingsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -828,6 +854,7 @@ export type RecurringBookingCreateWithoutDriverInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   customer: Prisma.CustomerCreateNestedOneWithoutRecurringBookingsInput
@@ -848,6 +875,7 @@ export type RecurringBookingUncheckedCreateWithoutDriverInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutRecurringInput
@@ -897,6 +925,7 @@ export type RecurringBookingScalarWhereInput = {
   name?: Prisma.StringFilter<"RecurringBooking"> | string
   phone?: Prisma.StringFilter<"RecurringBooking"> | string
   isActive?: Prisma.BoolFilter<"RecurringBooking"> | boolean
+  driverStatus?: Prisma.StringNullableFilter<"RecurringBooking"> | string | null
   createdAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"RecurringBooking"> | Date | string
 }
@@ -914,6 +943,7 @@ export type RecurringBookingCreateWithoutCustomerInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   driver?: Prisma.DriverCreateNestedOneWithoutRecurringBookingsInput
@@ -934,6 +964,7 @@ export type RecurringBookingUncheckedCreateWithoutCustomerInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutRecurringInput
@@ -979,6 +1010,7 @@ export type RecurringBookingCreateManyDriverInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -996,6 +1028,7 @@ export type RecurringBookingUpdateWithoutDriverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   customer?: Prisma.CustomerUpdateOneRequiredWithoutRecurringBookingsNestedInput
@@ -1016,6 +1049,7 @@ export type RecurringBookingUncheckedUpdateWithoutDriverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutRecurringNestedInput
@@ -1035,6 +1069,7 @@ export type RecurringBookingUncheckedUpdateManyWithoutDriverInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1053,6 +1088,7 @@ export type RecurringBookingCreateManyCustomerInput = {
   name: string
   phone: string
   isActive?: boolean
+  driverStatus?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -1070,6 +1106,7 @@ export type RecurringBookingUpdateWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   driver?: Prisma.DriverUpdateOneWithoutRecurringBookingsNestedInput
@@ -1090,6 +1127,7 @@ export type RecurringBookingUncheckedUpdateWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutRecurringNestedInput
@@ -1109,6 +1147,7 @@ export type RecurringBookingUncheckedUpdateManyWithoutCustomerInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  driverStatus?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1159,6 +1198,7 @@ export type RecurringBookingSelect<ExtArgs extends runtime.Types.Extensions.Inte
   name?: boolean
   phone?: boolean
   isActive?: boolean
+  driverStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1182,6 +1222,7 @@ export type RecurringBookingSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   name?: boolean
   phone?: boolean
   isActive?: boolean
+  driverStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1203,6 +1244,7 @@ export type RecurringBookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   name?: boolean
   phone?: boolean
   isActive?: boolean
+  driverStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
@@ -1224,11 +1266,12 @@ export type RecurringBookingSelectScalar = {
   name?: boolean
   phone?: boolean
   isActive?: boolean
+  driverStatus?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type RecurringBookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "driverId" | "pickup" | "dropoff" | "stops" | "time" | "vehicle" | "fare" | "distance" | "days" | "name" | "phone" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["recurringBooking"]>
+export type RecurringBookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "customerId" | "driverId" | "pickup" | "dropoff" | "stops" | "time" | "vehicle" | "fare" | "distance" | "days" | "name" | "phone" | "isActive" | "driverStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["recurringBooking"]>
 export type RecurringBookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   customer?: boolean | Prisma.CustomerDefaultArgs<ExtArgs>
   driver?: boolean | Prisma.RecurringBooking$driverArgs<ExtArgs>
@@ -1266,6 +1309,7 @@ export type $RecurringBookingPayload<ExtArgs extends runtime.Types.Extensions.In
     name: string
     phone: string
     isActive: boolean
+    driverStatus: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["recurringBooking"]>
@@ -1708,6 +1752,7 @@ export interface RecurringBookingFieldRefs {
   readonly name: Prisma.FieldRef<"RecurringBooking", 'String'>
   readonly phone: Prisma.FieldRef<"RecurringBooking", 'String'>
   readonly isActive: Prisma.FieldRef<"RecurringBooking", 'Boolean'>
+  readonly driverStatus: Prisma.FieldRef<"RecurringBooking", 'String'>
   readonly createdAt: Prisma.FieldRef<"RecurringBooking", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"RecurringBooking", 'DateTime'>
 }

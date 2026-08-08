@@ -26,6 +26,7 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
   const [saving, setSaving] = useState(false);
   const [rides, setRides] = useState<RideRecord[]>([]);
   const days: string[] = (() => { try { return JSON.parse(item.days); } catch { return []; } })();
+  const STATUSES = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress", "completed", "cancelled"];
 
   useEffect(() => {
     fetch("/api/drivers?status=approved").then((r) => r.json()).then((d) => setDrivers(d.drivers || [])).catch(() => {});
@@ -40,6 +41,14 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
     });
     setSaving(false);
     onClose();
+  };
+
+  const updateRideStatus = async (rideId: string, status: string) => {
+    await fetch(`/api/bookings/${rideId}`, {
+      method: "PATCH", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    setRides((prev) => prev.map((r) => r.id === rideId ? { ...r, status } : r));
   };
 
   const completedRides = rides.filter((r) => r.status === "completed").length;
@@ -111,13 +120,13 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
               <p className="text-navy/40 text-xs font-medium mb-2"><Calendar className="w-3.5 h-3.5 inline mr-1" />Recent Rides</p>
               <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
                 {rides.slice(0, 10).map((r) => (
-                  <div key={r.id} className="flex items-center justify-between py-2 px-3 bg-gray-50 rounded-lg text-xs">
-                    <span className="text-navy/60">{r.date}</span>
-                    <span className="text-navy/40">{r.time}</span>
-                    <span className="font-bold text-navy">&pound;{r.fare.toFixed(2)}</span>
-                    <span className={`font-semibold px-2 py-0.5 rounded-md ${statusCls[r.status] || "bg-gray-100 text-gray-500"}`}>
-                      {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
-                    </span>
+                  <div key={r.id} className="flex items-center gap-2 py-2 px-3 bg-gray-50 rounded-lg text-xs">
+                    <span className="text-navy/60 shrink-0">{r.date}</span>
+                    <span className="font-bold text-navy shrink-0">&pound;{r.fare.toFixed(2)}</span>
+                    <select value={r.status} onChange={(e) => updateRideStatus(r.id, e.target.value)}
+                      className={`text-xs font-semibold px-2 py-1 rounded-md border-0 outline-none cursor-pointer ${statusCls[r.status] || "bg-gray-100 text-gray-500"}`}>
+                      {STATUSES.map((s) => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
+                    </select>
                   </div>
                 ))}
               </div>

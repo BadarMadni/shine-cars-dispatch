@@ -27,7 +27,10 @@ export async function GET(req: NextRequest) {
     prisma.recurringBooking.findMany({
       where, orderBy: { createdAt: "desc" },
       skip: (page - 1) * limit, take: limit,
-      include: {
+      select: {
+        id: true, name: true, phone: true, pickup: true, dropoff: true,
+        time: true, vehicle: true, fare: true, distance: true, days: true,
+        isActive: true, driverStatus: true, createdAt: true,
         customer: { select: { companyName: true, accountType: true } },
         driver: { select: { id: true, name: true } },
         bookings: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, status: true, date: true, time: true, fare: true } },

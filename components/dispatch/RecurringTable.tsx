@@ -12,6 +12,7 @@ interface LatestBooking { id: string; status: string; date: string; time: string
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;
+  driverStatus?: string | null;
   customer: { companyName: string | null; accountType: string };
   driver?: Driver | null;
   bookings?: LatestBooking[];
@@ -111,7 +112,9 @@ export default function RecurringTable({ filter, search }: { filter: string; sea
                 <td className="py-3 px-4 text-navy/60 text-xs">{parseDays(rb.days)}</td>
                 <td className="py-3 px-4 font-bold text-navy">&pound;{rb.fare.toFixed(2)}</td>
                 <td className="py-3 px-4">
-                  {rb.bookings?.[0] ? (
+                  {rb.driverStatus === "rejected" ? (
+                    <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-red-50 text-red-500">Rejected</span>
+                  ) : rb.bookings?.[0] ? (
                     <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${statusStyle[rb.bookings[0].status] || "bg-gray-50 text-gray-500"}`}>
                       {rb.bookings[0].status.charAt(0).toUpperCase() + rb.bookings[0].status.slice(1)}
                     </span>

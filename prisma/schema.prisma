@@ -109,12 +109,13 @@ model RecurringBooking {
   days       String
   name       String
   phone      String
-  isActive   Boolean  @default(true)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  customer   Customer @relation(fields: [customerId], references: [id])
-  driver     Driver?  @relation(fields: [driverId], references: [id])
-  bookings   Booking[]
+  isActive     Boolean  @default(true)
+  driverStatus String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  customer     Customer @relation(fields: [customerId], references: [id])
+  driver       Driver?  @relation(fields: [driverId], references: [id])
+  bookings     Booking[]
 
   @@index([customerId])
   @@index([driverId])

@@ -41,7 +41,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (name) data.name = name;
   if (phone) data.phone = phone;
   if (stops !== undefined) data.stops = stops?.length ? JSON.stringify(stops) : null;
-  if (driverId !== undefined) data.driverId = driverId || null;
+  if (driverId !== undefined) {
+    data.driverId = driverId || null;
+    if (driverId) data.driverStatus = null;
+  }
 
   const oldRecurring = await prisma.recurringBooking.findUnique({ where: { id }, select: { driverId: true } });
   const recurring = await prisma.recurringBooking.update({ where: { id }, data });
