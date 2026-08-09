@@ -127,8 +127,8 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             )}
             <div className="grid grid-cols-3 gap-3 text-center">
               <div><p className="text-xl font-bold text-green-600">{completedRides}</p><p className="text-navy/40 text-xs">Completed</p></div>
-              <div><p className="text-xl font-bold text-amber-600">{remaining}</p><p className="text-navy/40 text-xs">Remaining</p></div>
-              <div><p className="text-xl font-bold text-navy">{totalExpected || rides.length}</p><p className="text-navy/40 text-xs">Total Days</p></div>
+              <div><p className="text-xl font-bold text-amber-600">{totalExpected > 0 ? remaining : "—"}</p><p className="text-navy/40 text-xs">Remaining</p></div>
+              <div><p className={`font-bold ${totalExpected > 0 ? "text-xl text-navy" : "text-sm text-navy/50"}`}>{totalExpected > 0 ? totalExpected : "Ongoing"}</p><p className="text-navy/40 text-xs">Total Days</p></div>
             </div>
           </div>
 
