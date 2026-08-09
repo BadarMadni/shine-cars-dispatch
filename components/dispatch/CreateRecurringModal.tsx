@@ -19,6 +19,8 @@ export default function CreateRecurringModal({ onClose }: { onClose: () => void 
   const [time, setTime] = useState(""); const [vehicle, setVehicle] = useState<VehicleType>("car");
   const [fare, setFare] = useState(0); const [distance, setDistance] = useState(0);
   const [days, setDays] = useState<string[]>([]);
+  const [frequency, setFrequency] = useState("weekly");
+  const [startDate, setStartDate] = useState(""); const [endDate, setEndDate] = useState("");
   const [saving, setSaving] = useState(false); const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState("");
 
@@ -55,7 +57,7 @@ export default function CreateRecurringModal({ onClose }: { onClose: () => void 
     setSaving(true); setError("");
     const res = await fetch("/api/recurring", {
       method: "POST", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ customerId, pickup: pickupText, dropoff: dropoffText, time, vehicle, fare, distance, days, name, phone }),
+      body: JSON.stringify({ customerId, pickup: pickupText, dropoff: dropoffText, time, vehicle, fare, distance, days, name, phone, frequency, startDate: startDate || null, endDate: endDate || null }),
     });
     const data = await res.json();
     setSaving(false);
@@ -124,6 +126,18 @@ export default function CreateRecurringModal({ onClose }: { onClose: () => void 
               </select></div>
           </div>
 
+          <div>
+            <label className="text-xs text-navy/60 font-medium">Frequency</label>
+            <select value={frequency} onChange={(e) => setFrequency(e.target.value)} className={fieldCls}>
+              <option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><label className="text-xs text-navy/60 font-medium">Start Date</label>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className={fieldCls} /></div>
+            <div><label className="text-xs text-navy/60 font-medium">End Date</label>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className={fieldCls} /></div>
+          </div>
           <div>
             <label className="text-xs text-navy/60 font-medium mb-1.5 block">Days</label>
             <div className="flex flex-wrap gap-2">

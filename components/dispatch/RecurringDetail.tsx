@@ -8,6 +8,7 @@ interface RideRecord { id: string; status: string; date: string; time: string; f
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;
+  frequency?: string; startDate?: string | null; endDate?: string | null;
   customer: { companyName: string | null; accountType: string };
   driver?: { id: string; name: string } | null;
   bookings?: RideRecord[];
@@ -94,12 +95,15 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
           </div>
 
           <div>
-            <p className="text-navy/40 text-xs font-medium mb-2">Schedule</p>
+            <p className="text-navy/40 text-xs font-medium mb-2">Schedule — <span className="capitalize">{item.frequency || "weekly"}</span></p>
             <div className="flex flex-wrap gap-1.5">
               {ALL_DAYS.map((d) => (
                 <span key={d} className={`px-2.5 py-1 rounded-lg text-xs font-bold ${days.includes(d) ? "bg-crimson/10 text-crimson border border-crimson/30" : "bg-gray-100 text-navy/20"}`}>{d.slice(0, 3).toUpperCase()}</span>
               ))}
             </div>
+            {(item.startDate || item.endDate) && (
+              <p className="text-navy/40 text-xs mt-2">{item.startDate || "—"} → {item.endDate || "Ongoing"}</p>
+            )}
           </div>
 
           {/* Weekly Stats */}

@@ -107,6 +107,9 @@ model RecurringBooking {
   fare       Float
   distance   Float
   days       String
+  frequency  String   @default("weekly")
+  startDate  String?
+  endDate    String?
   name       String
   phone      String
   isActive     Boolean  @default(true)

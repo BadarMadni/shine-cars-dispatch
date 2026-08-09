@@ -27,7 +27,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
 
   const { id } = await params;
   const body = await req.json();
-  const { isActive, pickup, dropoff, stops, time, vehicle, fare, distance, days, name, phone, driverId } = body;
+  const { isActive, pickup, dropoff, stops, time, vehicle, fare, distance, days, name, phone, driverId, frequency, startDate, endDate } = body;
 
   const data: Record<string, unknown> = {};
   if (typeof isActive === "boolean") data.isActive = isActive;
@@ -41,6 +41,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (name) data.name = name;
   if (phone) data.phone = phone;
   if (stops !== undefined) data.stops = stops?.length ? JSON.stringify(stops) : null;
+  if (frequency) data.frequency = frequency;
+  if (startDate !== undefined) data.startDate = startDate || null;
+  if (endDate !== undefined) data.endDate = endDate || null;
   if (driverId !== undefined) {
     data.driverId = driverId || null;
     data.driverStatus = null;

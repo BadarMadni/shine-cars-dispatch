@@ -12,7 +12,7 @@ interface LatestBooking { id: string; status: string; date: string; time: string
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;
-  driverStatus?: string | null;
+  driverStatus?: string | null; frequency?: string; startDate?: string | null; endDate?: string | null;
   customer: { companyName: string | null; accountType: string };
   driver?: Driver | null;
   bookings?: LatestBooking[];

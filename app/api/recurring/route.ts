@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
       select: {
         id: true, name: true, phone: true, pickup: true, dropoff: true,
         time: true, vehicle: true, fare: true, distance: true, days: true,
-        isActive: true, driverStatus: true, createdAt: true,
+        isActive: true, driverStatus: true, frequency: true, startDate: true, endDate: true, createdAt: true,
         customer: { select: { companyName: true, accountType: true } },
         driver: { select: { id: true, name: true } },
         bookings: { orderBy: { createdAt: "desc" }, take: 1, select: { id: true, status: true, date: true, time: true, fare: true } },
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
-    const { customerId, pickup, dropoff, stops, time, vehicle, fare, distance, days, name, phone } = body;
+    const { customerId, pickup, dropoff, stops, time, vehicle, fare, distance, days, name, phone, frequency, startDate, endDate } = body;
 
     if (!customerId || !pickup || !dropoff || !time || !fare || !days || !name || !phone) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -63,8 +63,9 @@ export async function POST(req: NextRequest) {
       data: {
         customerId, pickup, dropoff, time, vehicle: vehicle || "car",
         fare: parseFloat(fare), distance: parseFloat(distance) || 0,
-        days: JSON.stringify(days), name, phone,
-        stops: stops?.length ? JSON.stringify(stops) : null,
+        days: JSON.stringify(days), frequency: frequency || "weekly",
+        startDate: startDate || null, endDate: endDate || null,
+        name, phone, stops: stops?.length ? JSON.stringify(stops) : null,
       },
     });
 

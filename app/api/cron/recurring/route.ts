@@ -21,6 +21,8 @@ export async function GET(req: NextRequest) {
   for (const rb of actives) {
     const days: string[] = JSON.parse(rb.days);
     if (!days.includes(dayName)) continue;
+    if (rb.startDate && dateStr < rb.startDate) continue;
+    if (rb.endDate && dateStr > rb.endDate) continue;
 
     const exists = await prisma.booking.findFirst({
       where: { recurringId: rb.id, date: dateStr },

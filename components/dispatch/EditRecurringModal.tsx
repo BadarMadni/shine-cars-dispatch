@@ -9,6 +9,7 @@ import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
   time: string; vehicle: string; fare: number; distance: number; days: string; isActive: boolean;
+  frequency?: string; startDate?: string | null; endDate?: string | null;
 }
 
 const ALL_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -27,6 +28,9 @@ export default function EditRecurringModal({ item, onClose }: { item: RecurringB
   const [fare, setFare] = useState(item.fare);
   const [distance, setDistance] = useState(item.distance);
   const [days, setDays] = useState<string[]>(parsedDays);
+  const [frequency, setFrequency] = useState(item.frequency || "weekly");
+  const [startDate, setStartDate] = useState(item.startDate || "");
+  const [endDate, setEndDate] = useState(item.endDate || "");
   const [saving, setSaving] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState("");
@@ -60,7 +64,7 @@ export default function EditRecurringModal({ item, onClose }: { item: RecurringB
     setSaving(true); setError("");
     const res = await fetch(`/api/recurring/${item.id}`, {
       method: "PATCH", headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ pickup: pickupText, dropoff: dropoffText, time, vehicle, fare, distance, days, name, phone }),
+      body: JSON.stringify({ pickup: pickupText, dropoff: dropoffText, time, vehicle, fare, distance, days, name, phone, frequency, startDate: startDate || null, endDate: endDate || null }),
     });
     const data = await res.json();
     setSaving(false);
@@ -116,6 +120,18 @@ export default function EditRecurringModal({ item, onClose }: { item: RecurringB
               </select></div>
           </div>
 
+          <div>
+            <label className="text-xs text-navy/60 font-medium">Frequency</label>
+            <select value={frequency} onChange={(e) => setFrequency(e.target.value)} className={fieldCls}>
+              <option value="weekly">Weekly</option><option value="monthly">Monthly</option>
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div><label className="text-xs text-navy/60 font-medium">Start Date</label>
+              <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} className={fieldCls} /></div>
+            <div><label className="text-xs text-navy/60 font-medium">End Date</label>
+              <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className={fieldCls} /></div>
+          </div>
           <div>
             <label className="text-xs text-navy/60 font-medium mb-1.5 block">Days</label>
             <div className="flex flex-wrap gap-2">
