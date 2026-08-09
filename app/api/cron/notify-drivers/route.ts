@@ -9,8 +9,7 @@ export async function GET(req: NextRequest) {
   }
 
   const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
-  const in25 = new Date(now.getTime() + 25 * 60 * 1000);
-  const in40 = new Date(now.getTime() + 40 * 60 * 1000);
+  // Hobby plan: runs once daily at 6 AM UTC — notify all today's bookings
   const today = now.toISOString().split("T")[0];
 
   const bookings = await prisma.booking.findMany({
@@ -28,7 +27,7 @@ export async function GET(req: NextRequest) {
     const bookingTime = new Date(now);
     bookingTime.setHours(h, m, 0, 0);
 
-    if (bookingTime < in25 || bookingTime > in40) continue;
+    if (bookingTime < now) continue; // skip past bookings
     if (!b.driver?.pushToken) continue;
 
     const alreadyNotified = await prisma.driverNotification.findFirst({
