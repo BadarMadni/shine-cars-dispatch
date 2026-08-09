@@ -53,10 +53,18 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
   };
 
   const completedRides = rides.filter((r) => r.status === "completed").length;
-  const thisWeekStart = new Date(); thisWeekStart.setDate(thisWeekStart.getDate() - thisWeekStart.getDay() + 1);
-  const weekStr = thisWeekStart.toISOString().split("T")[0];
-  const thisWeekRides = rides.filter((r) => r.date >= weekStr);
-  const thisWeekCompleted = thisWeekRides.filter((r) => r.status === "completed").length;
+  const dayIndexMap: Record<string, number> = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+  const totalExpected = (() => {
+    if (!item.startDate || !item.endDate) return 0;
+    let count = 0;
+    const cur = new Date(item.startDate + "T00:00:00");
+    const end = new Date(item.endDate + "T00:00:00");
+    const dayNums = days.map((d) => dayIndexMap[d]);
+    while (cur <= end) { if (dayNums.includes(cur.getDay())) count++; cur.setDate(cur.getDate() + 1); }
+    return count;
+  })();
+  const remaining = Math.max(0, totalExpected - completedRides);
+  const pct = totalExpected > 0 ? Math.round((completedRides / totalExpected) * 100) : 0;
 
   const selectCls = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm text-navy outline-none focus:border-crimson/50";
   const infoCls = "flex items-start gap-2.5 text-sm text-navy/70";
@@ -72,6 +80,7 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             <p className="text-navy/40 text-xs mt-0.5">{item.customer.companyName || "Individual"}</p>
           </div>
           <div className="flex items-center gap-2">
+            <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-600 capitalize">{item.frequency || "weekly"}</span>
             <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${item.isActive ? "bg-green-100 text-green-600" : "bg-red-100 text-red-500"}`}>
               {item.isActive ? "Active" : "Inactive"}
             </span>
@@ -106,15 +115,20 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             )}
           </div>
 
-          {/* Weekly Stats */}
           <div className="bg-gray-50 rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-2">
-              <CheckCircle className="w-4 h-4 text-green-500" />
-              <p className="text-navy text-sm font-semibold">Completion Stats</p>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-500" /><p className="text-navy text-sm font-semibold">Progress</p></div>
+              {totalExpected > 0 && <span className="text-xs font-bold text-navy/50">{pct}%</span>}
             </div>
-            <div className="grid grid-cols-2 gap-3 text-center">
-              <div><p className="text-2xl font-bold text-navy">{thisWeekCompleted}/{thisWeekRides.length}</p><p className="text-navy/40 text-xs">This Week</p></div>
-              <div><p className="text-2xl font-bold text-navy">{completedRides}/{rides.length}</p><p className="text-navy/40 text-xs">All Time</p></div>
+            {totalExpected > 0 && (
+              <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                <div className="bg-green-500 h-2 rounded-full transition-all" style={{ width: `${pct}%` }} />
+              </div>
+            )}
+            <div className="grid grid-cols-3 gap-3 text-center">
+              <div><p className="text-xl font-bold text-green-600">{completedRides}</p><p className="text-navy/40 text-xs">Completed</p></div>
+              <div><p className="text-xl font-bold text-amber-600">{remaining}</p><p className="text-navy/40 text-xs">Remaining</p></div>
+              <div><p className="text-xl font-bold text-navy">{totalExpected || rides.length}</p><p className="text-navy/40 text-xs">Total Days</p></div>
             </div>
           </div>
 
@@ -125,7 +139,7 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
               <div className="space-y-1.5 max-h-[140px] overflow-y-auto">
                 {rides.slice(0, 10).map((r) => (
                   <div key={r.id} className="flex items-center gap-2 py-2 px-3 bg-gray-50 rounded-lg text-xs">
-                    <span className="text-navy/60 shrink-0">{r.date}</span>
+                    <span className="text-navy/60 shrink-0">{new Date(r.date + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short" })}, {r.date}</span>
                     <span className="font-bold text-navy shrink-0">&pound;{r.fare.toFixed(2)}</span>
                     <select value={r.status} onChange={(e) => updateRideStatus(r.id, e.target.value)}
                       className={`text-xs font-semibold px-2 py-1 rounded-md border-0 outline-none cursor-pointer ${statusCls[r.status] || "bg-gray-100 text-gray-500"}`}>
