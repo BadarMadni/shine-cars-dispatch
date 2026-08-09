@@ -49,24 +49,40 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const oldRecurring = await prisma.recurringBooking.findUnique({ where: { id }, select: { driverId: true } });
   const recurring = await prisma.recurringBooking.update({ where: { id }, data });
 
-  // Send notification when driver is newly assigned
+  // Send notification + create today's booking when driver is newly assigned
   if (driverId && driverId !== oldRecurring?.driverId) {
     const driver = await prisma.driver.findUnique({ where: { id: driverId }, select: { pushToken: true } });
     if (driver?.pushToken) {
-      sendPushNotification(
-        driver.pushToken,
-        "Recurring Booking Assigned",
+      sendPushNotification(driver.pushToken, "Recurring Booking Assigned",
         `${recurring.pickup} → ${recurring.dropoff} | £${recurring.fare.toFixed(2)}`,
-        { recurringId: recurring.id, type: "recurring" }
-      );
+        { recurringId: recurring.id, type: "recurring" });
     }
-    createDriverNotification(
-      driverId,
-      "Recurring Booking Assigned",
+    createDriverNotification(driverId, "Recurring Booking Assigned",
       `${recurring.name} | ${recurring.pickup} → ${recurring.dropoff} | £${recurring.fare.toFixed(2)}`,
-      "recurring",
-      JSON.stringify({ recurringId: recurring.id })
-    );
+      "recurring", JSON.stringify({ recurringId: recurring.id }));
+
+    // Auto-create today's booking if today is a scheduled day
+    const DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+    const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
+    const dayName = DAY_NAMES[now.getDay()];
+    const dateStr = now.toISOString().split("T")[0];
+    const scheduledDays: string[] = JSON.parse(recurring.days);
+
+    if (scheduledDays.includes(dayName)) {
+      const exists = await prisma.booking.findFirst({ where: { recurringId: id, date: dateStr } });
+      if (!exists) {
+        await prisma.booking.create({
+          data: {
+            name: recurring.name, phone: recurring.phone, pickup: recurring.pickup, dropoff: recurring.dropoff,
+            date: dateStr, time: recurring.time, distance: recurring.distance, fare: recurring.fare,
+            vehicle: recurring.vehicle, status: "assigned", source: "recurring", paymentMethod: "invoice",
+            fareType: "fixed", paymentStatus: "unpaid", stops: recurring.stops,
+            customerId: recurring.customerId, driverId, assignedAt: new Date(),
+            isRecurring: true, recurringId: id,
+          },
+        });
+      }
+    }
   }
 
   return NextResponse.json({ recurring });
