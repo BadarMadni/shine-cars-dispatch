@@ -54,7 +54,31 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       }
     }
 
+    const oldBooking = await prisma.booking.findUnique({ where: { id } });
     const booking = await prisma.booking.update({ where: { id }, data });
+
+    // Auto-add to invoice when invoice booking is completed
+    if (status === "completed" && oldBooking?.paymentMethod === "invoice" && oldBooking.customerId) {
+      const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
+      const monday = new Date(now);
+      monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+      const weekStart = monday.toISOString().split("T")[0];
+      const endDate = new Date(monday);
+      endDate.setDate(endDate.getDate() + 7);
+      const weekEnd = endDate.toISOString().split("T")[0];
+
+      const existing = await prisma.invoiceItem.findFirst({ where: { bookingId: id } });
+      if (!existing) {
+        const invoice = await prisma.invoice.upsert({
+          where: { customerId_weekStart: { customerId: oldBooking.customerId, weekStart } },
+          create: { customerId: oldBooking.customerId, weekStart, weekEnd, total: oldBooking.fare, status: "unpaid" },
+          update: { total: { increment: oldBooking.fare } },
+        });
+        await prisma.invoiceItem.create({
+          data: { invoiceId: invoice.id, bookingId: id, fare: oldBooking.fare, date: oldBooking.date, pickup: oldBooking.pickup, dropoff: oldBooking.dropoff },
+        });
+      }
+    }
 
     if (driverId && driverId !== null) {
       const driver = await prisma.driver.findUnique({

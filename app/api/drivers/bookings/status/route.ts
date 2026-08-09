@@ -40,6 +40,29 @@ export async function PATCH(req: NextRequest) {
       data,
     });
 
+    // Auto-add to invoice when invoice booking is completed
+    if (status === "completed" && booking.paymentMethod === "invoice" && booking.customerId) {
+      const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
+      const monday = new Date(now);
+      monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+      const weekStart = monday.toISOString().split("T")[0];
+      const endDate = new Date(monday);
+      endDate.setDate(endDate.getDate() + 7);
+      const weekEnd = endDate.toISOString().split("T")[0];
+
+      const existing = await prisma.invoiceItem.findFirst({ where: { bookingId } });
+      if (!existing) {
+        const invoice = await prisma.invoice.upsert({
+          where: { customerId_weekStart: { customerId: booking.customerId, weekStart } },
+          create: { customerId: booking.customerId, weekStart, weekEnd, total: booking.fare, status: "unpaid" },
+          update: { total: { increment: booking.fare } },
+        });
+        await prisma.invoiceItem.create({
+          data: { invoiceId: invoice.id, bookingId, fare: booking.fare, date: booking.date, pickup: booking.pickup, dropoff: booking.dropoff },
+        });
+      }
+    }
+
     return NextResponse.json({ success: true, booking: updated });
   } catch {
     return NextResponse.json({ success: false, message: "Failed" }, { status: 500 });
