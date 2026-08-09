@@ -109,7 +109,11 @@ export default function RecurringTable({ filter, search }: { filter: string; sea
                   </p>
                 </td>
                 <td className="py-3 px-4 text-navy/60 text-xs">{rb.time}</td>
-                <td className="py-3 px-4 text-navy/60 text-xs">{parseDays(rb.days)}</td>
+                <td className="py-3 px-4">
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded capitalize ${rb.frequency === "monthly" ? "bg-purple-50 text-purple-600" : "bg-blue-50 text-blue-600"}`}>{rb.frequency || "weekly"}</span>
+                  <p className="text-navy/60 text-xs mt-0.5">{parseDays(rb.days)}</p>
+                  {rb.startDate && <p className="text-navy/30 text-[10px]">{rb.startDate} → {rb.endDate || "∞"}</p>}
+                </td>
                 <td className="py-3 px-4 font-bold text-navy">&pound;{rb.fare.toFixed(2)}</td>
                 <td className="py-3 px-4">
                   {rb.driverStatus === "rejected" ? (
