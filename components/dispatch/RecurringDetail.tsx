@@ -54,14 +54,17 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
 
   const completedRides = rides.filter((r) => r.status === "completed").length;
   const dayIndexMap: Record<string, number> = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
+  const hasDateRange = !!(item.startDate && item.endDate);
   const totalExpected = (() => {
-    if (!item.startDate || !item.endDate) return 0;
-    let count = 0;
-    const cur = new Date(item.startDate + "T00:00:00");
-    const end = new Date(item.endDate + "T00:00:00");
-    const dayNums = days.map((d) => dayIndexMap[d]);
-    while (cur <= end) { if (dayNums.includes(cur.getDay())) count++; cur.setDate(cur.getDate() + 1); }
-    return count;
+    if (hasDateRange) {
+      let count = 0;
+      const cur = new Date(item.startDate + "T00:00:00");
+      const end = new Date(item.endDate + "T00:00:00");
+      const dayNums = days.map((d) => dayIndexMap[d]);
+      while (cur <= end) { if (dayNums.includes(cur.getDay())) count++; cur.setDate(cur.getDate() + 1); }
+      return count;
+    }
+    return days.length; // per cycle (week/month)
   })();
   const remaining = Math.max(0, totalExpected - completedRides);
   const pct = totalExpected > 0 ? Math.round((completedRides / totalExpected) * 100) : 0;
@@ -127,8 +130,8 @@ export default function RecurringDetail({ item, onClose }: { item: RecurringBook
             )}
             <div className="grid grid-cols-3 gap-3 text-center">
               <div><p className="text-xl font-bold text-green-600">{completedRides}</p><p className="text-navy/40 text-xs">Completed</p></div>
-              <div><p className="text-xl font-bold text-amber-600">{totalExpected > 0 ? remaining : "—"}</p><p className="text-navy/40 text-xs">Remaining</p></div>
-              <div><p className={`font-bold ${totalExpected > 0 ? "text-xl text-navy" : "text-sm text-navy/50"}`}>{totalExpected > 0 ? totalExpected : "Ongoing"}</p><p className="text-navy/40 text-xs">Total Days</p></div>
+              <div><p className="text-xl font-bold text-amber-600">{remaining}</p><p className="text-navy/40 text-xs">Remaining</p></div>
+              <div><p className="text-xl font-bold text-navy">{totalExpected}</p><p className="text-navy/40 text-xs">{hasDateRange ? "Total Days" : `Per ${(item.frequency || "week").charAt(0).toUpperCase() + (item.frequency || "week").slice(1)}`}</p></div>
             </div>
           </div>
 
