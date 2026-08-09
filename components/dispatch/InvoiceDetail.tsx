@@ -66,7 +66,7 @@ export default function InvoiceDetail({ id, onClose }: { id: string; onClose: ()
             <div key={item.id} className="bg-gray-50 rounded-xl p-3 space-y-1.5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2 text-xs text-navy/60">
-                  <Calendar className="w-3 h-3" /> {item.date} at {item.booking.time}
+                  <Calendar className="w-3 h-3" /> {new Date(item.date + "T00:00:00").toLocaleDateString("en-GB", { weekday: "short" })}, {item.date} at {item.booking.time}
                 </div>
                 <span className="text-xs font-bold text-navy">&pound;{item.fare.toFixed(2)}</span>
               </div>
