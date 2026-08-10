@@ -24,7 +24,7 @@ export default function DispatchAddressInput({ value, onChange, placeholder, lab
     if (autocompleteRef.current) return;
 
     const ac = new google.maps.places.Autocomplete(inputRef.current, {
-      componentRestrictions: { country: ["gb", "pk"] },
+      componentRestrictions: { country: "gb" },
       fields: ["formatted_address", "geometry", "name"],
     });
 
