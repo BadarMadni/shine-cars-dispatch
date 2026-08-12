@@ -123,6 +123,8 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
             <div><p className="text-navy/40 text-xs mb-1">Date</p><input type="date" value={date} onChange={(e) => setDate(e.target.value)} className={inputClass} /></div>
             <div><p className="text-navy/40 text-xs mb-1">Time</p><input type="time" value={time} onChange={(e) => setTime(e.target.value)} className={inputClass} /></div>
           </div>
+          <button type="button" onClick={() => { const now = new Date(); setDate(now.toISOString().split("T")[0]); setTime(now.toTimeString().slice(0, 5)); }}
+            className="text-xs text-crimson/70 hover:text-crimson font-medium cursor-pointer -mt-2 ml-1">Set to Now</button>
 
           <div className="grid grid-cols-3 gap-3">
             <div>

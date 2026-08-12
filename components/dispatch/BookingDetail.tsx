@@ -20,7 +20,7 @@ interface Booking {
   driver?: { id: string; name: string } | null;
 }
 
-interface Driver { id: string; name: string; isAvailable: boolean; }
+interface Driver { id: string; name: string; isAvailable: boolean; hasActiveRide?: boolean; }
 
 const statuses = ["pending", "confirmed", "assigned", "accepted", "arrived", "in-progress", "completed", "cancelled"];
 
@@ -52,29 +52,21 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     fetch("/api/drivers?status=approved").then((r) => r.json()).then((d) => setDrivers(d.drivers || [])).catch(() => {});
   }, []);
 
-  const recalcFare = (stopsOverride?: string[]) => {
+  const handlePlaceChange = (type: "pickup" | "dropoff", place: PlaceData) => {
+    places.current[type] = place;
     const p = places.current.pickup, d = places.current.dropoff;
     if (!p || !d || !window.google?.maps) return;
     setCalculating(true);
-    const validStops = (stopsOverride || edits.stops || []).filter(Boolean);
-    new google.maps.DirectionsService().route({
-      origin: { lat: p.lat, lng: p.lng },
-      destination: { lat: d.lat, lng: d.lng },
-      waypoints: validStops.map((s) => ({ location: s, stopover: true })),
-      travelMode: google.maps.TravelMode.DRIVING,
-    }, (res, st) => {
-      setCalculating(false);
-      if (st !== "OK" || !res?.routes[0]) return;
-      const totalMeters = res.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0);
-      const miles = metersToMiles(totalMeters);
-      const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
-      setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
-    });
-  };
-
-  const handlePlaceChange = (type: "pickup" | "dropoff", place: PlaceData) => {
-    places.current[type] = place;
-    recalcFare();
+    new google.maps.DistanceMatrixService().getDistanceMatrix(
+      { origins: [{ lat: p.lat, lng: p.lng }], destinations: [{ lat: d.lat, lng: d.lng }], travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.IMPERIAL },
+      (res, st) => {
+        setCalculating(false);
+        if (st !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
+        const miles = metersToMiles(res.rows[0].elements[0].distance.value);
+        const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
+        setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
+      }
+    );
   };
 
   const save = async () => {
@@ -125,7 +117,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
           {editing ? (
             <BookingEditFields edits={edits} calculating={calculating}
               onChange={(k, v) => setEdits((p) => ({ ...p, [k]: v }))}
-              onStopsChange={(s) => { setEdits((p) => ({ ...p, stops: s })); recalcFare(s); }}
+              onStopsChange={(s) => setEdits((p) => ({ ...p, stops: s }))}
               onPlaceChange={handlePlaceChange} />
           ) : (
             <BookingInfoRows booking={booking} />
@@ -138,7 +130,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
             <select value={driverId} onChange={(e) => setDriverId(e.target.value)} className={selectClass}>
               <option value="">Unassigned</option>
               {drivers.map((d) => (
-                <option key={d.id} value={d.id}>{d.name} {d.isAvailable ? "(Available)" : "(Busy)"}</option>
+                <option key={d.id} value={d.id}>{d.name} {!d.isAvailable ? "(Offline)" : d.hasActiveRide ? "(Busy)" : "(Available)"}</option>
               ))}
             </select>
           </div>
