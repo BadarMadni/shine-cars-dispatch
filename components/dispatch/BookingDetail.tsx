@@ -57,16 +57,20 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     const p = places.current.pickup, d = places.current.dropoff;
     if (!p || !d || !window.google?.maps) return;
     setCalculating(true);
-    new google.maps.DistanceMatrixService().getDistanceMatrix(
-      { origins: [{ lat: p.lat, lng: p.lng }], destinations: [{ lat: d.lat, lng: d.lng }], travelMode: google.maps.TravelMode.DRIVING, unitSystem: google.maps.UnitSystem.IMPERIAL },
-      (res, st) => {
-        setCalculating(false);
-        if (st !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
-        const miles = metersToMiles(res.rows[0].elements[0].distance.value);
-        const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
-        setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
-      }
-    );
+    const validStops = (edits.stops || []).filter(Boolean);
+    new google.maps.DirectionsService().route({
+      origin: { lat: p.lat, lng: p.lng },
+      destination: { lat: d.lat, lng: d.lng },
+      waypoints: validStops.map((s) => ({ location: s, stopover: true })),
+      travelMode: google.maps.TravelMode.DRIVING,
+    }, (res, st) => {
+      setCalculating(false);
+      if (st !== "OK" || !res?.routes[0]) return;
+      const totalMeters = res.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0);
+      const miles = metersToMiles(totalMeters);
+      const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
+      setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
+    });
   };
 
   const save = async () => {

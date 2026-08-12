@@ -23,24 +23,28 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [pendingDrivers, setPendingDrivers] = useState(0);
+  const [unreadChats, setUnreadChats] = useState(0);
 
-  const fetchPending = useCallback(async () => {
+  const fetchBadges = useCallback(async () => {
     try {
-      const res = await fetch("/api/drivers/pending-count");
-      const data = await res.json();
-      setPendingDrivers(data.count || 0);
+      const [dr, ch] = await Promise.all([
+        fetch("/api/drivers/pending-count").then((r) => r.json()),
+        fetch("/api/chat/unread-count").then((r) => r.json()),
+      ]);
+      setPendingDrivers(dr.count || 0);
+      setUnreadChats(ch.count || 0);
     } catch {}
   }, []);
 
   useEffect(() => {
-    fetchPending();
-    const iv = setInterval(fetchPending, 10_000);
+    fetchBadges();
+    const iv = setInterval(fetchBadges, 10_000);
     return () => clearInterval(iv);
-  }, [fetchPending]);
+  }, [fetchBadges]);
 
-  // Clear badge when viewing drivers page
   useEffect(() => {
     if (pathname === "/drivers") setPendingDrivers(0);
+    if (pathname === "/chat") setUnreadChats(0);
   }, [pathname]);
 
   const handleLogout = async () => {
@@ -73,6 +77,11 @@ export default function Sidebar() {
               {label === "Drivers" && pendingDrivers > 0 && pathname !== "/drivers" && (
                 <span className="ml-auto bg-crimson text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {pendingDrivers}
+                </span>
+              )}
+              {label === "Chat" && unreadChats > 0 && pathname !== "/chat" && (
+                <span className="ml-auto bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  {unreadChats}
                 </span>
               )}
             </Link>

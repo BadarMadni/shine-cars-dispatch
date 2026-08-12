@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Phone, Mail, FileText, ChevronLeft, ChevronRight,
-  Eye, CheckCircle, XCircle, Power,
+  Eye, ExternalLink, CheckCircle, XCircle, Power,
 } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import DriverDetail, { Driver } from "./DriverDetail";
@@ -97,12 +98,13 @@ export default function DriversTable({ filter, search }: { filter: string; searc
                   </span>
                 </td>
                 <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
-                  {d.status === "approved" ? (
-                    <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${d.isAvailable ? "bg-green-50 text-green-600" : "bg-orange-50 text-orange-600"}`}>
-                      <span className={`w-2 h-2 rounded-full ${d.isAvailable ? "bg-green-500" : "bg-orange-400"}`} />
-                      {d.isAvailable ? "Available" : "Busy"}
-                    </span>
-                  ) : <span className="text-xs text-navy/30">—</span>}
+                  {d.status === "approved" ? (() => {
+                    const avail = !d.isAvailable ? { bg: "bg-gray-50 text-gray-500", dot: "bg-gray-400", label: "Offline" }
+                      : d.hasActiveRide ? { bg: "bg-orange-50 text-orange-600", dot: "bg-orange-400", label: "Busy" }
+                      : { bg: "bg-green-50 text-green-600", dot: "bg-green-500", label: "Available" };
+                    return <span className={`text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1.5 w-fit ${avail.bg}`}>
+                      <span className={`w-2 h-2 rounded-full ${avail.dot}`} />{avail.label}</span>;
+                  })() : <span className="text-xs text-navy/30">—</span>}
                 </td>
                 <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   {d.status === "approved" && (
@@ -127,6 +129,10 @@ export default function DriversTable({ filter, search }: { filter: string; searc
                       className="text-crimson text-xs font-medium hover:underline cursor-pointer flex items-center gap-1">
                       <Eye className="w-3 h-3" /> View
                     </button>
+                    <Link href={`/drivers/${d.id}`}
+                      className="text-blue-500 text-xs font-medium hover:underline flex items-center gap-1">
+                      <ExternalLink className="w-3 h-3" /> Details
+                    </Link>
                     {d.status === "pending" && (
                       <>
                         <button onClick={() => updateStatus(d.id, "approved")}

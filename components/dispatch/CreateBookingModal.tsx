@@ -28,27 +28,26 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState("");
 
-  // Auto-calculate fare when both addresses + vehicle set
+  // Auto-calculate fare including stops
   useEffect(() => {
     if (!pickup || !dropoff || !window.google?.maps) return;
     setCalculating(true);
-    const service = new google.maps.DistanceMatrixService();
-    service.getDistanceMatrix(
-      {
-        origins: [{ lat: pickup.lat, lng: pickup.lng }],
-        destinations: [{ lat: dropoff.lat, lng: dropoff.lng }],
-        travelMode: google.maps.TravelMode.DRIVING,
-        unitSystem: google.maps.UnitSystem.IMPERIAL,
-      },
-      (res, status) => {
-        setCalculating(false);
-        if (status !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
-        const miles = metersToMiles(res.rows[0].elements[0].distance.value);
-        setDistance(miles);
-        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date)));
-      }
-    );
-  }, [pickup, dropoff, vehicle]);
+    const validStops = stops.filter(Boolean);
+    const ds = new google.maps.DirectionsService();
+    ds.route({
+      origin: { lat: pickup.lat, lng: pickup.lng },
+      destination: { lat: dropoff.lat, lng: dropoff.lng },
+      waypoints: validStops.map((s) => ({ location: s, stopover: true })),
+      travelMode: google.maps.TravelMode.DRIVING,
+    }, (res, status) => {
+      setCalculating(false);
+      if (status !== "OK" || !res?.routes[0]) return;
+      const totalMeters = res.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0);
+      const miles = metersToMiles(totalMeters);
+      setDistance(miles);
+      setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date)));
+    });
+  }, [pickup, dropoff, vehicle, stops]);
 
   const inputClass = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy outline-none focus:border-crimson/50";
 

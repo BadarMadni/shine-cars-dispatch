@@ -13,6 +13,7 @@ export interface Driver {
   status: string; isAvailable: boolean; isEnabled: boolean;
   createdAt: string; documents: Document[];
   vehicleMake?: string; vehicleColor?: string; vehicleReg?: string;
+  hasActiveRide?: boolean;
 }
 
 interface FullDriver extends Omit<Driver, "documents"> { documents: { id: string; type: string; fileUrl: string; expiryDate: string }[] }

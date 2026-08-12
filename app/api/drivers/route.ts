@@ -21,6 +21,7 @@ export async function GET(req: NextRequest) {
       where,
       include: {
         documents: { select: { id: true, type: true, expiryDate: true } },
+        bookings: { where: { status: { in: ["accepted", "arrived", "in-progress"] } }, select: { id: true }, take: 1 },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -29,6 +30,7 @@ export async function GET(req: NextRequest) {
       drivers: drivers.map((d) => ({
         id: d.id, name: d.name, email: d.email, phone: d.phone,
         status: d.status, isAvailable: d.isAvailable, isEnabled: d.isEnabled,
+        hasActiveRide: d.bookings.length > 0,
         vehicleMake: d.vehicleMake, vehicleColor: d.vehicleColor, vehicleReg: d.vehicleReg,
         createdAt: d.createdAt, documents: d.documents,
       })),
