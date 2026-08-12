@@ -1262,6 +1262,9 @@ export const DriverScalarFieldEnum = {
   latitude: 'latitude',
   longitude: 'longitude',
   locationUpdatedAt: 'locationUpdatedAt',
+  vehicleMake: 'vehicleMake',
+  vehicleColor: 'vehicleColor',
+  vehicleReg: 'vehicleReg',
   pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

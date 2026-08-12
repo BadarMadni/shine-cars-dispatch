@@ -48,6 +48,9 @@ export type DriverMinAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   locationUpdatedAt: Date | null
+  vehicleMake: string | null
+  vehicleColor: string | null
+  vehicleReg: string | null
   pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +68,9 @@ export type DriverMaxAggregateOutputType = {
   latitude: number | null
   longitude: number | null
   locationUpdatedAt: Date | null
+  vehicleMake: string | null
+  vehicleColor: string | null
+  vehicleReg: string | null
   pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -82,6 +88,9 @@ export type DriverCountAggregateOutputType = {
   latitude: number
   longitude: number
   locationUpdatedAt: number
+  vehicleMake: number
+  vehicleColor: number
+  vehicleReg: number
   pushToken: number
   createdAt: number
   updatedAt: number
@@ -111,6 +120,9 @@ export type DriverMinAggregateInputType = {
   latitude?: true
   longitude?: true
   locationUpdatedAt?: true
+  vehicleMake?: true
+  vehicleColor?: true
+  vehicleReg?: true
   pushToken?: true
   createdAt?: true
   updatedAt?: true
@@ -128,6 +140,9 @@ export type DriverMaxAggregateInputType = {
   latitude?: true
   longitude?: true
   locationUpdatedAt?: true
+  vehicleMake?: true
+  vehicleColor?: true
+  vehicleReg?: true
   pushToken?: true
   createdAt?: true
   updatedAt?: true
@@ -145,6 +160,9 @@ export type DriverCountAggregateInputType = {
   latitude?: true
   longitude?: true
   locationUpdatedAt?: true
+  vehicleMake?: true
+  vehicleColor?: true
+  vehicleReg?: true
   pushToken?: true
   createdAt?: true
   updatedAt?: true
@@ -249,6 +267,9 @@ export type DriverGroupByOutputType = {
   latitude: number | null
   longitude: number | null
   locationUpdatedAt: Date | null
+  vehicleMake: string | null
+  vehicleColor: string | null
+  vehicleReg: string | null
   pushToken: string | null
   createdAt: Date
   updatedAt: Date
@@ -289,6 +310,9 @@ export type DriverWhereInput = {
   latitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
   longitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
   locationUpdatedAt?: Prisma.DateTimeNullableFilter<"Driver"> | Date | string | null
+  vehicleMake?: Prisma.StringNullableFilter<"Driver"> | string | null
+  vehicleColor?: Prisma.StringNullableFilter<"Driver"> | string | null
+  vehicleReg?: Prisma.StringNullableFilter<"Driver"> | string | null
   pushToken?: Prisma.StringNullableFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
@@ -311,6 +335,9 @@ export type DriverOrderByWithRelationInput = {
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   locationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleMake?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleReg?: Prisma.SortOrderInput | Prisma.SortOrder
   pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -336,6 +363,9 @@ export type DriverWhereUniqueInput = Prisma.AtLeast<{
   latitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
   longitude?: Prisma.FloatNullableFilter<"Driver"> | number | null
   locationUpdatedAt?: Prisma.DateTimeNullableFilter<"Driver"> | Date | string | null
+  vehicleMake?: Prisma.StringNullableFilter<"Driver"> | string | null
+  vehicleColor?: Prisma.StringNullableFilter<"Driver"> | string | null
+  vehicleReg?: Prisma.StringNullableFilter<"Driver"> | string | null
   pushToken?: Prisma.StringNullableFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Driver"> | Date | string
@@ -358,6 +388,9 @@ export type DriverOrderByWithAggregationInput = {
   latitude?: Prisma.SortOrderInput | Prisma.SortOrder
   longitude?: Prisma.SortOrderInput | Prisma.SortOrder
   locationUpdatedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleMake?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleColor?: Prisma.SortOrderInput | Prisma.SortOrder
+  vehicleReg?: Prisma.SortOrderInput | Prisma.SortOrder
   pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -383,6 +416,9 @@ export type DriverScalarWhereWithAggregatesInput = {
   latitude?: Prisma.FloatNullableWithAggregatesFilter<"Driver"> | number | null
   longitude?: Prisma.FloatNullableWithAggregatesFilter<"Driver"> | number | null
   locationUpdatedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Driver"> | Date | string | null
+  vehicleMake?: Prisma.StringNullableWithAggregatesFilter<"Driver"> | string | null
+  vehicleColor?: Prisma.StringNullableWithAggregatesFilter<"Driver"> | string | null
+  vehicleReg?: Prisma.StringNullableWithAggregatesFilter<"Driver"> | string | null
   pushToken?: Prisma.StringNullableWithAggregatesFilter<"Driver"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Driver"> | Date | string
@@ -400,6 +436,9 @@ export type DriverCreateInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -422,6 +461,9 @@ export type DriverUncheckedCreateInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -444,6 +486,9 @@ export type DriverUpdateInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -466,6 +511,9 @@ export type DriverUncheckedUpdateInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -488,6 +536,9 @@ export type DriverCreateManyInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -505,6 +556,9 @@ export type DriverUpdateManyMutationInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -522,6 +576,9 @@ export type DriverUncheckedUpdateManyInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -544,6 +601,9 @@ export type DriverCountOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   locationUpdatedAt?: Prisma.SortOrder
+  vehicleMake?: Prisma.SortOrder
+  vehicleColor?: Prisma.SortOrder
+  vehicleReg?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -566,6 +626,9 @@ export type DriverMaxOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   locationUpdatedAt?: Prisma.SortOrder
+  vehicleMake?: Prisma.SortOrder
+  vehicleColor?: Prisma.SortOrder
+  vehicleReg?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -583,6 +646,9 @@ export type DriverMinOrderByAggregateInput = {
   latitude?: Prisma.SortOrder
   longitude?: Prisma.SortOrder
   locationUpdatedAt?: Prisma.SortOrder
+  vehicleMake?: Prisma.SortOrder
+  vehicleColor?: Prisma.SortOrder
+  vehicleReg?: Prisma.SortOrder
   pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -684,6 +750,9 @@ export type DriverCreateWithoutBookingsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -705,6 +774,9 @@ export type DriverUncheckedCreateWithoutBookingsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -742,6 +814,9 @@ export type DriverUpdateWithoutBookingsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -763,6 +838,9 @@ export type DriverUncheckedUpdateWithoutBookingsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -784,6 +862,9 @@ export type DriverCreateWithoutRecurringBookingsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -805,6 +886,9 @@ export type DriverUncheckedCreateWithoutRecurringBookingsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -842,6 +926,9 @@ export type DriverUpdateWithoutRecurringBookingsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -863,6 +950,9 @@ export type DriverUncheckedUpdateWithoutRecurringBookingsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -884,6 +974,9 @@ export type DriverCreateWithoutNotificationsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -905,6 +998,9 @@ export type DriverUncheckedCreateWithoutNotificationsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -942,6 +1038,9 @@ export type DriverUpdateWithoutNotificationsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -963,6 +1062,9 @@ export type DriverUncheckedUpdateWithoutNotificationsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -984,6 +1086,9 @@ export type DriverCreateWithoutChatMessagesInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1005,6 +1110,9 @@ export type DriverUncheckedCreateWithoutChatMessagesInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1042,6 +1150,9 @@ export type DriverUpdateWithoutChatMessagesInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1063,6 +1174,9 @@ export type DriverUncheckedUpdateWithoutChatMessagesInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1084,6 +1198,9 @@ export type DriverCreateWithoutDocumentsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1105,6 +1222,9 @@ export type DriverUncheckedCreateWithoutDocumentsInput = {
   latitude?: number | null
   longitude?: number | null
   locationUpdatedAt?: Date | string | null
+  vehicleMake?: string | null
+  vehicleColor?: string | null
+  vehicleReg?: string | null
   pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1142,6 +1262,9 @@ export type DriverUpdateWithoutDocumentsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1163,6 +1286,9 @@ export type DriverUncheckedUpdateWithoutDocumentsInput = {
   latitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   longitude?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   locationUpdatedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  vehicleMake?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleColor?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  vehicleReg?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1251,6 +1377,9 @@ export type DriverSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   latitude?: boolean
   longitude?: boolean
   locationUpdatedAt?: boolean
+  vehicleMake?: boolean
+  vehicleColor?: boolean
+  vehicleReg?: boolean
   pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1274,6 +1403,9 @@ export type DriverSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extens
   latitude?: boolean
   longitude?: boolean
   locationUpdatedAt?: boolean
+  vehicleMake?: boolean
+  vehicleColor?: boolean
+  vehicleReg?: boolean
   pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1291,6 +1423,9 @@ export type DriverSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
   latitude?: boolean
   longitude?: boolean
   locationUpdatedAt?: boolean
+  vehicleMake?: boolean
+  vehicleColor?: boolean
+  vehicleReg?: boolean
   pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1308,12 +1443,15 @@ export type DriverSelectScalar = {
   latitude?: boolean
   longitude?: boolean
   locationUpdatedAt?: boolean
+  vehicleMake?: boolean
+  vehicleColor?: boolean
+  vehicleReg?: boolean
   pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "status" | "isAvailable" | "isEnabled" | "latitude" | "longitude" | "locationUpdatedAt" | "pushToken" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
+export type DriverOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "status" | "isAvailable" | "isEnabled" | "latitude" | "longitude" | "locationUpdatedAt" | "vehicleMake" | "vehicleColor" | "vehicleReg" | "pushToken" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
 export type DriverInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   documents?: boolean | Prisma.Driver$documentsArgs<ExtArgs>
   bookings?: boolean | Prisma.Driver$bookingsArgs<ExtArgs>
@@ -1346,6 +1484,9 @@ export type $DriverPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs
     latitude: number | null
     longitude: number | null
     locationUpdatedAt: Date | null
+    vehicleMake: string | null
+    vehicleColor: string | null
+    vehicleReg: string | null
     pushToken: string | null
     createdAt: Date
     updatedAt: Date
@@ -1788,6 +1929,9 @@ export interface DriverFieldRefs {
   readonly latitude: Prisma.FieldRef<"Driver", 'Float'>
   readonly longitude: Prisma.FieldRef<"Driver", 'Float'>
   readonly locationUpdatedAt: Prisma.FieldRef<"Driver", 'DateTime'>
+  readonly vehicleMake: Prisma.FieldRef<"Driver", 'String'>
+  readonly vehicleColor: Prisma.FieldRef<"Driver", 'String'>
+  readonly vehicleReg: Prisma.FieldRef<"Driver", 'String'>
   readonly pushToken: Prisma.FieldRef<"Driver", 'String'>
   readonly createdAt: Prisma.FieldRef<"Driver", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Driver", 'DateTime'>

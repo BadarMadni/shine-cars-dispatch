@@ -68,6 +68,9 @@ model Driver {
   latitude          Float?
   longitude         Float?
   locationUpdatedAt DateTime?
+  vehicleMake       String?
+  vehicleColor      String?
+  vehicleReg        String?
   pushToken         String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt

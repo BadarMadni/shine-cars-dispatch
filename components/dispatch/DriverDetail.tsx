@@ -12,11 +12,10 @@ export interface Driver {
   id: string; name: string; email: string; phone: string;
   status: string; isAvailable: boolean; isEnabled: boolean;
   createdAt: string; documents: Document[];
+  vehicleMake?: string; vehicleColor?: string; vehicleReg?: string;
 }
 
-interface FullDriver extends Omit<Driver, "documents"> {
-  documents: { id: string; type: string; fileUrl: string; expiryDate: string }[];
-}
+interface FullDriver extends Omit<Driver, "documents"> { documents: { id: string; type: string; fileUrl: string; expiryDate: string }[] }
 
 function StatusBadge({ status }: { status: string }) {
   const styles: Record<string, string> = {
@@ -104,6 +103,16 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                       </p>
                     </div>
                   </div>
+                  {(driver.vehicleMake || driver.vehicleColor || driver.vehicleReg) && (
+                    <div className="bg-gray-50 rounded-xl p-4">
+                      <h4 className="text-sm font-bold text-navy mb-2 flex items-center gap-1.5"><Car className="w-4 h-4" /> Vehicle</h4>
+                      <div className="grid grid-cols-3 gap-3 text-sm">
+                        {[["Make", driver.vehicleMake], ["Color", driver.vehicleColor], ["Reg No.", driver.vehicleReg]].map(([l, v]) => (
+                          <div key={l}><p className="text-navy/40 text-xs mb-0.5">{l}</p><p className="text-navy font-medium">{v || "—"}</p></div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                   <div>
                     <h4 className="text-sm font-bold text-navy mb-3">Documents ({driver.documents.length})</h4>
                     {driver.documents.length === 0 ? (

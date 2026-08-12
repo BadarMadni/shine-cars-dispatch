@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard, ClipboardList, Users, MapPin, LogOut, Menu, X, UserCheck, MessageCircle, Receipt, Repeat,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 const links = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -22,6 +22,26 @@ const links = [
 export default function Sidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [pendingDrivers, setPendingDrivers] = useState(0);
+
+  const fetchPending = useCallback(async () => {
+    try {
+      const res = await fetch("/api/drivers/pending-count");
+      const data = await res.json();
+      setPendingDrivers(data.count || 0);
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    fetchPending();
+    const iv = setInterval(fetchPending, 10_000);
+    return () => clearInterval(iv);
+  }, [fetchPending]);
+
+  // Clear badge when viewing drivers page
+  useEffect(() => {
+    if (pathname === "/drivers") setPendingDrivers(0);
+  }, [pathname]);
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -50,6 +70,11 @@ export default function Sidebar() {
               }`}>
               <Icon className="w-4.5 h-4.5" />
               {label}
+              {label === "Drivers" && pendingDrivers > 0 && pathname !== "/drivers" && (
+                <span className="ml-auto bg-crimson text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  {pendingDrivers}
+                </span>
+              )}
             </Link>
           );
         })}

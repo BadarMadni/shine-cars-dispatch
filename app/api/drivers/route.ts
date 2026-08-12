@@ -29,6 +29,7 @@ export async function GET(req: NextRequest) {
       drivers: drivers.map((d) => ({
         id: d.id, name: d.name, email: d.email, phone: d.phone,
         status: d.status, isAvailable: d.isAvailable, isEnabled: d.isEnabled,
+        vehicleMake: d.vehicleMake, vehicleColor: d.vehicleColor, vehicleReg: d.vehicleReg,
         createdAt: d.createdAt, documents: d.documents,
       })),
     });

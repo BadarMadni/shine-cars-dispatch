@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getR2Url, isR2Key } from "@/lib/r2";
 import { createDriverNotification } from "@/lib/notify";
+import { sendPushNotification } from "@/lib/pushNotification";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -23,6 +24,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       driver: {
         id: driver.id, name: driver.name, email: driver.email, phone: driver.phone,
         status: driver.status, isAvailable: driver.isAvailable, isEnabled: driver.isEnabled,
+        vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg,
         createdAt: driver.createdAt, documents,
       },
     });
@@ -55,12 +57,15 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     const driver = await prisma.driver.update({
       where: { id },
       data,
+      select: { id: true, name: true, status: true, isEnabled: true, pushToken: true },
     });
 
     if (body.status === "approved") {
       createDriverNotification(id, "Account Approved", "Your account has been approved. You can now receive bookings!", "approval");
+      if (driver.pushToken) sendPushNotification(driver.pushToken, "Account Approved", "Your account has been approved. You can now receive bookings!", { type: "approval" });
     } else if (body.status === "rejected") {
       createDriverNotification(id, "Account Rejected", "Your account was not approved. Please resubmit your documents.", "rejection");
+      if (driver.pushToken) sendPushNotification(driver.pushToken, "Account Rejected", "Your account was not approved. Please resubmit your documents.", { type: "rejection" });
     }
 
     return NextResponse.json({
