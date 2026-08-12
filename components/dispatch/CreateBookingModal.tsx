@@ -47,7 +47,8 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
       setDistance(miles);
       setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date)));
     });
-  }, [pickup, dropoff, vehicle, stops]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pickup, dropoff, vehicle, JSON.stringify(stops)]);
 
   const inputClass = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy outline-none focus:border-crimson/50";
 

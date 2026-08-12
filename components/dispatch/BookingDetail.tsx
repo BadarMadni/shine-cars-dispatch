@@ -52,12 +52,11 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     fetch("/api/drivers?status=approved").then((r) => r.json()).then((d) => setDrivers(d.drivers || [])).catch(() => {});
   }, []);
 
-  const handlePlaceChange = (type: "pickup" | "dropoff", place: PlaceData) => {
-    places.current[type] = place;
+  const recalcFare = (stopsOverride?: string[]) => {
     const p = places.current.pickup, d = places.current.dropoff;
     if (!p || !d || !window.google?.maps) return;
     setCalculating(true);
-    const validStops = (edits.stops || []).filter(Boolean);
+    const validStops = (stopsOverride || edits.stops || []).filter(Boolean);
     new google.maps.DirectionsService().route({
       origin: { lat: p.lat, lng: p.lng },
       destination: { lat: d.lat, lng: d.lng },
@@ -71,6 +70,11 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
       const fare = calculateFare(miles, p.lat, p.lng, edits.vehicle as VehicleType, isSundayOrHoliday(edits.date));
       setEdits((prev) => ({ ...prev, distance: miles.toFixed(1), fare: fare.toFixed(2) }));
     });
+  };
+
+  const handlePlaceChange = (type: "pickup" | "dropoff", place: PlaceData) => {
+    places.current[type] = place;
+    recalcFare();
   };
 
   const save = async () => {
@@ -121,7 +125,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
           {editing ? (
             <BookingEditFields edits={edits} calculating={calculating}
               onChange={(k, v) => setEdits((p) => ({ ...p, [k]: v }))}
-              onStopsChange={(s) => setEdits((p) => ({ ...p, stops: s }))}
+              onStopsChange={(s) => { setEdits((p) => ({ ...p, stops: s })); recalcFare(s); }}
               onPlaceChange={handlePlaceChange} />
           ) : (
             <BookingInfoRows booking={booking} />
