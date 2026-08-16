@@ -7,6 +7,7 @@ import StatusBadge from "./StatusBadge";
 interface Booking {
   id: string; pickup: string; dropoff: string; date: string;
   time: string; status: string; fare?: number; vehicle?: string;
+  isRecurring?: boolean;
 }
 
 const FILTERS = [
@@ -74,6 +75,9 @@ export default function DriverBookingsList({ bookings }: { bookings: Booking[] }
                       <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         b.vehicle === "MPV" ? "bg-purple-50 text-purple-600" : "bg-blue-50 text-blue-600"
                       }`}>{b.vehicle}</span>
+                    )}
+                    {b.isRecurring && (
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-50 text-purple-600">RECURRING</span>
                     )}
                     {b.fare != null && b.fare > 0 && (
                       <span className="text-sm font-bold text-navy ml-auto">£{b.fare.toFixed(2)}</span>

@@ -12,7 +12,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       include: {
         documents: true,
         bookings: {
-          select: { id: true, pickup: true, dropoff: true, date: true, time: true, status: true, fare: true, vehicle: true },
+          select: { id: true, pickup: true, dropoff: true, date: true, time: true, status: true, fare: true, vehicle: true, isRecurring: true },
           orderBy: { createdAt: "desc" },
         },
       },
