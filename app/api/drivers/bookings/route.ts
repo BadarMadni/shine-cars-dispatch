@@ -24,8 +24,9 @@ export async function GET(req: NextRequest) {
       where.isRecurring = false;
       where.status = { in: ["assigned", "accepted", "arrived", "in-progress"] };
     } else if (filter === "completed") {
-      where.isRecurring = false;
       where.status = { in: ["completed", "cancelled"] };
+    } else if (filter === "all-completed") {
+      where.status = "completed";
     } else {
       where.isRecurring = false;
       where.status = { in: ["assigned"] };
