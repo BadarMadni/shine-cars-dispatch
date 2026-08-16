@@ -9,6 +9,7 @@ import {
 interface Stats {
   total: number; pending: number; confirmed: number;
   completed: number; todayCount: number; revenue: number;
+  platformRevenue: number;
 }
 
 const cards = [
@@ -18,17 +19,21 @@ const cards = [
   { key: "completed", label: "Completed", icon: CheckCircle, color: "from-emerald-500 to-emerald-600" },
   { key: "todayCount", label: "Today", icon: CalendarDays, color: "from-purple-500 to-purple-600" },
   { key: "revenue", label: "Revenue", icon: PoundSterling, color: "from-crimson to-crimson-dark", isCurrency: true },
+  { key: "platformRevenue", label: "Platform (15%)", icon: TrendingUp, color: "from-indigo-500 to-indigo-600", isCurrency: true },
 ] as const;
 
 export default function StatsCards() {
   const [stats, setStats] = useState<Stats | null>(null);
 
   useEffect(() => {
-    fetch("/api/bookings/stats").then((r) => r.json()).then(setStats).catch(() => {});
+    fetch("/api/bookings/stats").then((r) => r.json()).then((d: Stats) => {
+      d.platformRevenue = Math.round(d.revenue * 0.15 * 100) / 100;
+      setStats(d);
+    }).catch(() => {});
   }, []);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
+    <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-7 gap-3 sm:gap-4">
       {cards.map(({ key, label, icon: Icon, color, ...rest }, i) => (
         <motion.div key={key}
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
