@@ -13,8 +13,9 @@ interface Customer {
 }
 
 interface Booking {
-  id: string; pickup: string; dropoff: string; stops?: string | null; date: string; time: string;
-  distance: number; fare: number; vehicle: string; status: string;
+  id: string; pickup: string; dropoff: string; stops?: string | null;
+  pickupDetails?: string | null; dropoffDetails?: string | null;
+  date: string; time: string; distance: number; fare: number; vehicle: string; status: string;
   paymentMethod: string; paymentStatus: string; createdAt: string;
   fareType?: string; meterFare?: number | null; cashCollected?: number | null;
 }
@@ -107,10 +108,8 @@ export default function CustomerDetail({ customer, onClose }: Props) {
             Ride History
             <span className="text-navy/30 text-sm font-normal ml-2">({bookings.length})</span>
           </h4>
-          {loading ? (
-            <p className="text-navy/30 text-sm text-center py-8">Loading rides...</p>
-          ) : bookings.length === 0 ? (
-            <p className="text-navy/30 text-sm text-center py-8">No rides yet</p>
+          {loading ? (<p className="text-navy/30 text-sm text-center py-8">Loading rides...</p>
+          ) : bookings.length === 0 ? (<p className="text-navy/30 text-sm text-center py-8">No rides yet</p>
           ) : (
             <div className="space-y-3">
               {bookings.map((b) => (
@@ -151,15 +150,13 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                       <div>
                         <p className="text-navy/40 text-xs">Pickup</p>
                         <p className="text-navy/70">{b.pickup}</p>
+                        {b.pickupDetails && <p className="text-amber-600 text-xs italic">{b.pickupDetails}</p>}
                       </div>
                     </div>
                     {b.stops && (() => { try { const s: string[] = JSON.parse(b.stops); return s.map((addr, i) => (
                       <div key={i} className="flex items-start gap-2.5">
                         <MapPin className="w-4 h-4 text-amber-500 mt-0.5 shrink-0" />
-                        <div>
-                          <p className="text-navy/40 text-xs">Stop {i + 1}</p>
-                          <p className="text-navy/70">{addr}</p>
-                        </div>
+                        <div><p className="text-navy/40 text-xs">Stop {i + 1}</p><p className="text-navy/70">{addr}</p></div>
                       </div>
                     )); } catch { return null; } })()}
                     <div className="flex items-start gap-2.5">
@@ -167,6 +164,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                       <div>
                         <p className="text-navy/40 text-xs">Drop-off</p>
                         <p className="text-navy/70">{b.dropoff}</p>
+                        {b.dropoffDetails && <p className="text-amber-600 text-xs italic">{b.dropoffDetails}</p>}
                       </div>
                     </div>
                   </div>
@@ -187,10 +185,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                     </div>
                   </div>
                   {b.cashCollected != null && b.status === "completed" && (
-                    <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-600">
-                      <PoundSterling className="w-3.5 h-3.5" />
-                      <span>Cash Collected: £{b.cashCollected.toFixed(2)}</span>
-                    </div>
+                    <div className="flex items-center gap-1.5 mt-2 text-xs font-semibold text-green-600"><PoundSterling className="w-3.5 h-3.5" /><span>Cash Collected: £{b.cashCollected.toFixed(2)}</span></div>
                   )}
                 </div>
               ))}

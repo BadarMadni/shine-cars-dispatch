@@ -12,7 +12,7 @@ interface Driver {
   status: string; isAvailable: boolean; isEnabled: boolean;
   vehicleMake?: string; vehicleColor?: string; vehicleReg?: string; passengerLicense?: number;
   createdAt: string;
-  bookings: { id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare?: number; vehicle?: string }[];
+  bookings: { id: string; pickup: string; dropoff: string; pickupDetails?: string | null; dropoffDetails?: string | null; date: string; time: string; status: string; fare?: number; vehicle?: string }[];
 }
 
 export default function DriverDetailPage({ params }: { params: Promise<{ id: string }> }) {

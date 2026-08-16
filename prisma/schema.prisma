@@ -31,6 +31,10 @@ model Booking {
   cashCollected Float?
   stops         String?
   notes         String?
+  pickupDetails String?
+  dropoffDetails String?
+  eventPricingId String?
+  eventSurcharge Float?
   isRecurring   Boolean   @default(false)
   recurringId   String?
   createdAt     DateTime  @default(now())
@@ -202,4 +206,17 @@ model DriverDocument {
   driver     Driver   @relation(fields: [driverId], references: [id])
 
   @@index([driverId])
+}
+
+model EventPricing {
+  id              String   @id @default(cuid())
+  name            String
+  startDate       String
+  startTime       String
+  endDate         String
+  endTime         String
+  increasePercent Float
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

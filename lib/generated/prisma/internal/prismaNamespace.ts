@@ -406,7 +406,8 @@ export const ModelName = {
   InvoiceItem: 'InvoiceItem',
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
-  DriverDocument: 'DriverDocument'
+  DriverDocument: 'DriverDocument',
+  EventPricing: 'EventPricing'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "booking" | "operator" | "driver" | "customer" | "recurringBooking" | "invoice" | "invoiceItem" | "driverNotification" | "chatMessage" | "driverDocument"
+    modelProps: "booking" | "operator" | "driver" | "customer" | "recurringBooking" | "invoice" | "invoiceItem" | "driverNotification" | "chatMessage" | "driverDocument" | "eventPricing"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1166,6 +1167,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    EventPricing: {
+      payload: Prisma.$EventPricingPayload<ExtArgs>
+      fields: Prisma.EventPricingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.EventPricingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.EventPricingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        findFirst: {
+          args: Prisma.EventPricingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.EventPricingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        findMany: {
+          args: Prisma.EventPricingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>[]
+        }
+        create: {
+          args: Prisma.EventPricingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        createMany: {
+          args: Prisma.EventPricingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.EventPricingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>[]
+        }
+        delete: {
+          args: Prisma.EventPricingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        update: {
+          args: Prisma.EventPricingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        deleteMany: {
+          args: Prisma.EventPricingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.EventPricingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.EventPricingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>[]
+        }
+        upsert: {
+          args: Prisma.EventPricingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$EventPricingPayload>
+        }
+        aggregate: {
+          args: Prisma.EventPricingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateEventPricing>
+        }
+        groupBy: {
+          args: Prisma.EventPricingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventPricingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.EventPricingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.EventPricingCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1229,6 +1304,10 @@ export const BookingScalarFieldEnum = {
   cashCollected: 'cashCollected',
   stops: 'stops',
   notes: 'notes',
+  pickupDetails: 'pickupDetails',
+  dropoffDetails: 'dropoffDetails',
+  eventPricingId: 'eventPricingId',
+  eventSurcharge: 'eventSurcharge',
   isRecurring: 'isRecurring',
   recurringId: 'recurringId',
   createdAt: 'createdAt',
@@ -1381,6 +1460,22 @@ export const DriverDocumentScalarFieldEnum = {
 } as const
 
 export type DriverDocumentScalarFieldEnum = (typeof DriverDocumentScalarFieldEnum)[keyof typeof DriverDocumentScalarFieldEnum]
+
+
+export const EventPricingScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  startDate: 'startDate',
+  startTime: 'startTime',
+  endDate: 'endDate',
+  endTime: 'endTime',
+  increasePercent: 'increasePercent',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventPricingScalarFieldEnum = (typeof EventPricingScalarFieldEnum)[keyof typeof EventPricingScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1636,6 +1731,7 @@ export type GlobalOmitConfig = {
   driverNotification?: Prisma.DriverNotificationOmit
   chatMessage?: Prisma.ChatMessageOmit
   driverDocument?: Prisma.DriverDocumentOmit
+  eventPricing?: Prisma.EventPricingOmit
 }
 
 /* Types for Logging */

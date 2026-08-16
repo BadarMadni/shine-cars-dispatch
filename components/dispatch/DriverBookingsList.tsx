@@ -5,8 +5,9 @@ import { MapPin, Clock, Car, ChevronLeft, ChevronRight, LayoutList } from "lucid
 import StatusBadge from "./StatusBadge";
 
 interface Booking {
-  id: string; pickup: string; dropoff: string; date: string;
-  time: string; status: string; fare?: number; vehicle?: string;
+  id: string; pickup: string; dropoff: string;
+  pickupDetails?: string | null; dropoffDetails?: string | null;
+  date: string; time: string; status: string; fare?: number; vehicle?: string;
   isRecurring?: boolean;
 }
 
@@ -88,13 +89,13 @@ export default function DriverBookingsList({ bookings }: { bookings: Booking[] }
                       <div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
                         <MapPin className="w-2.5 h-2.5 text-green-600" />
                       </div>
-                      <span className="line-clamp-1">{b.pickup}</span>
+                      <div><span className="line-clamp-1">{b.pickup}</span>{b.pickupDetails && <span className="text-amber-600 text-xs italic block">{b.pickupDetails}</span>}</div>
                     </div>
                     <div className="flex items-start gap-2 text-sm text-navy/70">
                       <div className="w-4 h-4 rounded-full bg-red-100 flex items-center justify-center shrink-0 mt-0.5">
                         <MapPin className="w-2.5 h-2.5 text-crimson" />
                       </div>
-                      <span className="line-clamp-1">{b.dropoff}</span>
+                      <div><span className="line-clamp-1">{b.dropoff}</span>{b.dropoffDetails && <span className="text-amber-600 text-xs italic block">{b.dropoffDetails}</span>}</div>
                     </div>
                   </div>
                 </div>

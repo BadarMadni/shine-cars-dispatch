@@ -1,6 +1,6 @@
 import {
   MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard, Gauge, Banknote,
+  Calendar, Clock, Car, CreditCard, Gauge, Banknote, Zap,
 } from "lucide-react";
 
 interface Booking {
@@ -10,6 +10,8 @@ interface Booking {
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
   fareType?: string; meterDistance?: number | null; meterFare?: number | null;
   cashCollected?: number | null; status?: string;
+  eventSurcharge?: number | null;
+  pickupDetails?: string | null; dropoffDetails?: string | null;
 }
 
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
@@ -18,8 +20,10 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     { icon: User, color: "text-blue-500", label: "Customer", value: b.name },
     { icon: Phone, color: "text-navy/40", label: "Phone", value: b.phone },
     { icon: MapPin, color: "text-green-500", label: "Pickup", value: b.pickup },
+    ...(b.pickupDetails ? [{ icon: MapPin, color: "text-green-400", label: "Pickup Details", value: b.pickupDetails }] : []),
     ...parsedStops.map((s: string, i: number) => ({ icon: MapPin, color: "text-amber-500", label: `Stop ${i + 1}`, value: s })),
     { icon: Navigation, color: "text-crimson", label: "Drop-off", value: b.dropoff },
+    ...(b.dropoffDetails ? [{ icon: Navigation, color: "text-crimson/60", label: "Drop-off Details", value: b.dropoffDetails }] : []),
     { icon: Calendar, color: "text-purple-500", label: "Date", value: b.date },
     { icon: Clock, color: "text-purple-500", label: "Time", value: b.time },
     { icon: Route, color: "text-gold", label: "Distance", value: `${b.distance.toFixed(1)} miles` },
@@ -34,6 +38,9 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
       { icon: Route, color: "text-green-500", label: "Meter Distance", value: `${b.meterDistance?.toFixed(1) || "—"} mi` },
     ] : []),
     { icon: CreditCard, color: "text-indigo-500", label: "Payment", value: `${(b.paymentMethod || "cash").toUpperCase()} — ${(b.paymentStatus || "unpaid").toUpperCase()}` },
+    ...(b.eventSurcharge != null && b.eventSurcharge > 0 ? [
+      { icon: Zap, color: "text-amber-500", label: "Event Surcharge", value: `+£${b.eventSurcharge.toFixed(2)}` },
+    ] : []),
     ...(b.cashCollected != null && b.status === "completed" ? [
       { icon: Banknote, color: "text-green-500", label: "Cash Collected by Driver", value: `£${b.cashCollected.toFixed(2)}` },
     ] : []),

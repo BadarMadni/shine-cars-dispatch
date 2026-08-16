@@ -84,7 +84,7 @@ export default function BookingEditFields({
           </div>
         </div>
       </div>
-      <button type="button" onClick={() => { const now = new Date(); onChange("date", now.toISOString().split("T")[0]); onChange("time", now.toTimeString().slice(0, 5)); }}
+      <button type="button" onClick={() => { const now = new Date(); const y = now.getFullYear(), m = String(now.getMonth()+1).padStart(2,"0"), d = String(now.getDate()).padStart(2,"0"); onChange("date", `${y}-${m}-${d}`); onChange("time", now.toTimeString().slice(0, 5)); }}
         className="text-xs text-crimson/70 hover:text-crimson font-medium cursor-pointer -mt-1 ml-7">Set to Now</button>
 
       {/* Fare & Distance - auto or manual */}

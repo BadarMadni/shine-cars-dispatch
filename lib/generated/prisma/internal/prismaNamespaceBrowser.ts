@@ -60,7 +60,8 @@ export const ModelName = {
   InvoiceItem: 'InvoiceItem',
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
-  DriverDocument: 'DriverDocument'
+  DriverDocument: 'DriverDocument',
+  EventPricing: 'EventPricing'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -103,6 +104,10 @@ export const BookingScalarFieldEnum = {
   cashCollected: 'cashCollected',
   stops: 'stops',
   notes: 'notes',
+  pickupDetails: 'pickupDetails',
+  dropoffDetails: 'dropoffDetails',
+  eventPricingId: 'eventPricingId',
+  eventSurcharge: 'eventSurcharge',
   isRecurring: 'isRecurring',
   recurringId: 'recurringId',
   createdAt: 'createdAt',
@@ -255,6 +260,22 @@ export const DriverDocumentScalarFieldEnum = {
 } as const
 
 export type DriverDocumentScalarFieldEnum = (typeof DriverDocumentScalarFieldEnum)[keyof typeof DriverDocumentScalarFieldEnum]
+
+
+export const EventPricingScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  startDate: 'startDate',
+  startTime: 'startTime',
+  endDate: 'endDate',
+  endTime: 'endTime',
+  increasePercent: 'increasePercent',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type EventPricingScalarFieldEnum = (typeof EventPricingScalarFieldEnum)[keyof typeof EventPricingScalarFieldEnum]
 
 
 export const SortOrder = {
