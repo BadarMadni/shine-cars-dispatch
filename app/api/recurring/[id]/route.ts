@@ -52,8 +52,9 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   const oldRecurring = await prisma.recurringBooking.findUnique({ where: { id }, select: { driverId: true } });
   const recurring = await prisma.recurringBooking.update({ where: { id }, data });
 
-  // Send notification + create today's booking when driver is newly assigned
-  if (driverId && driverId !== oldRecurring?.driverId) {
+  // Send notification when driver is newly assigned
+  const newlyAssigned = driverId && driverId !== oldRecurring?.driverId;
+  if (newlyAssigned) {
     const driver = await prisma.driver.findUnique({ where: { id: driverId }, select: { pushToken: true } });
     if (driver?.pushToken) {
       sendPushNotification(driver.pushToken, "Recurring Booking Assigned",
@@ -63,8 +64,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     createDriverNotification(driverId, "Recurring Booking Assigned",
       `${recurring.name} | ${recurring.pickup} → ${recurring.dropoff} | £${recurring.fare.toFixed(2)}`,
       "recurring", JSON.stringify({ recurringId: recurring.id }));
+  }
 
-    // Auto-create today's booking if today is a scheduled day
+  // Auto-create today's booking if today matches scheduled days (on driver assign OR day/schedule edit)
+  if (recurring.driverId && (newlyAssigned || days)) {
     const DAY_NAMES = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
     const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Europe/London" }));
     const dayName = DAY_NAMES[now.getDay()];
@@ -80,7 +83,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
             date: dateStr, time: recurring.time, distance: recurring.distance, fare: recurring.fare,
             vehicle: recurring.vehicle, status: "assigned", source: "recurring", paymentMethod: "invoice",
             fareType: "fixed", paymentStatus: "unpaid", stops: recurring.stops,
-            customerId: recurring.customerId, driverId, assignedAt: new Date(),
+            customerId: recurring.customerId, driverId: recurring.driverId, assignedAt: new Date(),
             isRecurring: true, recurringId: id,
           },
         });
