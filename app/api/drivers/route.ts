@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
         id: d.id, name: d.name, email: d.email, phone: d.phone,
         status: d.status, isAvailable: d.isAvailable, isEnabled: d.isEnabled,
         hasActiveRide: d.bookings.length > 0,
-        vehicleMake: d.vehicleMake, vehicleColor: d.vehicleColor, vehicleReg: d.vehicleReg,
+        vehicleMake: d.vehicleMake, vehicleColor: d.vehicleColor, vehicleReg: d.vehicleReg, passengerLicense: d.passengerLicense,
         createdAt: d.createdAt, documents: d.documents,
       })),
     });

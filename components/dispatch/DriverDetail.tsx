@@ -12,7 +12,7 @@ export interface Driver {
   id: string; name: string; email: string; phone: string;
   status: string; isAvailable: boolean; isEnabled: boolean;
   createdAt: string; documents: Document[];
-  vehicleMake?: string; vehicleColor?: string; vehicleReg?: string;
+  vehicleMake?: string; vehicleColor?: string; vehicleReg?: string; passengerLicense?: number;
   hasActiveRide?: boolean;
 }
 
@@ -104,12 +104,12 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                       </p>
                     </div>
                   </div>
-                  {(driver.vehicleMake || driver.vehicleColor || driver.vehicleReg) && (
+                  {(driver.vehicleMake || driver.vehicleColor || driver.vehicleReg || driver.passengerLicense) && (
                     <div className="bg-gray-50 rounded-xl p-4">
                       <h4 className="text-sm font-bold text-navy mb-2 flex items-center gap-1.5"><Car className="w-4 h-4" /> Vehicle</h4>
-                      <div className="grid grid-cols-3 gap-3 text-sm">
-                        {[["Make", driver.vehicleMake], ["Color", driver.vehicleColor], ["Reg No.", driver.vehicleReg]].map(([l, v]) => (
-                          <div key={l}><p className="text-navy/40 text-xs mb-0.5">{l}</p><p className="text-navy font-medium">{v || "—"}</p></div>
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        {[["Make", driver.vehicleMake], ["Color", driver.vehicleColor], ["Reg No.", driver.vehicleReg], ["Licence to Carry", driver.passengerLicense ? String(driver.passengerLicense) : null]].map(([l, v]) => (
+                          <div key={l as string}><p className="text-navy/40 text-xs mb-0.5">{l}</p><p className="text-navy font-medium">{v || "—"}</p></div>
                         ))}
                       </div>
                     </div>

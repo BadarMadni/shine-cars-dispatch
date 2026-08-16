@@ -1265,6 +1265,7 @@ export const DriverScalarFieldEnum = {
   vehicleMake: 'vehicleMake',
   vehicleColor: 'vehicleColor',
   vehicleReg: 'vehicleReg',
+  passengerLicense: 'passengerLicense',
   pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

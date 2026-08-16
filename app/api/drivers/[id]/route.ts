@@ -30,7 +30,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
       driver: {
         id: driver.id, name: driver.name, email: driver.email, phone: driver.phone,
         status: driver.status, isAvailable: driver.isAvailable, isEnabled: driver.isEnabled,
-        vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg,
+        vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg, passengerLicense: driver.passengerLicense,
         createdAt: driver.createdAt, documents, bookings: driver.bookings,
       },
     });

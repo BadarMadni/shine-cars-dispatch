@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Mail, Phone, Clock, Car, Palette, Hash, Loader2, Shield, Power } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Clock, Car, Palette, Hash, Loader2, Shield, Power, Users } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
 import DriverBookingStats from "@/components/dispatch/DriverBookingStats";
 import DriverBookingsList from "@/components/dispatch/DriverBookingsList";
@@ -10,7 +10,7 @@ import DriverBookingsList from "@/components/dispatch/DriverBookingsList";
 interface Driver {
   id: string; name: string; email: string; phone: string;
   status: string; isAvailable: boolean; isEnabled: boolean;
-  vehicleMake?: string; vehicleColor?: string; vehicleReg?: string;
+  vehicleMake?: string; vehicleColor?: string; vehicleReg?: string; passengerLicense?: number;
   createdAt: string;
   bookings: { id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare?: number; vehicle?: string }[];
 }
@@ -80,11 +80,12 @@ export default function DriverDetailPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Vehicle + Quick Info */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         {[
           { icon: Car, label: "Vehicle", value: driver.vehicleMake || "Not set", color: "text-blue-600", bg: "bg-blue-50" },
           { icon: Palette, label: "Colour", value: driver.vehicleColor || "Not set", color: "text-purple-600", bg: "bg-purple-50" },
           { icon: Hash, label: "Reg No.", value: driver.vehicleReg || "Not set", color: "text-amber-600", bg: "bg-amber-50", bold: true },
+          { icon: Users, label: "Licence to Carry", value: driver.passengerLicense ? String(driver.passengerLicense) : "Not set", color: "text-green-600", bg: "bg-green-50" },
         ].map(({ icon: Icon, label, value, color, bg, bold }) => (
           <div key={label} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
             <div className={`w-10 h-10 ${bg} rounded-xl flex items-center justify-center shrink-0`}>

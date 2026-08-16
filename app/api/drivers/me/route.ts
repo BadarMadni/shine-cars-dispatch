@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
       driver: {
         id: driver.id, name: driver.name, email: driver.email,
         phone: driver.phone, status: driver.status, isAvailable: driver.isAvailable,
-        vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg,
+        vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg, passengerLicense: driver.passengerLicense,
         documents: driver.documents,
       },
     });

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import {
   Phone, Mail, FileText, ChevronLeft, ChevronRight,
-  Eye, ExternalLink, CheckCircle, XCircle, Power,
+  Eye, ExternalLink, CheckCircle, XCircle, Power, Users,
 } from "lucide-react";
 import StatusBadge from "./StatusBadge";
 import DriverDetail, { Driver } from "./DriverDetail";
@@ -68,7 +68,7 @@ export default function DriversTable({ filter, search }: { filter: string; searc
           <thead>
             <tr className="border-b border-gray-100">
               {[{ h: "Driver" }, { h: "Contact", c: "hidden sm:table-cell" }, { h: "Docs", c: "hidden lg:table-cell" },
-                { h: "Availability", c: "hidden md:table-cell" }, { h: "Enabled", c: "hidden md:table-cell" },
+                { h: "Licence", c: "hidden lg:table-cell" }, { h: "Availability", c: "hidden md:table-cell" }, { h: "Enabled", c: "hidden md:table-cell" },
                 { h: "Status" }, { h: "Registered", c: "hidden lg:table-cell" }, { h: "Actions" },
               ].map(({ h, c }) => (
                 <th key={h} className={`text-left text-navy/40 font-medium text-xs py-3 px-4 ${c || ""}`}>{h}</th>
@@ -96,6 +96,13 @@ export default function DriversTable({ filter, search }: { filter: string; searc
                   <span className="text-xs text-navy/60 flex items-center gap-1">
                     <FileText className="w-3 h-3" /> {d.documents.length}
                   </span>
+                </td>
+                <td className="py-3.5 px-2 sm:px-4 hidden lg:table-cell">
+                  {d.passengerLicense ? (
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-green-50 text-green-600 flex items-center gap-1 w-fit">
+                      <Users className="w-3 h-3" /> {d.passengerLicense}
+                    </span>
+                  ) : <span className="text-xs text-navy/30">—</span>}
                 </td>
                 <td className="py-3.5 px-2 sm:px-4 hidden md:table-cell">
                   {d.status === "approved" ? (() => {
