@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Calendar, Users, Download } from "lucide-react";
+import { Search, Calendar, Users, Download, X } from "lucide-react";
 
 interface Driver { id: string; name: string }
 
@@ -11,12 +11,14 @@ interface Props {
   driverId: string; onDriverId: (v: string) => void;
   drivers: Driver[];
   onExport: () => void;
+  onClear: () => void;
 }
 
 export default function ReportsFilters({
   search, onSearch, startDate, onStartDate, endDate, onEndDate,
-  driverId, onDriverId, drivers, onExport,
+  driverId, onDriverId, drivers, onExport, onClear,
 }: Props) {
+  const hasFilters = search || startDate || endDate || driverId;
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 sm:p-5">
       <div className="flex flex-col sm:flex-row gap-3 flex-wrap">
@@ -44,6 +46,13 @@ export default function ReportsFilters({
             {drivers.map((d) => <option key={d.id} value={d.id}>{d.name}</option>)}
           </select>
         </div>
+
+        {hasFilters && (
+          <button onClick={onClear}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gray-100 text-navy/60 text-sm font-semibold hover:bg-gray-200 transition-colors cursor-pointer shrink-0">
+            <X className="w-4 h-4" /> Clear
+          </button>
+        )}
 
         <button onClick={onExport}
           className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-green-500 text-white text-sm font-semibold hover:bg-green-600 transition-colors cursor-pointer shrink-0">

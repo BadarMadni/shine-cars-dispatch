@@ -96,7 +96,8 @@ export default function ReportsPage() {
 
       <ReportsFilters search={search} onSearch={setSearch} startDate={startDate}
         onStartDate={setStartDate} endDate={endDate} onEndDate={setEndDate}
-        driverId={driverId} onDriverId={setDriverId} drivers={drivers} onExport={exportCSV} />
+        driverId={driverId} onDriverId={setDriverId} drivers={drivers} onExport={exportCSV}
+        onClear={() => { setSearch(""); setStartDate(""); setEndDate(""); setDriverId(""); }} />
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-5">
         <div className="xl:col-span-2">
