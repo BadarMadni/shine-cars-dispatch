@@ -32,6 +32,7 @@ export type CustomerMinAggregateOutputType = {
   password: string | null
   accountType: string | null
   companyName: string | null
+  pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -44,6 +45,7 @@ export type CustomerMaxAggregateOutputType = {
   password: string | null
   accountType: string | null
   companyName: string | null
+  pushToken: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -56,6 +58,7 @@ export type CustomerCountAggregateOutputType = {
   password: number
   accountType: number
   companyName: number
+  pushToken: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -70,6 +73,7 @@ export type CustomerMinAggregateInputType = {
   password?: true
   accountType?: true
   companyName?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -82,6 +86,7 @@ export type CustomerMaxAggregateInputType = {
   password?: true
   accountType?: true
   companyName?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +99,7 @@ export type CustomerCountAggregateInputType = {
   password?: true
   accountType?: true
   companyName?: true
+  pushToken?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -179,6 +185,7 @@ export type CustomerGroupByOutputType = {
   password: string
   accountType: string
   companyName: string | null
+  pushToken: string | null
   createdAt: Date
   updatedAt: Date
   _count: CustomerCountAggregateOutputType | null
@@ -212,6 +219,7 @@ export type CustomerWhereInput = {
   password?: Prisma.StringFilter<"Customer"> | string
   accountType?: Prisma.StringFilter<"Customer"> | string
   companyName?: Prisma.StringNullableFilter<"Customer"> | string | null
+  pushToken?: Prisma.StringNullableFilter<"Customer"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -227,6 +235,7 @@ export type CustomerOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   accountType?: Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   bookings?: Prisma.BookingOrderByRelationAggregateInput
@@ -245,6 +254,7 @@ export type CustomerWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"Customer"> | string
   accountType?: Prisma.StringFilter<"Customer"> | string
   companyName?: Prisma.StringNullableFilter<"Customer"> | string | null
+  pushToken?: Prisma.StringNullableFilter<"Customer"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Customer"> | Date | string
   bookings?: Prisma.BookingListRelationFilter
@@ -260,6 +270,7 @@ export type CustomerOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   accountType?: Prisma.SortOrder
   companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  pushToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.CustomerCountOrderByAggregateInput
@@ -278,6 +289,7 @@ export type CustomerScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   accountType?: Prisma.StringWithAggregatesFilter<"Customer"> | string
   companyName?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
+  pushToken?: Prisma.StringNullableWithAggregatesFilter<"Customer"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Customer"> | Date | string
 }
@@ -290,6 +302,7 @@ export type CustomerCreateInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
@@ -305,6 +318,7 @@ export type CustomerUncheckedCreateInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
@@ -320,6 +334,7 @@ export type CustomerUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
@@ -335,6 +350,7 @@ export type CustomerUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
@@ -350,6 +366,7 @@ export type CustomerCreateManyInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -362,6 +379,7 @@ export type CustomerUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -374,6 +392,7 @@ export type CustomerUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -391,6 +410,7 @@ export type CustomerCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   accountType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -403,6 +423,7 @@ export type CustomerMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   accountType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -415,6 +436,7 @@ export type CustomerMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   accountType?: Prisma.SortOrder
   companyName?: Prisma.SortOrder
+  pushToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -476,6 +498,7 @@ export type CustomerCreateWithoutBookingsInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   recurringBookings?: Prisma.RecurringBookingCreateNestedManyWithoutCustomerInput
@@ -490,6 +513,7 @@ export type CustomerUncheckedCreateWithoutBookingsInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   recurringBookings?: Prisma.RecurringBookingUncheckedCreateNestedManyWithoutCustomerInput
@@ -520,6 +544,7 @@ export type CustomerUpdateWithoutBookingsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringBookings?: Prisma.RecurringBookingUpdateManyWithoutCustomerNestedInput
@@ -534,6 +559,7 @@ export type CustomerUncheckedUpdateWithoutBookingsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   recurringBookings?: Prisma.RecurringBookingUncheckedUpdateManyWithoutCustomerNestedInput
@@ -548,6 +574,7 @@ export type CustomerCreateWithoutRecurringBookingsInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
@@ -562,6 +589,7 @@ export type CustomerUncheckedCreateWithoutRecurringBookingsInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
@@ -592,6 +620,7 @@ export type CustomerUpdateWithoutRecurringBookingsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
@@ -606,6 +635,7 @@ export type CustomerUncheckedUpdateWithoutRecurringBookingsInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
@@ -620,6 +650,7 @@ export type CustomerCreateWithoutInvoicesInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingCreateNestedManyWithoutCustomerInput
@@ -634,6 +665,7 @@ export type CustomerUncheckedCreateWithoutInvoicesInput = {
   password: string
   accountType?: string
   companyName?: string | null
+  pushToken?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   bookings?: Prisma.BookingUncheckedCreateNestedManyWithoutCustomerInput
@@ -664,6 +696,7 @@ export type CustomerUpdateWithoutInvoicesInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUpdateManyWithoutCustomerNestedInput
@@ -678,6 +711,7 @@ export type CustomerUncheckedUpdateWithoutInvoicesInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   accountType?: Prisma.StringFieldUpdateOperationsInput | string
   companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pushToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   bookings?: Prisma.BookingUncheckedUpdateManyWithoutCustomerNestedInput
@@ -741,6 +775,7 @@ export type CustomerSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   password?: boolean
   accountType?: boolean
   companyName?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   bookings?: boolean | Prisma.Customer$bookingsArgs<ExtArgs>
@@ -757,6 +792,7 @@ export type CustomerSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   password?: boolean
   accountType?: boolean
   companyName?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["customer"]>
@@ -769,6 +805,7 @@ export type CustomerSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   password?: boolean
   accountType?: boolean
   companyName?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["customer"]>
@@ -781,11 +818,12 @@ export type CustomerSelectScalar = {
   password?: boolean
   accountType?: boolean
   companyName?: boolean
+  pushToken?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "accountType" | "companyName" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+export type CustomerOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "password" | "accountType" | "companyName" | "pushToken" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
 export type CustomerInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   bookings?: boolean | Prisma.Customer$bookingsArgs<ExtArgs>
   recurringBookings?: boolean | Prisma.Customer$recurringBookingsArgs<ExtArgs>
@@ -810,6 +848,7 @@ export type $CustomerPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     password: string
     accountType: string
     companyName: string | null
+    pushToken: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["customer"]>
@@ -1245,6 +1284,7 @@ export interface CustomerFieldRefs {
   readonly password: Prisma.FieldRef<"Customer", 'String'>
   readonly accountType: Prisma.FieldRef<"Customer", 'String'>
   readonly companyName: Prisma.FieldRef<"Customer", 'String'>
+  readonly pushToken: Prisma.FieldRef<"Customer", 'String'>
   readonly createdAt: Prisma.FieldRef<"Customer", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Customer", 'DateTime'>
 }

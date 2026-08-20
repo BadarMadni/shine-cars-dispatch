@@ -161,6 +161,7 @@ export const CustomerScalarFieldEnum = {
   password: 'password',
   accountType: 'accountType',
   companyName: 'companyName',
+  pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
