@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { sendPushNotification } from "@/lib/pushNotification";
 import { createDriverNotification } from "@/lib/notify";
+import { sendCustomerPushNotification } from "@/lib/sendCustomerNotification";
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -100,6 +101,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
         "booking",
         JSON.stringify({ bookingId: booking.id })
       );
+    }
+
+    // Send push notification to customer on status change
+    if (status && oldBooking?.status !== status) {
+      sendCustomerPushNotification(id, status);
     }
 
     return NextResponse.json({ booking });
