@@ -108,6 +108,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       sendCustomerPushNotification(id, status);
     }
 
+    // Send push notification to customer on fare update
+    if (data.fare != null && oldBooking && oldBooking.fare !== booking.fare) {
+      sendCustomerPushNotification(id, "fare-updated");
+    }
+
     return NextResponse.json({ booking });
   } catch {
     return NextResponse.json({ error: "Failed to update booking" }, { status: 500 });
