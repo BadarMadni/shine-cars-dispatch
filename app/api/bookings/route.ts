@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { customerId, name, phone, email, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, fareType, notes, eventPricingId, eventSurcharge } = body;
 
-    if (!name || !phone || !pickup || !dropoff || !fare) {
+    if (!name || !phone || !pickup || !dropoff || fare == null) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
