@@ -1,4 +1,5 @@
 import { prisma } from "./prisma";
+import { sendPushNotification } from "./pushNotification";
 
 const STATUS_MESSAGES: Record<string, { title: string; body: string }> = {
   confirmed: { title: "Booking Confirmed", body: "Your ride has been confirmed by dispatch." },
@@ -29,23 +30,14 @@ export async function sendCustomerPushNotification(bookingId: string, newStatus:
     const msg = STATUS_MESSAGES[newStatus];
     if (!msg) return;
 
-    await fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Accept-Encoding": "gzip, deflate",
-      },
-      body: JSON.stringify({
-        to: customer.pushToken,
-        title: msg.title,
-        body: msg.body,
-        data: { bookingId, status: newStatus },
-        sound: "default",
-        badge: 1,
-      }),
-    });
+    // Use Firebase FCM (same as driver notifications)
+    await sendPushNotification(
+      customer.pushToken,
+      msg.title,
+      msg.body,
+      { bookingId, status: newStatus }
+    );
   } catch (e) {
-    console.error("Push notification error:", e);
+    console.error("Customer push notification error:", e);
   }
 }
