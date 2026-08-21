@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
+import { sendCustomerPushNotification } from "@/lib/sendCustomerNotification";
 
 const JWT_SECRET = process.env.JWT_SECRET || "shine-cars-dispatch-secret-2024";
 const VALID = ["accepted", "arrived", "in-progress", "completed", "cancelled"];
@@ -61,6 +62,11 @@ export async function PATCH(req: NextRequest) {
           data: { invoiceId: invoice.id, bookingId, fare: booking.fare, date: booking.date, pickup: booking.pickup, dropoff: booking.dropoff },
         });
       }
+    }
+
+    // Send push notification to customer on status change
+    if (booking.status !== status) {
+      sendCustomerPushNotification(bookingId, status);
     }
 
     return NextResponse.json({ success: true, booking: updated });
