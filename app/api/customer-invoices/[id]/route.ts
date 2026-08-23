@@ -38,13 +38,28 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   // Get recurring info if any booking is recurring
   const recurringIds = [...new Set(invoice.items.map((i) => i.booking?.recurringId).filter(Boolean))] as string[];
-  let recurringInfo: Record<string, { frequency: string; days: string }> = {};
+  let recurringInfo: Record<string, { frequency: string; days: string; totalDays: number; completedDays: number; remainingDays: number }> = {};
   if (recurringIds.length) {
+    const dayMap: Record<string, number> = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
     const recs = await prisma.recurringBooking.findMany({
       where: { id: { in: recurringIds } },
-      select: { id: true, frequency: true, days: true },
-    });
-    recurringInfo = Object.fromEntries(recs.map((r) => [r.id, { frequency: r.frequency, days: r.days }]));
+      select: { id: true, frequency: true, days: true, startDate: true, endDate: true },
+      });
+    for (const r of recs) {
+      const days: string[] = JSON.parse(r.days || "[]");
+      const allBookings = await prisma.booking.count({ where: { recurringId: r.id } });
+      const done = await prisma.booking.count({ where: { recurringId: r.id, status: "completed" } });
+      let total = days.length;
+      if (r.startDate && r.endDate) {
+        let count = 0;
+        const cur = new Date(r.startDate + "T00:00:00");
+        const end = new Date(r.endDate + "T00:00:00");
+        const dayNums = days.map((d) => dayMap[d]);
+        while (cur <= end) { if (dayNums.includes(cur.getDay())) count++; cur.setDate(cur.getDate() + 1); }
+        total = count;
+      }
+      recurringInfo[r.id] = { frequency: r.frequency, days: r.days, totalDays: total, completedDays: done, remainingDays: Math.max(0, total - done) };
+    }
   }
 
   return NextResponse.json({
