@@ -17,13 +17,18 @@ export async function GET(req: NextRequest) {
   if (!customer) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
-    const items = await prisma.recurringBooking.findMany({
+    const recs = await prisma.recurringBooking.findMany({
       where: { customerId: customer.id },
       orderBy: { createdAt: "desc" },
       include: {
         driver: { select: { name: true, phone: true } },
-        bookings: { orderBy: { createdAt: "desc" }, take: 1, select: { status: true, date: true } },
+        bookings: { orderBy: { createdAt: "desc" }, select: { status: true, date: true } },
       },
+    });
+    const items = recs.map((r) => {
+      const total = r.bookings.length;
+      const completed = r.bookings.filter((b) => b.status === "completed").length;
+      return { ...r, totalDays: total, completedDays: completed, remainingDays: total - completed };
     });
     return NextResponse.json({ items });
   } catch {
