@@ -25,10 +25,20 @@ export async function GET(req: NextRequest) {
         bookings: { orderBy: { createdAt: "desc" }, select: { status: true, date: true } },
       },
     });
+    const dayMap: Record<string, number> = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
     const items = recs.map((r) => {
-      const total = r.bookings.length;
+      const days: string[] = JSON.parse(r.days || "[]");
       const completed = r.bookings.filter((b) => b.status === "completed").length;
-      return { ...r, totalDays: total, completedDays: completed, remainingDays: total - completed };
+      let totalDays = days.length;
+      if (r.startDate && r.endDate) {
+        let count = 0;
+        const cur = new Date(r.startDate + "T00:00:00");
+        const end = new Date(r.endDate + "T00:00:00");
+        const dayNums = days.map((d) => dayMap[d]);
+        while (cur <= end) { if (dayNums.includes(cur.getDay())) count++; cur.setDate(cur.getDate() + 1); }
+        totalDays = count;
+      }
+      return { ...r, totalDays, completedDays: completed, remainingDays: Math.max(0, totalDays - completed) };
     });
     return NextResponse.json({ items });
   } catch {
