@@ -26,17 +26,27 @@ export default function Sidebar() {
   const [open, setOpen] = useState(false);
   const [pendingDrivers, setPendingDrivers] = useState(0);
   const [unreadChats, setUnreadChats] = useState(0);
+  const [newRecurring, setNewRecurring] = useState(0);
+  const lastRecIdRef = useCallback(() => ({ current: "" }), [])();
 
   const fetchBadges = useCallback(async () => {
     try {
-      const [dr, ch] = await Promise.all([
+      const [dr, ch, rec] = await Promise.all([
         fetch("/api/drivers/pending-count").then((r) => r.json()),
         fetch("/api/chat/unread-count").then((r) => r.json()),
+        fetch("/api/recurring?limit=1").then((r) => r.json()),
       ]);
       setPendingDrivers(dr.count || 0);
       setUnreadChats(ch.count || 0);
+      const latestRecId = rec.items?.[0]?.id || "";
+      if (!lastRecIdRef.current) {
+        lastRecIdRef.current = latestRecId;
+      } else if (latestRecId && latestRecId !== lastRecIdRef.current) {
+        lastRecIdRef.current = latestRecId;
+        setNewRecurring((p) => p + 1);
+      }
     } catch {}
-  }, []);
+  }, [lastRecIdRef]);
 
   useEffect(() => {
     fetchBadges();
@@ -47,6 +57,7 @@ export default function Sidebar() {
   useEffect(() => {
     if (pathname === "/drivers") setPendingDrivers(0);
     if (pathname === "/chat") setUnreadChats(0);
+    if (pathname === "/recurring") setNewRecurring(0);
   }, [pathname]);
 
   const handleLogout = async () => {
@@ -84,6 +95,11 @@ export default function Sidebar() {
               {label === "Chat" && unreadChats > 0 && pathname !== "/chat" && (
                 <span className="ml-auto bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
                   {unreadChats}
+                </span>
+              )}
+              {label === "Recurring" && newRecurring > 0 && pathname !== "/recurring" && (
+                <span className="ml-auto bg-crimson text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">
+                  {newRecurring}
                 </span>
               )}
             </Link>
