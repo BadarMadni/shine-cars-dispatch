@@ -20,27 +20,52 @@ export default function NewBookingAlert() {
   const [booking, setBooking] = useState<Booking | null>(null);
   const [visible, setVisible] = useState(false);
   const lastIdRef = useRef<string>("");
+  const lastRecIdRef = useRef<string>("");
   const initializedRef = useRef(false);
 
   const checkNewBookings = useCallback(async () => {
     try {
-      const res = await fetch("/api/bookings?limit=1");
-      const data = await res.json();
+      const [bookRes, recRes] = await Promise.all([
+        fetch("/api/bookings?limit=1"),
+        fetch("/api/recurring?limit=1"),
+      ]);
+      const bookData = await bookRes.json();
+      const recData = await recRes.json();
 
       if (!initializedRef.current) {
-        lastIdRef.current = data.bookings?.[0]?.id || "";
+        lastIdRef.current = bookData.bookings?.[0]?.id || "";
+        lastRecIdRef.current = recData.items?.[0]?.id || "";
         initializedRef.current = true;
         return;
       }
 
-      if (!data.bookings?.length) return;
-      const latest = data.bookings[0];
+      // Check new regular bookings
+      if (bookData.bookings?.length) {
+        const latest = bookData.bookings[0];
+        if (latest.id && latest.id !== lastIdRef.current) {
+          lastIdRef.current = latest.id;
+          setBooking(latest);
+          setVisible(true);
+          playNotificationSound();
+          return;
+        }
+      }
 
-      if (latest.id && latest.id !== lastIdRef.current) {
-        lastIdRef.current = latest.id;
-        setBooking(latest);
-        setVisible(true);
-        playNotificationSound();
+      // Check new recurring bookings
+      if (recData.items?.length) {
+        const latest = recData.items[0];
+        if (latest.id && latest.id !== lastRecIdRef.current) {
+          lastRecIdRef.current = latest.id;
+          setBooking({
+            id: latest.id, name: latest.name, phone: latest.phone,
+            pickup: latest.pickup, dropoff: latest.dropoff, stops: latest.stops,
+            date: latest.days || "", time: latest.time,
+            distance: latest.distance || 0, fare: latest.fare,
+            status: "pending", createdAt: latest.createdAt, isRecurring: true,
+          });
+          setVisible(true);
+          playNotificationSound();
+        }
       }
     } catch {}
   }, []);
