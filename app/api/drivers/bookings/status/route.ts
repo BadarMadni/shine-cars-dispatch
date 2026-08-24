@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { prisma } from "@/lib/prisma";
 import { sendCustomerPushNotification } from "@/lib/sendCustomerNotification";
+import { sendPushNotification } from "@/lib/pushNotification";
 
 const JWT_SECRET = process.env.JWT_SECRET || "shine-cars-dispatch-secret-2024";
 const VALID = ["accepted", "arrived", "in-progress", "completed", "cancelled"];
@@ -61,6 +62,19 @@ export async function PATCH(req: NextRequest) {
         await prisma.invoiceItem.create({
           data: { invoiceId: invoice.id, bookingId, fare: booking.fare, date: booking.date, pickup: booking.pickup, dropoff: booking.dropoff },
         });
+
+        // Check if all recurring bookings are now completed → notify customer to pay
+        if (booking.recurringId) {
+          const remaining = await prisma.booking.count({ where: { recurringId: booking.recurringId, status: { not: "completed" } } });
+          if (remaining === 0) {
+            const cust = await prisma.customer.findUnique({ where: { id: booking.customerId! }, select: { pushToken: true } });
+            if (cust?.pushToken) {
+              sendPushNotification(cust.pushToken, "Invoice Ready to Pay",
+                `All rides completed! Your invoice #${invoice.id.slice(-6).toUpperCase()} is ready. Tap to pay.`,
+                { type: "invoice-pay", invoiceId: invoice.id });
+            }
+          }
+        }
       }
     }
 

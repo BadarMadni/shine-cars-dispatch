@@ -16,7 +16,7 @@ export async function sendCustomerPushNotification(bookingId: string, newStatus:
   try {
     const booking = await prisma.booking.findUnique({
       where: { id: bookingId },
-      select: { customerId: true, pickup: true, dropoff: true, fare: true },
+      select: { customerId: true, pickup: true, dropoff: true, fare: true, driverId: true, isRecurring: true },
     });
 
     if (!booking?.customerId) return;
@@ -31,16 +31,40 @@ export async function sendCustomerPushNotification(bookingId: string, newStatus:
     const msg = STATUS_MESSAGES[newStatus];
     if (!msg) return;
 
-    const body = newStatus === "fare-updated" && booking.fare
-      ? `Your fare has been updated to £${booking.fare.toFixed(2)}.`
-      : msg.body;
+    // Get driver info for richer notifications
+    let driverName = "";
+    let driverVehicle = "";
+    let driverPhone = "";
+    if (booking.driverId) {
+      const driver = await prisma.driver.findUnique({
+        where: { id: booking.driverId },
+        select: { name: true, phone: true, vehicleMake: true, vehicleColor: true },
+      });
+      if (driver) {
+        driverName = driver.name;
+        driverPhone = driver.phone;
+        driverVehicle = [driver.vehicleColor, driver.vehicleMake].filter(Boolean).join(" ");
+      }
+    }
 
-    // Use Firebase FCM (same as driver notifications)
+    let body = msg.body;
+    if (newStatus === "fare-updated" && booking.fare) {
+      body = `Your fare has been updated to £${booking.fare.toFixed(2)}.`;
+    } else if (newStatus === "assigned" && driverName) {
+      body = `${driverName} has been assigned to your ride.${driverVehicle ? ` Vehicle: ${driverVehicle}` : ""}`;
+    } else if (newStatus === "accepted" && driverName) {
+      body = `${driverName} has accepted your trip and is on the way.${driverVehicle ? ` (${driverVehicle})` : ""}`;
+    } else if (newStatus === "arrived" && driverName) {
+      body = `${driverName} has arrived at the pickup location.`;
+    } else if (newStatus === "completed") {
+      body = `Your trip is completed. Fare: £${booking.fare?.toFixed(2) || "0.00"}`;
+    }
+
     await sendPushNotification(
       customer.pushToken,
       msg.title,
       body,
-      { bookingId, status: newStatus }
+      { bookingId, status: newStatus, driverName, driverVehicle, driverPhone, pickup: booking.pickup || "", dropoff: booking.dropoff || "" }
     );
   } catch (e) {
     console.error("Customer push notification error:", e);

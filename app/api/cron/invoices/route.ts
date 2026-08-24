@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendPushNotification } from "@/lib/pushNotification";
 
 export async function GET(req: NextRequest) {
   const authHeader = req.headers.get("authorization");
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
 
     const total = bookings.reduce((sum, b) => sum + b.fare, 0);
 
-    await prisma.invoice.create({
+    const inv = await prisma.invoice.create({
       data: {
         customerId: c.id, weekStart, weekEnd, total, status: "unpaid",
         items: {
@@ -49,6 +50,17 @@ export async function GET(req: NextRequest) {
         },
       },
     });
+
+    // Check if all rides completed (remaining = 0) → send push to pay
+    const allCompleted = bookings.every((b) => b.status === "completed");
+    if (allCompleted) {
+      const cust = await prisma.customer.findUnique({ where: { id: c.id }, select: { pushToken: true } });
+      if (cust?.pushToken) {
+        sendPushNotification(cust.pushToken, "Invoice Ready to Pay",
+          `Your invoice #${inv.id.slice(-6).toUpperCase()} for £${total.toFixed(2)} is ready. Tap to pay now.`,
+          { type: "invoice-pay", invoiceId: inv.id });
+      }
+    }
     invoicesCreated++;
   }
 
