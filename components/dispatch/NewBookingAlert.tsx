@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Bell, MapPin, Navigation, User, Phone, Calendar, Clock, Route, PoundSterling, X, Check,
+  Bell, MapPin, Navigation, User, Phone, Calendar, Clock, Route, PoundSterling, X, Check, AlertTriangle,
 } from "lucide-react";
 import { playNotificationSound } from "@/components/dispatch/NotificationSound";
 
@@ -14,6 +14,7 @@ interface Booking {
   distance: number; fare: number;
   status: string; createdAt: string;
   isRecurring?: boolean;
+  isUrgent?: boolean;
 }
 
 export default function NewBookingAlert() {
@@ -112,8 +113,11 @@ export default function NewBookingAlert() {
               >
                 <Bell className="w-10 h-10 mx-auto mb-2" />
               </motion.div>
-              <h3 className="text-xl font-bold">{booking.isRecurring ? "Recurring Booking!" : "New Booking!"}</h3>
-              <p className="text-white/70 text-sm mt-1">{booking.isRecurring ? "A recurring ride has been generated" : "A new ride has been requested"}</p>
+              <h3 className="text-xl font-bold">
+                {booking.isUrgent && <span className="inline-flex items-center gap-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full mr-2 animate-pulse"><AlertTriangle className="w-3 h-3" />URGENT</span>}
+                {booking.isRecurring ? "Recurring Booking!" : "New Booking!"}
+              </h3>
+              <p className="text-white/70 text-sm mt-1">{booking.isRecurring ? "A recurring ride has been generated" : booking.isUrgent ? "An urgent ride has been requested" : "A new ride has been requested"}</p>
             </motion.div>
 
             {/* Booking details */}

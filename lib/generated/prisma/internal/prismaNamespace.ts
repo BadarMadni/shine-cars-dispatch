@@ -1308,6 +1308,7 @@ export const BookingScalarFieldEnum = {
   dropoffDetails: 'dropoffDetails',
   eventPricingId: 'eventPricingId',
   eventSurcharge: 'eventSurcharge',
+  isUrgent: 'isUrgent',
   isRecurring: 'isRecurring',
   recurringId: 'recurringId',
   createdAt: 'createdAt',

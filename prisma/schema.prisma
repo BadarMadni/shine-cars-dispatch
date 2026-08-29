@@ -35,6 +35,7 @@ model Booking {
   dropoffDetails String?
   eventPricingId String?
   eventSurcharge Float?
+  isUrgent      Boolean   @default(false)
   isRecurring   Boolean   @default(false)
   recurringId   String?
   createdAt     DateTime  @default(now())

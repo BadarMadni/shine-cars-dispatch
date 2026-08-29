@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { customerId, name, phone, email, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, fareType, notes, eventPricingId, eventSurcharge, pickupDetails, dropoffDetails, source } = body;
+    const { customerId, name, phone, email, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, fareType, notes, eventPricingId, eventSurcharge, pickupDetails, dropoffDetails, source, isUrgent } = body;
 
     if (!name || !phone || !pickup || !dropoff || fare == null) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
         customerId: resolvedCustomerId || null,
         eventPricingId: eventPricingId || null,
         eventSurcharge: eventSurcharge ? parseFloat(eventSurcharge) : null,
+        isUrgent: isUrgent === true,
       },
     });
 
