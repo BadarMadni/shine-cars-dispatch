@@ -17,8 +17,14 @@ export async function PATCH(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  let payload: CustomerPayload;
   try {
-    const payload = jwt.verify(auth.slice(7).trim(), SECRET) as CustomerPayload;
+    payload = jwt.verify(auth.slice(7).trim(), SECRET) as CustomerPayload;
+  } catch {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  try {
     const body = await req.json();
 
     const allowed: Record<string, string> = {};
@@ -36,7 +42,7 @@ export async function PATCH(req: NextRequest) {
     });
 
     return NextResponse.json({ customer });
-  } catch {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  } catch (e) {
+    return NextResponse.json({ error: "Update failed", details: String(e) }, { status: 500 });
   }
 }
