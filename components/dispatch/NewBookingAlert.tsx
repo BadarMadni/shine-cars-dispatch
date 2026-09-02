@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Bell, MapPin, Navigation, User, Phone, Calendar, Clock, Route, PoundSterling, X, Check, AlertTriangle,
+  Bell, MapPin, Navigation, User, Phone, Calendar, Clock, Route, PoundSterling, X, Check, AlertTriangle, Building2,
 } from "lucide-react";
 import { startNotificationLoop, stopNotificationLoop } from "@/components/dispatch/NotificationSound";
 
@@ -13,6 +13,7 @@ interface Booking {
   date: string; time: string;
   distance: number; fare: number;
   status: string; createdAt: string;
+  buildingInfo?: string | null;
   isRecurring?: boolean;
   isUrgent?: boolean;
 }
@@ -127,6 +128,7 @@ export default function NewBookingAlert() {
                 { icon: User, color: "text-blue-500", label: "Customer", val: booking.name },
                 { icon: Phone, color: "text-navy/40", label: "Phone", val: booking.phone },
                 { icon: MapPin, color: "text-green-500", label: "Pickup", val: booking.pickup },
+                ...(booking.buildingInfo ? [{ icon: Building2, color: "text-amber-500", label: "Building / House Info", val: booking.buildingInfo }] : []),
                 ...(() => { try { const s: string[] = booking.stops ? JSON.parse(booking.stops) : []; return s.map((addr, i) => ({ icon: MapPin, color: "text-amber-500", label: `Stop ${i + 1}`, val: addr })); } catch { return []; } })(),
                 { icon: Navigation, color: "text-crimson", label: "Drop-off", val: booking.dropoff },
                 { icon: Calendar, color: "text-purple-500", label: "Date & Time", val: `${booking.date} at ${booking.time}` },
