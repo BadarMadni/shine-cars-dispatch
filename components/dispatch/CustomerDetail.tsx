@@ -14,7 +14,7 @@ interface Customer {
 
 interface Booking {
   id: string; pickup: string; dropoff: string; stops?: string | null;
-  pickupDetails?: string | null; dropoffDetails?: string | null;
+  pickupDetails?: string | null; dropoffDetails?: string | null; buildingInfo?: string | null;
   date: string; time: string; distance: number; fare: number; vehicle: string; status: string;
   paymentMethod: string; paymentStatus: string; createdAt: string;
   fareType?: string; meterFare?: number | null; cashCollected?: number | null;
@@ -151,6 +151,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                         <p className="text-navy/40 text-xs">Pickup</p>
                         <p className="text-navy/70">{b.pickup}</p>
                         {b.pickupDetails && <p className="text-amber-600 text-xs italic">{b.pickupDetails}</p>}
+                        {b.buildingInfo && <p className="text-amber-500 text-xs italic">🏠 {b.buildingInfo}</p>}
                       </div>
                     </div>
                     {b.stops && (() => { try { const s: string[] = JSON.parse(b.stops); return s.map((addr, i) => (

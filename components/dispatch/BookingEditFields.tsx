@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Clock, PoundSterling, Car, CreditCard, Loader2, Plus, X, Gauge,
+  Clock, PoundSterling, Car, CreditCard, Loader2, Plus, X, Gauge, Building2,
 } from "lucide-react";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
 
@@ -17,6 +17,7 @@ export interface BookingEdits {
   fareType: string;
   paymentMethod: string;
   paymentStatus: string;
+  buildingInfo: string;
 }
 
 const inputClass =
@@ -42,6 +43,10 @@ export default function BookingEditFields({
         onChange={(v, place) => { onChange("pickup", v); if (place && onPlaceChange) onPlaceChange("pickup", place); }}
         label="Pickup" placeholder="Search pickup address..."
       />
+      <div>
+        <p className="text-navy/40 text-xs mb-1"><Building2 className="w-3 h-3 inline" /> Building / House Info</p>
+        <input type="text" value={edits.buildingInfo} onChange={(e) => onChange("buildingInfo", e.target.value)} placeholder="House no, flat, building (optional)" className={inputClass} />
+      </div>
       {edits.stops.map((stop, i) => (
         <div key={i} className="relative">
           <DispatchAddressInput

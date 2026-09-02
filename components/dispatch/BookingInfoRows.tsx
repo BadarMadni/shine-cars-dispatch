@@ -1,6 +1,6 @@
 import {
   MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard, Gauge, Banknote, Zap, AlertTriangle,
+  Calendar, Clock, Car, CreditCard, Gauge, Banknote, Zap, AlertTriangle, Building2,
 } from "lucide-react";
 
 interface Booking {
@@ -13,6 +13,7 @@ interface Booking {
   isUrgent?: boolean;
   eventSurcharge?: number | null;
   pickupDetails?: string | null; dropoffDetails?: string | null;
+  buildingInfo?: string | null;
 }
 
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
@@ -23,6 +24,7 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     { icon: Phone, color: "text-navy/40", label: "Phone", value: b.phone },
     { icon: MapPin, color: "text-green-500", label: "Pickup", value: b.pickup },
     ...(b.pickupDetails ? [{ icon: MapPin, color: "text-green-400", label: "Pickup Details", value: b.pickupDetails }] : []),
+    ...(b.buildingInfo ? [{ icon: Building2, color: "text-amber-500", label: "Building Info", value: b.buildingInfo }] : []),
     ...parsedStops.map((s: string, i: number) => ({ icon: MapPin, color: "text-amber-500", label: `Stop ${i + 1}`, value: s })),
     { icon: Navigation, color: "text-crimson", label: "Drop-off", value: b.dropoff },
     ...(b.dropoffDetails ? [{ icon: Navigation, color: "text-crimson/60", label: "Drop-off Details", value: b.dropoffDetails }] : []),

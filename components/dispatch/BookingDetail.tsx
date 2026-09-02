@@ -15,6 +15,7 @@ interface Booking {
   date: string; time: string;
   distance: number; fare: number;
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
+  buildingInfo?: string | null;
   status: string; createdAt: string; notes: string | null;
   driverId?: string | null;
   driver?: { id: string; name: string } | null;
@@ -46,6 +47,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
     fareType: (booking as unknown as Record<string, unknown>).fareType as string || "fixed",
     paymentMethod: booking.paymentMethod || "cash",
     paymentStatus: booking.paymentStatus || "unpaid",
+    buildingInfo: booking.buildingInfo || "",
   });
 
   useEffect(() => {
@@ -79,7 +81,7 @@ export default function BookingDetail({ booking, onClose }: { booking: Booking; 
       body.date = toDisplayDate(edits.date); body.time = edits.time;
       body.fare = parseFloat(edits.fare) || booking.fare;
       body.distance = parseFloat(edits.distance) || booking.distance;
-      body.vehicle = edits.vehicle; body.fareType = edits.fareType; body.paymentMethod = edits.paymentMethod; body.paymentStatus = edits.paymentStatus;
+      body.vehicle = edits.vehicle; body.fareType = edits.fareType; body.paymentMethod = edits.paymentMethod; body.paymentStatus = edits.paymentStatus; body.buildingInfo = edits.buildingInfo || null;
     }
     await fetch(`/api/bookings/${booking.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     setSaving(false); onClose();

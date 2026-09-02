@@ -22,7 +22,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   try {
     const { id } = await params;
     const body = await req.json();
-    const { status, notes, driverId, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, paymentStatus, fareType, meterDistance, meterFare, name, phone } = body;
+    const { status, notes, driverId, pickup, dropoff, stops, date, time, fare, distance, vehicle, paymentMethod, paymentStatus, fareType, meterDistance, meterFare, name, phone, buildingInfo } = body;
 
     const data: Record<string, unknown> = {};
     if (status) data.status = status;
@@ -42,6 +42,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (meterFare !== undefined) data.meterFare = parseFloat(meterFare);
     if (name !== undefined) data.name = name;
     if (phone !== undefined) data.phone = phone;
+    if (buildingInfo !== undefined) data.buildingInfo = buildingInfo;
 
     if (driverId !== undefined) {
       if (driverId === null) {

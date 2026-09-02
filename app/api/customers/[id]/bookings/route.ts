@@ -12,7 +12,7 @@ export async function GET(
       orderBy: { createdAt: "desc" },
       select: {
         id: true, pickup: true, dropoff: true, stops: true,
-        pickupDetails: true, dropoffDetails: true,
+        pickupDetails: true, dropoffDetails: true, buildingInfo: true,
         date: true, time: true, distance: true, fare: true, vehicle: true,
         status: true, paymentMethod: true, paymentStatus: true,
         fareType: true, meterFare: true, cashCollected: true,

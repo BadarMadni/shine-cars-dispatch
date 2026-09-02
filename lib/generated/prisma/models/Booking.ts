@@ -70,6 +70,7 @@ export type BookingMinAggregateOutputType = {
   notes: string | null
   pickupDetails: string | null
   dropoffDetails: string | null
+  buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
   isUrgent: boolean | null
@@ -105,6 +106,7 @@ export type BookingMaxAggregateOutputType = {
   notes: string | null
   pickupDetails: string | null
   dropoffDetails: string | null
+  buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
   isUrgent: boolean | null
@@ -140,6 +142,7 @@ export type BookingCountAggregateOutputType = {
   notes: number
   pickupDetails: number
   dropoffDetails: number
+  buildingInfo: number
   eventPricingId: number
   eventSurcharge: number
   isUrgent: number
@@ -195,6 +198,7 @@ export type BookingMinAggregateInputType = {
   notes?: true
   pickupDetails?: true
   dropoffDetails?: true
+  buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
   isUrgent?: true
@@ -230,6 +234,7 @@ export type BookingMaxAggregateInputType = {
   notes?: true
   pickupDetails?: true
   dropoffDetails?: true
+  buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
   isUrgent?: true
@@ -265,6 +270,7 @@ export type BookingCountAggregateInputType = {
   notes?: true
   pickupDetails?: true
   dropoffDetails?: true
+  buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
   isUrgent?: true
@@ -387,6 +393,7 @@ export type BookingGroupByOutputType = {
   notes: string | null
   pickupDetails: string | null
   dropoffDetails: string | null
+  buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
   isUrgent: boolean
@@ -445,6 +452,7 @@ export type BookingWhereInput = {
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   pickupDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
   dropoffDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
+  buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isUrgent?: Prisma.BoolFilter<"Booking"> | boolean
@@ -484,6 +492,7 @@ export type BookingOrderByWithRelationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   pickupDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   dropoffDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  buildingInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
   isUrgent?: Prisma.SortOrder
@@ -526,6 +535,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   pickupDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
   dropoffDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
+  buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isUrgent?: Prisma.BoolFilter<"Booking"> | boolean
@@ -565,6 +575,7 @@ export type BookingOrderByWithAggregationInput = {
   notes?: Prisma.SortOrderInput | Prisma.SortOrder
   pickupDetails?: Prisma.SortOrderInput | Prisma.SortOrder
   dropoffDetails?: Prisma.SortOrderInput | Prisma.SortOrder
+  buildingInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
   isUrgent?: Prisma.SortOrder
@@ -608,6 +619,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   notes?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   pickupDetails?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   dropoffDetails?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
+  buildingInfo?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
   isUrgent?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
@@ -641,6 +653,7 @@ export type BookingCreateInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -679,6 +692,7 @@ export type BookingUncheckedCreateInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -713,6 +727,7 @@ export type BookingUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -751,6 +766,7 @@ export type BookingUncheckedUpdateInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -787,6 +803,7 @@ export type BookingCreateManyInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -820,6 +837,7 @@ export type BookingUpdateManyMutationInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -854,6 +872,7 @@ export type BookingUncheckedUpdateManyInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -889,6 +908,7 @@ export type BookingCountOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   pickupDetails?: Prisma.SortOrder
   dropoffDetails?: Prisma.SortOrder
+  buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   isUrgent?: Prisma.SortOrder
@@ -933,6 +953,7 @@ export type BookingMaxOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   pickupDetails?: Prisma.SortOrder
   dropoffDetails?: Prisma.SortOrder
+  buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   isUrgent?: Prisma.SortOrder
@@ -968,6 +989,7 @@ export type BookingMinOrderByAggregateInput = {
   notes?: Prisma.SortOrder
   pickupDetails?: Prisma.SortOrder
   dropoffDetails?: Prisma.SortOrder
+  buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   isUrgent?: Prisma.SortOrder
@@ -1201,6 +1223,7 @@ export type BookingCreateWithoutDriverInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1237,6 +1260,7 @@ export type BookingUncheckedCreateWithoutDriverInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1302,6 +1326,7 @@ export type BookingScalarWhereInput = {
   notes?: Prisma.StringNullableFilter<"Booking"> | string | null
   pickupDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
   dropoffDetails?: Prisma.StringNullableFilter<"Booking"> | string | null
+  buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isUrgent?: Prisma.BoolFilter<"Booking"> | boolean
@@ -1335,6 +1360,7 @@ export type BookingCreateWithoutCustomerInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1371,6 +1397,7 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1431,6 +1458,7 @@ export type BookingCreateWithoutRecurringInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1468,6 +1496,7 @@ export type BookingUncheckedCreateWithoutRecurringInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1527,6 +1556,7 @@ export type BookingCreateWithoutInvoiceItemsInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1564,6 +1594,7 @@ export type BookingUncheckedCreateWithoutInvoiceItemsInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1613,6 +1644,7 @@ export type BookingUpdateWithoutInvoiceItemsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1650,6 +1682,7 @@ export type BookingUncheckedUpdateWithoutInvoiceItemsInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1684,6 +1717,7 @@ export type BookingCreateManyDriverInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1717,6 +1751,7 @@ export type BookingUpdateWithoutDriverInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1753,6 +1788,7 @@ export type BookingUncheckedUpdateWithoutDriverInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1788,6 +1824,7 @@ export type BookingUncheckedUpdateManyWithoutDriverInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1822,6 +1859,7 @@ export type BookingCreateManyCustomerInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1855,6 +1893,7 @@ export type BookingUpdateWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1891,6 +1930,7 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1926,6 +1966,7 @@ export type BookingUncheckedUpdateManyWithoutCustomerInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1961,6 +2002,7 @@ export type BookingCreateManyRecurringInput = {
   notes?: string | null
   pickupDetails?: string | null
   dropoffDetails?: string | null
+  buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
   isUrgent?: boolean
@@ -1993,6 +2035,7 @@ export type BookingUpdateWithoutRecurringInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2030,6 +2073,7 @@ export type BookingUncheckedUpdateWithoutRecurringInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2065,6 +2109,7 @@ export type BookingUncheckedUpdateManyWithoutRecurringInput = {
   notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isUrgent?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2130,6 +2175,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   notes?: boolean
   pickupDetails?: boolean
   dropoffDetails?: boolean
+  buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
   isUrgent?: boolean
@@ -2170,6 +2216,7 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   pickupDetails?: boolean
   dropoffDetails?: boolean
+  buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
   isUrgent?: boolean
@@ -2208,6 +2255,7 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   notes?: boolean
   pickupDetails?: boolean
   dropoffDetails?: boolean
+  buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
   isUrgent?: boolean
@@ -2246,6 +2294,7 @@ export type BookingSelectScalar = {
   notes?: boolean
   pickupDetails?: boolean
   dropoffDetails?: boolean
+  buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
   isUrgent?: boolean
@@ -2255,7 +2304,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "eventPricingId" | "eventSurcharge" | "isUrgent" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "buildingInfo" | "eventPricingId" | "eventSurcharge" | "isUrgent" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   driver?: boolean | Prisma.Booking$driverArgs<ExtArgs>
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
@@ -2308,6 +2357,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     notes: string | null
     pickupDetails: string | null
     dropoffDetails: string | null
+    buildingInfo: string | null
     eventPricingId: string | null
     eventSurcharge: number | null
     isUrgent: boolean
@@ -2767,6 +2817,7 @@ export interface BookingFieldRefs {
   readonly notes: Prisma.FieldRef<"Booking", 'String'>
   readonly pickupDetails: Prisma.FieldRef<"Booking", 'String'>
   readonly dropoffDetails: Prisma.FieldRef<"Booking", 'String'>
+  readonly buildingInfo: Prisma.FieldRef<"Booking", 'String'>
   readonly eventPricingId: Prisma.FieldRef<"Booking", 'String'>
   readonly eventSurcharge: Prisma.FieldRef<"Booking", 'Float'>
   readonly isUrgent: Prisma.FieldRef<"Booking", 'Boolean'>

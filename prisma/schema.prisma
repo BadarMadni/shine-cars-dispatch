@@ -31,8 +31,9 @@ model Booking {
   cashCollected Float?
   stops         String?
   notes         String?
-  pickupDetails String?
+  pickupDetails  String?
   dropoffDetails String?
+  buildingInfo   String?
   eventPricingId String?
   eventSurcharge Float?
   isUrgent      Boolean   @default(false)

@@ -6,7 +6,7 @@ import StatusBadge from "./StatusBadge";
 
 interface Booking {
   id: string; pickup: string; dropoff: string;
-  pickupDetails?: string | null; dropoffDetails?: string | null;
+  pickupDetails?: string | null; dropoffDetails?: string | null; buildingInfo?: string | null;
   date: string; time: string; status: string; fare?: number; vehicle?: string;
   isRecurring?: boolean;
 }
@@ -89,7 +89,7 @@ export default function DriverBookingsList({ bookings }: { bookings: Booking[] }
                       <div className="w-4 h-4 rounded-full bg-green-100 flex items-center justify-center shrink-0 mt-0.5">
                         <MapPin className="w-2.5 h-2.5 text-green-600" />
                       </div>
-                      <div><span className="line-clamp-1">{b.pickup}</span>{b.pickupDetails && <span className="text-amber-600 text-xs italic block">{b.pickupDetails}</span>}</div>
+                      <div><span className="line-clamp-1">{b.pickup}</span>{b.pickupDetails && <span className="text-amber-600 text-xs italic block">{b.pickupDetails}</span>}{b.buildingInfo && <span className="text-amber-500 text-xs italic block">🏠 {b.buildingInfo}</span>}</div>
                     </div>
                     <div className="flex items-start gap-2 text-sm text-navy/70">
                       <div className="w-4 h-4 rounded-full bg-red-100 flex items-center justify-center shrink-0 mt-0.5">

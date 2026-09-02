@@ -25,7 +25,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
   const [fare, setFare] = useState(0); const [distance, setDistance] = useState(0);
   const [paymentMethod, setPaymentMethod] = useState("cash");
   const [fareType, setFareType] = useState<"fixed" | "meter">("fixed");
-  const [notes, setNotes] = useState(""); const [saving, setSaving] = useState(false);
+  const [notes, setNotes] = useState(""); const [buildingInfo, setBuildingInfo] = useState(""); const [saving, setSaving] = useState(false);
   const [calculating, setCalculating] = useState(false); const [error, setError] = useState("");
   const [activeEvent, setActiveEvent] = useState<ActiveEvent | null>(null);
 
@@ -64,7 +64,7 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
       const res = await fetch("/api/bookings", { method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ customerId: customer.id || null, name: customer.name, phone: customer.phone, email: customer.email,
           pickup: pickupText, dropoff: dropoffText, stops: stops.filter(Boolean), date: `${d}/${m}/${y}`, time, fare: displayFare, distance,
-          vehicle, paymentMethod, fareType, notes, eventPricingId: activeEvent?.id || null,
+          vehicle, paymentMethod, fareType, notes, buildingInfo: buildingInfo || null, eventPricingId: activeEvent?.id || null,
           eventSurcharge: activeEvent ? displayFare - fare : null }) });
       if (!res.ok) { const d = await res.json(); setError(d.error || "Failed"); setSaving(false); return; }
       onClose();
@@ -84,6 +84,8 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
           <div><p className="text-navy/60 text-xs font-medium mb-2">Customer</p><CustomerPicker onSelect={setCustomer} /></div>
           <div className="flex items-start gap-3"><MapPin className="w-4 h-4 mt-7 shrink-0 text-green-500" />
             <div className="flex-1"><DispatchAddressInput value="" onChange={(addr, place) => { setPickupText(addr); if (place) setPickup(place); }} label="Pickup" placeholder="Enter pickup address..." /></div></div>
+          <div className="ml-7"><p className="text-navy/40 text-xs mb-1">Building / House Info</p>
+            <input type="text" value={buildingInfo} onChange={(e) => setBuildingInfo(e.target.value)} placeholder="House no, flat, building name (optional)" className={inputClass} /></div>
           {stops.map((s, i) => (
             <div key={i} className="flex items-start gap-3"><CircleDot className="w-4 h-4 mt-7 shrink-0 text-amber-500" />
               <div className="flex-1 relative">
