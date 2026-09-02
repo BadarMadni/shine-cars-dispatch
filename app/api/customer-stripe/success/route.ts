@@ -33,6 +33,9 @@ export async function GET(req: NextRequest) {
           fareType: "fixed",
           stops: m.stops || null,
           customerId: m.customerId || undefined,
+          pickupDetails: m.pickupDetails || null,
+          dropoffDetails: m.dropoffDetails || null,
+          buildingInfo: m.buildingInfo || null,
           notes: `stripe:${sessionId}`,
         },
       });

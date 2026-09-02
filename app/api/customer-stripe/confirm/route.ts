@@ -29,6 +29,9 @@ export async function POST(req: Request) {
         status: "pending", paymentMethod: "card", paymentStatus: "paid",
         stops: m.stops || null,
         customerId: m.customerId || undefined,
+        pickupDetails: m.pickupDetails || null,
+        dropoffDetails: m.dropoffDetails || null,
+        buildingInfo: m.buildingInfo || null,
         notes: `stripe:${sessionId}`,
       },
     });
