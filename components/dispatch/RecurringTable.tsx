@@ -116,7 +116,9 @@ export default function RecurringTable({ filter, search }: { filter: string; sea
                 </td>
                 <td className="py-3 px-4 font-bold text-navy">&pound;{rb.fare.toFixed(2)}</td>
                 <td className="py-3 px-4">
-                  {rb.driverStatus === "rejected" ? (
+                  {!rb.isActive && rb.endDate && rb.endDate < new Date().toISOString().split("T")[0] ? (
+                    <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-gray-100 text-gray-500">Expired</span>
+                  ) : rb.driverStatus === "rejected" ? (
                     <span className="text-xs font-semibold px-2 py-1 rounded-lg bg-red-50 text-red-500">Rejected</span>
                   ) : rb.bookings?.[0] ? (
                     <span className={`text-xs font-semibold px-2 py-1 rounded-lg ${statusStyle[rb.bookings[0].status] || "bg-gray-50 text-gray-500"}`}>

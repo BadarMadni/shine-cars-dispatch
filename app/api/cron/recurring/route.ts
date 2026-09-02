@@ -55,5 +55,11 @@ export async function GET(req: NextRequest) {
     created++;
   }
 
-  return NextResponse.json({ success: true, created, date: dateStr, day: dayName });
+  // Auto-deactivate expired recurring bookings
+  const expired = await prisma.recurringBooking.updateMany({
+    where: { isActive: true, endDate: { not: null, lt: dateStr } },
+    data: { isActive: false },
+  });
+
+  return NextResponse.json({ success: true, created, expired: expired.count, date: dateStr, day: dayName });
 }
