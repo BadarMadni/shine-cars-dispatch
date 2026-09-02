@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Bell, MapPin, Navigation, User, Phone, Calendar, Clock, Route, PoundSterling, X, Check, AlertTriangle,
 } from "lucide-react";
-import { playNotificationSound } from "@/components/dispatch/NotificationSound";
+import { startNotificationLoop, stopNotificationLoop } from "@/components/dispatch/NotificationSound";
 
 interface Booking {
   id: string; name: string; phone: string;
@@ -47,7 +47,7 @@ export default function NewBookingAlert() {
           lastIdRef.current = latest.id;
           setBooking(latest);
           setVisible(true);
-          playNotificationSound();
+          startNotificationLoop();
           return;
         }
       }
@@ -65,7 +65,7 @@ export default function NewBookingAlert() {
             status: "pending", createdAt: latest.createdAt, isRecurring: true,
           });
           setVisible(true);
-          playNotificationSound();
+          startNotificationLoop();
         }
       }
     } catch {}
@@ -77,9 +77,10 @@ export default function NewBookingAlert() {
     return () => clearInterval(interval);
   }, [checkNewBookings]);
 
-  const dismiss = () => setVisible(false);
+  const dismiss = () => { stopNotificationLoop(); setVisible(false); };
 
   const confirm = async () => {
+    stopNotificationLoop();
     if (!booking) return;
     await fetch(`/api/bookings/${booking.id}`, {
       method: "PATCH",

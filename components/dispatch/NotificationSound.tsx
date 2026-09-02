@@ -1,38 +1,56 @@
 "use client";
 
+let audioRef: HTMLAudioElement | null = null;
+let loopInterval: ReturnType<typeof setInterval> | null = null;
+let unlocked = false;
+
+// Pre-load and unlock audio on first user interaction
+if (typeof window !== "undefined") {
+  const unlock = () => {
+    if (unlocked) return;
+    const a = new Audio("/booking-alert.wav");
+    a.volume = 0;
+    a.play().then(() => { a.pause(); unlocked = true; }).catch(() => {});
+    document.removeEventListener("click", unlock);
+    document.removeEventListener("keydown", unlock);
+    document.removeEventListener("touchstart", unlock);
+  };
+  document.addEventListener("click", unlock);
+  document.addEventListener("keydown", unlock);
+  document.addEventListener("touchstart", unlock);
+}
+
+export function startNotificationLoop() {
+  stopNotificationLoop();
+  const play = () => {
+    try {
+      if (audioRef) {
+        audioRef.currentTime = 0;
+        audioRef.play().catch(() => {});
+      } else {
+        const audio = new Audio("/booking-alert.wav");
+        audio.volume = 1.0;
+        audioRef = audio;
+        audio.play().catch(() => {});
+      }
+    } catch {}
+  };
+  play();
+  loopInterval = setInterval(play, 2000);
+}
+
+export function stopNotificationLoop() {
+  if (loopInterval) { clearInterval(loopInterval); loopInterval = null; }
+  if (audioRef) {
+    try { audioRef.pause(); audioRef.currentTime = 0; } catch {}
+    audioRef = null;
+  }
+}
+
 export function playNotificationSound() {
   try {
-    const ctx = new AudioContext();
-    const oscillator = ctx.createOscillator();
-    const gain = ctx.createGain();
-
-    oscillator.connect(gain);
-    gain.connect(ctx.destination);
-
-    // First tone
-    oscillator.frequency.setValueAtTime(880, ctx.currentTime);
-    oscillator.frequency.setValueAtTime(1100, ctx.currentTime + 0.15);
-    oscillator.frequency.setValueAtTime(880, ctx.currentTime + 0.3);
-
-    gain.gain.setValueAtTime(0.3, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
-
-    oscillator.start(ctx.currentTime);
-    oscillator.stop(ctx.currentTime + 0.5);
-
-    // Second chime after short pause
-    setTimeout(() => {
-      const ctx2 = new AudioContext();
-      const osc2 = ctx2.createOscillator();
-      const gain2 = ctx2.createGain();
-      osc2.connect(gain2);
-      gain2.connect(ctx2.destination);
-      osc2.frequency.setValueAtTime(1100, ctx2.currentTime);
-      osc2.frequency.setValueAtTime(1320, ctx2.currentTime + 0.1);
-      gain2.gain.setValueAtTime(0.3, ctx2.currentTime);
-      gain2.gain.exponentialRampToValueAtTime(0.01, ctx2.currentTime + 0.4);
-      osc2.start(ctx2.currentTime);
-      osc2.stop(ctx2.currentTime + 0.4);
-    }, 300);
+    const audio = new Audio("/booking-alert.wav");
+    audio.volume = 1.0;
+    audio.play().catch(() => {});
   } catch {}
 }

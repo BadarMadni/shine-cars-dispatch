@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Phone, PhoneOff, User, MapPin, Navigation, Building2 } from "lucide-react";
-import { playNotificationSound } from "@/components/dispatch/NotificationSound";
+import { startNotificationLoop, stopNotificationLoop } from "@/components/dispatch/NotificationSound";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
@@ -31,9 +31,8 @@ export default function IncomingCall({ caller, onAccept, onReject, onDismiss }: 
   const router = useRouter();
 
   useEffect(() => {
-    playNotificationSound();
-    const interval = setInterval(playNotificationSound, 3000);
-    return () => clearInterval(interval);
+    startNotificationLoop();
+    return () => stopNotificationLoop();
   }, []);
 
   return (
