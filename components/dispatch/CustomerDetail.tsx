@@ -138,7 +138,7 @@ export default function CustomerDetail({ customer, onClose }: Props) {
                     </div>
                     <span className="text-navy font-bold">
                       {b.fareType === "meter" && !b.meterFare
-                        ? `£${(b.fare * 0.9).toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
+                        ? `£${b.fare.toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
                         : `£${(b.meterFare ?? b.fare).toFixed(2)}`}
                     </span>
                   </div>

@@ -134,7 +134,7 @@ export function calculateFareRange(
 ): { min: number; max: number } {
   const fare = calculateFare(distanceMiles, pickupLat, pickupLng, vehicle, isSunday);
   return {
-    min: Math.round(fare * 0.9 * 100) / 100,
+    min: Math.round(fare * 100) / 100,
     max: Math.round(fare * 1.1 * 100) / 100,
   };
 }

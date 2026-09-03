@@ -35,7 +35,7 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     { icon: Gauge, color: "text-orange-500", label: "Fare Type", value: (b.fareType || "fixed").toUpperCase() },
     { icon: PoundSterling, color: "text-gold", label: b.fareType === "meter" ? "Estimated Fare" : "Fare",
       value: b.fareType === "meter" && !b.meterFare
-        ? `£${(b.fare * 0.9).toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
+        ? `£${b.fare.toFixed(2)} – £${(b.fare * 1.1).toFixed(2)}`
         : `£${b.fare.toFixed(2)}` },
     ...(b.fareType === "meter" && b.meterFare ? [
       { icon: Gauge, color: "text-green-500", label: "Meter Fare (Final)", value: `£${b.meterFare.toFixed(2)}` },
