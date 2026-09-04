@@ -92,6 +92,11 @@ export type ChatMessage = Prisma.ChatMessageModel
  */
 export type DriverDocument = Prisma.DriverDocumentModel
 /**
+ * Model SiteSetting
+ * 
+ */
+export type SiteSetting = Prisma.SiteSettingModel
+/**
  * Model EventPricing
  * 
  */

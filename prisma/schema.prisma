@@ -36,7 +36,8 @@ model Booking {
   buildingInfo   String?
   eventPricingId String?
   eventSurcharge Float?
-  isUrgent      Boolean   @default(false)
+  isPriority    Boolean   @default(false)
+  priorityCharge Float?
   isRecurring   Boolean   @default(false)
   recurringId   String?
   createdAt     DateTime  @default(now())
@@ -209,6 +210,12 @@ model DriverDocument {
   driver     Driver   @relation(fields: [driverId], references: [id])
 
   @@index([driverId])
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
 }
 
 model EventPricing {

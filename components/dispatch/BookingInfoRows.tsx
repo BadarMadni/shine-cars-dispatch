@@ -10,7 +10,8 @@ interface Booking {
   vehicle?: string; paymentMethod?: string; paymentStatus?: string;
   fareType?: string; meterDistance?: number | null; meterFare?: number | null;
   cashCollected?: number | null; status?: string;
-  isUrgent?: boolean;
+  isPriority?: boolean;
+  priorityCharge?: number | null;
   eventSurcharge?: number | null;
   pickupDetails?: string | null; dropoffDetails?: string | null;
   buildingInfo?: string | null;
@@ -19,7 +20,7 @@ interface Booking {
 export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
   const parsedStops: string[] = b.stops ? (() => { try { return JSON.parse(b.stops); } catch { return []; } })() : [];
   const rows = [
-    ...(b.isUrgent ? [{ icon: AlertTriangle, color: "text-red-500", label: "Priority", value: "URGENT" }] : []),
+    ...(b.isPriority ? [{ icon: AlertTriangle, color: "text-orange-500", label: "Priority", value: b.priorityCharge ? `PRIORITY (+£${b.priorityCharge.toFixed(2)})` : "PRIORITY" }] : []),
     { icon: User, color: "text-blue-500", label: "Customer", value: b.name },
     { icon: Phone, color: "text-navy/40", label: "Phone", value: b.phone },
     { icon: MapPin, color: "text-green-500", label: "Pickup", value: b.pickup },

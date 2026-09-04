@@ -17,7 +17,7 @@ interface Booking {
   paymentMethod?: string;
   paymentStatus?: string;
   isRecurring?: boolean;
-  isUrgent?: boolean;
+  isPriority?: boolean;
   status: string; createdAt: string; notes: string | null;
 }
 
@@ -99,7 +99,7 @@ export default function BookingTable({ filter, search }: { filter: string; searc
                 <td className="py-3.5 px-2 sm:px-4">
                   <div className="flex items-center gap-1.5">
                     <p className="font-semibold text-navy">{b.name}</p>
-                    {b.isUrgent && <span className="text-[9px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded-full flex items-center gap-0.5"><AlertTriangle className="w-2.5 h-2.5" />URGENT</span>}
+                    {b.isPriority && <span className="text-[9px] font-bold bg-orange-100 text-orange-600 px-1.5 py-0.5 rounded-full flex items-center gap-0.5"><AlertTriangle className="w-2.5 h-2.5" />PRIORITY</span>}
                     {b.isRecurring && <span className="text-[9px] font-bold bg-purple-100 text-purple-700 px-1.5 py-0.5 rounded-full">RECURRING</span>}
                   </div>
                   <p className="text-navy/40 text-xs flex items-center gap-1">

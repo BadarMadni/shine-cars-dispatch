@@ -61,6 +61,7 @@ export const ModelName = {
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
   DriverDocument: 'DriverDocument',
+  SiteSetting: 'SiteSetting',
   EventPricing: 'EventPricing'
 } as const
 
@@ -109,7 +110,8 @@ export const BookingScalarFieldEnum = {
   buildingInfo: 'buildingInfo',
   eventPricingId: 'eventPricingId',
   eventSurcharge: 'eventSurcharge',
-  isUrgent: 'isUrgent',
+  isPriority: 'isPriority',
+  priorityCharge: 'priorityCharge',
   isRecurring: 'isRecurring',
   recurringId: 'recurringId',
   createdAt: 'createdAt',
@@ -263,6 +265,15 @@ export const DriverDocumentScalarFieldEnum = {
 } as const
 
 export type DriverDocumentScalarFieldEnum = (typeof DriverDocumentScalarFieldEnum)[keyof typeof DriverDocumentScalarFieldEnum]
+
+
+export const SiteSettingScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  value: 'value'
+} as const
+
+export type SiteSettingScalarFieldEnum = (typeof SiteSettingScalarFieldEnum)[keyof typeof SiteSettingScalarFieldEnum]
 
 
 export const EventPricingScalarFieldEnum = {
