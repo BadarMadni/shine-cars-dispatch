@@ -50,13 +50,13 @@ export default function SIPPhone() {
         }
       } catch {}
 
-      // Then search bookings by phone number (regular + recurring)
-      const [regRes, recRes] = await Promise.all([
-        fetch(`/api/bookings?search=${encodeURIComponent(searchDigits)}&limit=50`),
-        fetch(`/api/bookings?search=${encodeURIComponent(searchDigits)}&limit=50&recurring=true`),
-      ]);
-      const [regData, recData] = await Promise.all([regRes.json(), recRes.json()]);
-      const customerBookings = [...(regData.bookings || []), ...(recData.bookings || [])];
+      // Then search bookings for history
+      const res = await fetch(`/api/bookings?limit=100`);
+      const data = await res.json();
+      const customerBookings = data.bookings?.filter((b: { phone: string }) =>
+        b.phone.replace(/[^0-9+]/g, "").includes(searchDigits) ||
+        searchDigits.includes(b.phone.replace(/[^0-9+]/g, "").slice(-10))
+      ) || [];
 
       const match = customerBookings[0];
       const name = customerName || match?.name;
