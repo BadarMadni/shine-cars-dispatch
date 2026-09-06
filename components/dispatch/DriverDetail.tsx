@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, X, Loader2, FileText, Shield, Car, CreditCard, Calendar, ZoomIn } from "lucide-react";
+import { Clock, X, Loader2, FileText, Shield, Car, CreditCard, Calendar, ZoomIn, Pencil, Save } from "lucide-react";
 
 interface Document {
   id: string; type: string; fileUrl?: string; expiryDate: string;
@@ -50,16 +50,43 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
   const [driver, setDriver] = useState<FullDriver | null>(null);
   const [loading, setLoading] = useState(false);
   const [lightbox, setLightbox] = useState<{ url: string; label: string } | null>(null);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", vehicleMake: "", vehicleColor: "", vehicleReg: "", passengerLicense: "" });
 
   useEffect(() => {
     if (!driverId) { setDriver(null); return; }
     setLoading(true);
     fetch(`/api/drivers/${driverId}`)
       .then((r) => r.json())
-      .then((d) => setDriver(d.driver || null))
+      .then((d) => {
+        setDriver(d.driver || null);
+        if (d.driver) setForm({
+          name: d.driver.name, email: d.driver.email, phone: d.driver.phone,
+          vehicleMake: d.driver.vehicleMake || "", vehicleColor: d.driver.vehicleColor || "",
+          vehicleReg: d.driver.vehicleReg || "", passengerLicense: d.driver.passengerLicense ? String(d.driver.passengerLicense) : "",
+        });
+      })
       .catch(() => setDriver(null))
       .finally(() => setLoading(false));
   }, [driverId]);
+
+  const handleSave = async () => {
+    if (!driver) return;
+    setSaving(true);
+    try {
+      const res = await fetch(`/api/drivers/${driver.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDriver({ ...driver, ...form, passengerLicense: form.passengerLicense ? parseInt(form.passengerLicense) : undefined });
+        setEditing(false);
+      }
+    } catch {} finally { setSaving(false); }
+  };
 
   return (
     <>
@@ -79,22 +106,51 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
               <>
                 <div className="p-6 border-b border-gray-100 flex items-center justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-navy">{driver.name}</h3>
+                    {editing ? (
+                      <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
+                        className="text-lg font-bold text-navy border-b-2 border-blue-400 outline-none bg-transparent w-full" />
+                    ) : (
+                      <h3 className="text-lg font-bold text-navy">{driver.name}</h3>
+                    )}
                     <StatusBadge status={driver.status} />
                   </div>
-                  <button onClick={onClose} className="text-navy/30 hover:text-navy cursor-pointer">
-                    <X className="w-5 h-5" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {editing ? (
+                      <button onClick={handleSave} disabled={saving}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-lg hover:bg-green-700 cursor-pointer disabled:opacity-50">
+                        {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Save className="w-3.5 h-3.5" />}
+                        Save
+                      </button>
+                    ) : (
+                      <button onClick={() => setEditing(true)}
+                        className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg hover:bg-blue-100 cursor-pointer">
+                        <Pencil className="w-3.5 h-3.5" /> Edit
+                      </button>
+                    )}
+                    <button onClick={() => { setEditing(false); onClose(); }} className="text-navy/30 hover:text-navy cursor-pointer">
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
                 </div>
                 <div className="p-6 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-navy/40 text-xs mb-1">Email</p>
-                      <p className="text-sm text-navy font-medium">{driver.email}</p>
+                      {editing ? (
+                        <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
+                          className="text-sm text-navy font-medium w-full border-b border-gray-300 outline-none bg-transparent py-0.5" />
+                      ) : (
+                        <p className="text-sm text-navy font-medium">{driver.email}</p>
+                      )}
                     </div>
                     <div>
                       <p className="text-navy/40 text-xs mb-1">Phone</p>
-                      <p className="text-sm text-navy font-medium">{driver.phone}</p>
+                      {editing ? (
+                        <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                          className="text-sm text-navy font-medium w-full border-b border-gray-300 outline-none bg-transparent py-0.5" />
+                      ) : (
+                        <p className="text-sm text-navy font-medium">{driver.phone}</p>
+                      )}
                     </div>
                     <div>
                       <p className="text-navy/40 text-xs mb-1">Registered</p>
@@ -104,16 +160,26 @@ export default function DriverDetail({ driverId, updating, onClose, onUpdateStat
                       </p>
                     </div>
                   </div>
-                  {(driver.vehicleMake || driver.vehicleColor || driver.vehicleReg || driver.passengerLicense) && (
-                    <div className="bg-gray-50 rounded-xl p-4">
-                      <h4 className="text-sm font-bold text-navy mb-2 flex items-center gap-1.5"><Car className="w-4 h-4" /> Vehicle</h4>
+                  <div className="bg-gray-50 rounded-xl p-4">
+                    <h4 className="text-sm font-bold text-navy mb-2 flex items-center gap-1.5"><Car className="w-4 h-4" /> Vehicle</h4>
+                    {editing ? (
+                      <div className="grid grid-cols-2 gap-3 text-sm">
+                        {([["Make", "vehicleMake"], ["Color", "vehicleColor"], ["Reg No.", "vehicleReg"], ["Licence to Carry", "passengerLicense"]] as const).map(([label, key]) => (
+                          <div key={key}>
+                            <p className="text-navy/40 text-xs mb-0.5">{label}</p>
+                            <input value={form[key]} onChange={(e) => setForm({ ...form, [key]: e.target.value })}
+                              className="text-navy font-medium w-full border-b border-gray-300 outline-none bg-transparent py-0.5 text-sm" />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
                       <div className="grid grid-cols-2 gap-3 text-sm">
                         {[["Make", driver.vehicleMake], ["Color", driver.vehicleColor], ["Reg No.", driver.vehicleReg], ["Licence to Carry", driver.passengerLicense ? String(driver.passengerLicense) : null]].map(([l, v]) => (
                           <div key={l as string}><p className="text-navy/40 text-xs mb-0.5">{l}</p><p className="text-navy font-medium">{v || "—"}</p></div>
                         ))}
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div>
                     <h4 className="text-sm font-bold text-navy mb-3">Documents ({driver.documents.length})</h4>
                     {driver.documents.length === 0 ? (

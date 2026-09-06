@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Search, Building2, UserRound, Mail, Phone, Calendar, Car } from "lucide-react";
+import { Search, Building2, UserRound, Mail, Phone, Calendar, Car, Pencil } from "lucide-react";
 import CustomerDetail from "@/components/dispatch/CustomerDetail";
 
 interface Customer {
@@ -77,13 +77,14 @@ export default function CustomersTable({ filter }: { filter: string }) {
               <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium">Type</th>
               <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium">Rides</th>
               <th className="text-left px-2 sm:px-4 py-3 text-navy/40 font-medium hidden sm:table-cell">Joined</th>
+              <th className="px-2 sm:px-4 py-3 text-navy/40 font-medium w-10"></th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="text-center py-8 text-navy/30">Loading...</td></tr>
+              <tr><td colSpan={7} className="text-center py-8 text-navy/30">Loading...</td></tr>
             ) : visible.length === 0 ? (
-              <tr><td colSpan={6} className="text-center py-8 text-navy/30">No customers found</td></tr>
+              <tr><td colSpan={7} className="text-center py-8 text-navy/30">No customers found</td></tr>
             ) : visible.map((c) => (
               <tr key={c.id} onClick={() => setSelected(c)}
                 className="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors">
@@ -108,6 +109,13 @@ export default function CustomersTable({ filter }: { filter: string }) {
                 </td>
                 <td className="px-2 sm:px-4 py-3 text-navy/40 text-xs hidden sm:table-cell">
                   {new Date(c.createdAt).toLocaleDateString("en-GB")}
+                </td>
+                <td className="px-2 sm:px-4 py-3">
+                  <button onClick={(e) => { e.stopPropagation(); setSelected(c); }}
+                    className="p-1.5 rounded-lg hover:bg-blue-50 text-navy/30 hover:text-blue-600 cursor-pointer transition-colors"
+                    title="Edit customer">
+                    <Pencil className="w-4 h-4" />
+                  </button>
                 </td>
               </tr>
             ))}
@@ -134,7 +142,11 @@ export default function CustomersTable({ filter }: { filter: string }) {
 
       {/* Detail Modal */}
       {selected && (
-        <CustomerDetail customer={selected} onClose={() => setSelected(null)} />
+        <CustomerDetail customer={selected} onClose={() => setSelected(null)}
+          onUpdate={(updated) => {
+            setSelected(updated);
+            setCustomers((prev) => prev.map((c) => c.id === updated.id ? updated : c));
+          }} />
       )}
     </div>
   );

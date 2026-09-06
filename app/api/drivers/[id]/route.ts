@@ -55,6 +55,13 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (typeof body.isEnabled === "boolean") {
       data.isEnabled = body.isEnabled;
     }
+    if (body.name !== undefined) data.name = body.name;
+    if (body.email !== undefined) data.email = body.email;
+    if (body.phone !== undefined) data.phone = body.phone;
+    if (body.vehicleMake !== undefined) data.vehicleMake = body.vehicleMake || null;
+    if (body.vehicleColor !== undefined) data.vehicleColor = body.vehicleColor || null;
+    if (body.vehicleReg !== undefined) data.vehicleReg = body.vehicleReg || null;
+    if (body.passengerLicense !== undefined) data.passengerLicense = body.passengerLicense ? parseInt(body.passengerLicense) : null;
 
     if (!Object.keys(data).length) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });

@@ -1,6 +1,29 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { id, name, email, phone, accountType, companyName } = body;
+    if (!id) return NextResponse.json({ error: "Missing customer id" }, { status: 400 });
+
+    const customer = await prisma.customer.update({
+      where: { id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(email !== undefined && { email }),
+        ...(phone !== undefined && { phone }),
+        ...(accountType !== undefined && { accountType }),
+        ...(companyName !== undefined && { companyName: companyName || null }),
+      },
+    });
+
+    return NextResponse.json({ customer });
+  } catch {
+    return NextResponse.json({ error: "Failed to update customer" }, { status: 500 });
+  }
+}
+
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
