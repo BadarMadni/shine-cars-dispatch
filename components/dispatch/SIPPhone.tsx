@@ -30,30 +30,43 @@ export default function SIPPhone() {
   const lookupCaller = useCallback(async (number: string): Promise<CallerInfo> => {
     try {
       const clean = number.replace(/[^0-9+]/g, "");
+      const searchDigits = clean.slice(-10);
+
+      // First search customers directly by phone
+      let customerId: string | undefined;
+      let customerName: string | undefined;
+      let accountType: string | undefined;
+      try {
+        const custRes = await fetch(`/api/customers?search=${encodeURIComponent(searchDigits)}`);
+        const custData = await custRes.json();
+        const cust = custData.customers?.find((c: { phone: string }) =>
+          c.phone.replace(/[^0-9+]/g, "").includes(searchDigits) ||
+          searchDigits.includes(c.phone.replace(/[^0-9+]/g, "").slice(-10))
+        );
+        if (cust) {
+          customerId = cust.id;
+          customerName = cust.name;
+          accountType = cust.accountType;
+        }
+      } catch {}
+
+      // Then search bookings for history
       const res = await fetch(`/api/bookings?limit=100`);
       const data = await res.json();
-      const match = data.bookings?.find((b: { phone: string }) =>
-        b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10)) ||
-        clean.includes(b.phone.replace(/[^0-9+]/g, "").slice(-10))
-      );
-      if (match) {
-        const customerBookings = data.bookings.filter((b: { phone: string }) =>
-          b.phone.replace(/[^0-9+]/g, "").includes(clean.slice(-10))
-        );
-        const allBookings = customerBookings
-          .map((b: { id: string; pickup: string; dropoff: string; date: string; time: string; status: string; fare: number }) => ({
-            id: b.id, pickup: b.pickup, dropoff: b.dropoff, date: b.date, time: b.time, status: b.status, fare: b.fare,
-          }));
-        let customerId: string | undefined;
-        let accountType: string | undefined;
-        try {
-          const custRes = await fetch(`/api/customers?search=${encodeURIComponent(clean.slice(-10))}`);
-          const custData = await custRes.json();
-          const cust = custData.customers?.[0];
-          if (cust) { customerId = cust.id; accountType = cust.accountType; }
-        } catch {}
+      const customerBookings = data.bookings?.filter((b: { phone: string }) =>
+        b.phone.replace(/[^0-9+]/g, "").includes(searchDigits) ||
+        searchDigits.includes(b.phone.replace(/[^0-9+]/g, "").slice(-10))
+      ) || [];
+
+      const match = customerBookings[0];
+      const name = customerName || match?.name;
+
+      if (name || customerId) {
+        const allBookings = customerBookings.map((b: { id: string; pickup: string; dropoff: string; stops?: string | null; date: string; time: string; status: string; fare: number }) => ({
+          id: b.id, pickup: b.pickup, dropoff: b.dropoff, stops: b.stops, date: b.date, time: b.time, status: b.status, fare: b.fare,
+        }));
         return {
-          number: clean, name: match.name, lastPickup: match.pickup,
+          number: clean, name, lastPickup: match?.pickup,
           totalTrips: customerBookings.length, activeBookings: allBookings.length ? allBookings : undefined,
           customerId, accountType,
         };
