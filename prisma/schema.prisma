@@ -36,6 +36,7 @@ model Booking {
   buildingInfo   String?
   eventPricingId String?
   eventSurcharge Float?
+  waitingCharge Float?
   isPriority    Boolean   @default(false)
   priorityCharge Float?
   isRecurring   Boolean   @default(false)

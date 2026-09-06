@@ -1,6 +1,6 @@
 import {
   MapPin, Navigation, Route, PoundSterling, Phone, User,
-  Calendar, Clock, Car, CreditCard, Gauge, Banknote, Zap, AlertTriangle, Building2,
+  Calendar, Clock, Car, CreditCard, Gauge, Banknote, Zap, AlertTriangle, Building2, Timer,
 } from "lucide-react";
 
 interface Booking {
@@ -13,6 +13,7 @@ interface Booking {
   isPriority?: boolean;
   priorityCharge?: number | null;
   eventSurcharge?: number | null;
+  waitingCharge?: number | null;
   pickupDetails?: string | null; dropoffDetails?: string | null;
   buildingInfo?: string | null;
 }
@@ -48,6 +49,9 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     ] : []),
     ...(b.cashCollected != null && b.status === "completed" ? [
       { icon: Banknote, color: "text-green-500", label: "Cash Collected by Driver", value: `£${b.cashCollected.toFixed(2)}` },
+    ] : []),
+    ...(b.waitingCharge != null && b.waitingCharge > 0 ? [
+      { icon: Timer, color: "text-orange-500", label: "Waiting Charge", value: `+£${b.waitingCharge.toFixed(2)}` },
     ] : []),
   ];
 
