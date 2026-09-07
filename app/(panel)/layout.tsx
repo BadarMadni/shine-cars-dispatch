@@ -1,5 +1,6 @@
 import Sidebar from "@/components/dispatch/Sidebar";
 import NewBookingAlert from "@/components/dispatch/NewBookingAlert";
+import NewMessageAlert from "@/components/dispatch/NewMessageAlert";
 import SIPPhone from "@/components/dispatch/SIPPhone";
 
 export default function PanelLayout({ children }: { children: React.ReactNode }) {
@@ -10,6 +11,7 @@ export default function PanelLayout({ children }: { children: React.ReactNode })
         {children}
       </main>
       <NewBookingAlert />
+      <NewMessageAlert />
       <SIPPhone />
     </div>
   );
