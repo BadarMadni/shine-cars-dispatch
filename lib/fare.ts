@@ -4,6 +4,11 @@ const OFFICE_LNG = 0.1601;
 const SURCHARGE_RADIUS_MILES = 3;
 const SURCHARGE_PER_MILE = 1;
 
+// March, Cambridgeshire (PE15)
+const MARCH_LAT = 52.5512;
+const MARCH_LNG = 0.0882;
+const MARCH_RADIUS_MILES = 3;
+
 export type VehicleType = "car" | "mpv";
 
 export const VEHICLES = {
@@ -34,6 +39,7 @@ export function calculateFare(
   pickupLng?: number,
   vehicle: VehicleType = "car",
   isSunday = false,
+  skipPickupSurcharge = false,
 ): number {
   if (distanceMiles <= 0) return 0;
 
@@ -52,7 +58,7 @@ export function calculateFare(
     fare = calcNormal(distanceMiles, r);
   }
 
-  if (pickupLat !== undefined && pickupLng !== undefined) {
+  if (!skipPickupSurcharge && pickupLat !== undefined && pickupLng !== undefined) {
     const distFromOffice = haversineDistance(OFFICE_LAT, OFFICE_LNG, pickupLat, pickupLng);
     if (distFromOffice > SURCHARGE_RADIUS_MILES) {
       fare += (distFromOffice - SURCHARGE_RADIUS_MILES) * SURCHARGE_PER_MILE;
@@ -98,6 +104,11 @@ export function isOutsideOfficeRadius(lat: number, lng: number): boolean {
   return haversineDistance(OFFICE_LAT, OFFICE_LNG, lat, lng) > SURCHARGE_RADIUS_MILES;
 }
 
+/** Check if a location is in the March area */
+export function isInMarchArea(lat: number, lng: number): boolean {
+  return haversineDistance(MARCH_LAT, MARCH_LNG, lat, lng) <= MARCH_RADIUS_MILES;
+}
+
 export function pickupSurcharge(lat: number, lng: number): number {
   const dist = haversineDistance(OFFICE_LAT, OFFICE_LNG, lat, lng);
   if (dist <= SURCHARGE_RADIUS_MILES) return 0;
@@ -131,8 +142,9 @@ export function calculateFareRange(
   pickupLng?: number,
   vehicle: VehicleType = "car",
   isSunday = false,
+  skipPickupSurcharge = false,
 ): { min: number; max: number } {
-  const fare = calculateFare(distanceMiles, pickupLat, pickupLng, vehicle, isSunday);
+  const fare = calculateFare(distanceMiles, pickupLat, pickupLng, vehicle, isSunday, skipPickupSurcharge);
   return {
     min: Math.round(fare * 100) / 100,
     max: Math.round(fare * 1.1 * 100) / 100,

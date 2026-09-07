@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { X, MapPin, Navigation, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import DispatchAddressInput, { type PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, isInMarchArea, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface RecurringBooking {
   id: string; name: string; phone: string; pickup: string; dropoff: string;
@@ -34,6 +34,12 @@ export default function EditRecurringModal({ item, onClose }: { item: RecurringB
   const [saving, setSaving] = useState(false);
   const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState("");
+  const [marchSurchargeOn, setMarchSurchargeOn] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/settings/march-surcharge").then((r) => r.json())
+      .then((d) => setMarchSurchargeOn(d.enabled !== false)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!pickup || !dropoff || !window.google?.maps) return;
@@ -47,10 +53,11 @@ export default function EditRecurringModal({ item, onClose }: { item: RecurringB
         if (status !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
         const miles = metersToMiles(res.rows[0].elements[0].distance.value);
         setDistance(miles);
-        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, false));
+        const skipSurcharge = !marchSurchargeOn && isInMarchArea(pickup.lat, pickup.lng);
+        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, false, skipSurcharge));
       }
     );
-  }, [pickup, dropoff, vehicle]);
+  }, [pickup, dropoff, vehicle, marchSurchargeOn]);
 
   const toggleDay = (d: string) => setDays((p) => p.includes(d) ? p.filter((x) => x !== d) : [...p, d]);
 

@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { X, MapPin, Navigation, Loader2, Plus, CircleDot } from "lucide-react";
 import CustomerPicker from "@/components/dispatch/CustomerPicker";
 import DispatchAddressInput, { PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, isInMarchArea, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
 
 function applyEventSurcharge(fare: number, percent: number) {
   return Math.round(fare * (1 + percent / 100) * 100) / 100;
@@ -28,6 +28,12 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
   const [notes, setNotes] = useState(""); const [buildingInfo, setBuildingInfo] = useState(""); const [saving, setSaving] = useState(false);
   const [calculating, setCalculating] = useState(false); const [error, setError] = useState("");
   const [activeEvent, setActiveEvent] = useState<ActiveEvent | null>(null);
+  const [marchSurchargeOn, setMarchSurchargeOn] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/settings/march-surcharge").then((r) => r.json())
+      .then((d) => setMarchSurchargeOn(d.enabled !== false)).catch(() => {});
+  }, []);
 
   useEffect(() => {
     if (!date || !time) { setActiveEvent(null); return; }
@@ -45,10 +51,11 @@ export default function CreateBookingModal({ onClose }: { onClose: () => void })
       setCalculating(false);
       if (status !== "OK" || !res?.routes[0]) return;
       const miles = metersToMiles(res.routes[0].legs.reduce((sum, leg) => sum + (leg.distance?.value || 0), 0));
-      setDistance(miles); setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date)));
+      const skipSurcharge = !marchSurchargeOn && isInMarchArea(pickup.lat, pickup.lng);
+      setDistance(miles); setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, isSundayOrHoliday(date), skipSurcharge));
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pickup, dropoff, vehicle, JSON.stringify(stops)]);
+  }, [pickup, dropoff, vehicle, JSON.stringify(stops), marchSurchargeOn]);
 
   const inputClass = "w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-navy outline-none focus:border-crimson/50";
   const displayFare = activeEvent ? applyEventSurcharge(fare, activeEvent.increasePercent) : fare;

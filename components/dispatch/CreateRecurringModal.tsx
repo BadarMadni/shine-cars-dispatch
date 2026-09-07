@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { X, MapPin, Navigation, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import DispatchAddressInput, { type PlaceData } from "@/components/dispatch/DispatchAddressInput";
-import { calculateFare, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
+import { calculateFare, isInMarchArea, isSundayOrHoliday, metersToMiles, type VehicleType } from "@/lib/fare";
 
 interface Company { id: string; name: string; companyName: string | null; phone: string }
 const ALL_DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"];
@@ -23,9 +23,12 @@ export default function CreateRecurringModal({ onClose }: { onClose: () => void 
   const [startDate, setStartDate] = useState(""); const [endDate, setEndDate] = useState("");
   const [saving, setSaving] = useState(false); const [calculating, setCalculating] = useState(false);
   const [error, setError] = useState("");
+  const [marchSurchargeOn, setMarchSurchargeOn] = useState(true);
 
   useEffect(() => {
     fetch("/api/customers?type=company").then((r) => r.json()).then((d) => setCompanies(d.customers || [])).catch(() => {});
+    fetch("/api/settings/march-surcharge").then((r) => r.json())
+      .then((d) => setMarchSurchargeOn(d.enabled !== false)).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -40,10 +43,11 @@ export default function CreateRecurringModal({ onClose }: { onClose: () => void 
         if (status !== "OK" || !res?.rows[0]?.elements[0]?.distance) return;
         const miles = metersToMiles(res.rows[0].elements[0].distance.value);
         setDistance(miles);
-        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, false));
+        const skipSurcharge = !marchSurchargeOn && isInMarchArea(pickup.lat, pickup.lng);
+        setFare(calculateFare(miles, pickup.lat, pickup.lng, vehicle, false, skipSurcharge));
       }
     );
-  }, [pickup, dropoff, vehicle]);
+  }, [pickup, dropoff, vehicle, marchSurchargeOn]);
 
   const toggleDay = (d: string) => setDays((p) => p.includes(d) ? p.filter((x) => x !== d) : [...p, d]);
 
