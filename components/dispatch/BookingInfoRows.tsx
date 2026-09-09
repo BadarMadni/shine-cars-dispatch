@@ -14,6 +14,7 @@ interface Booking {
   priorityCharge?: number | null;
   eventSurcharge?: number | null;
   waitingCharge?: number | null;
+  waitingSeconds?: number | null;
   extraChargeNote?: string | null;
   pickupDetails?: string | null; dropoffDetails?: string | null;
   buildingInfo?: string | null;
@@ -50,6 +51,9 @@ export default function BookingInfoRows({ booking: b }: { booking: Booking }) {
     ] : []),
     ...(b.cashCollected != null && b.status === "completed" ? [
       { icon: Banknote, color: "text-green-500", label: "Cash Collected by Driver", value: `£${b.cashCollected.toFixed(2)}` },
+    ] : []),
+    ...(b.waitingSeconds != null && b.waitingSeconds > 0 ? [
+      { icon: Timer, color: "text-orange-500", label: "Waiting Time", value: `${Math.floor(b.waitingSeconds / 60)} min ${b.waitingSeconds % 60}s` },
     ] : []),
     ...(b.waitingCharge != null && b.waitingCharge > 0 ? [
       { icon: Timer, color: "text-orange-500", label: "Waiting Charge", value: `+£${b.waitingCharge.toFixed(2)}` },

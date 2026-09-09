@@ -708,14 +708,6 @@ export type DriverUpdateOneWithoutBookingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DriverUpdateToOneWithWhereWithoutBookingsInput, Prisma.DriverUpdateWithoutBookingsInput>, Prisma.DriverUncheckedUpdateWithoutBookingsInput>
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type DriverCreateNestedOneWithoutRecurringBookingsInput = {
   create?: Prisma.XOR<Prisma.DriverCreateWithoutRecurringBookingsInput, Prisma.DriverUncheckedCreateWithoutRecurringBookingsInput>
   connectOrCreate?: Prisma.DriverCreateOrConnectWithoutRecurringBookingsInput

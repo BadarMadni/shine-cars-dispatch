@@ -34,6 +34,7 @@ export type BookingAvgAggregateOutputType = {
   cashCollected: number | null
   eventSurcharge: number | null
   waitingCharge: number | null
+  waitingSeconds: number | null
   priorityCharge: number | null
 }
 
@@ -45,6 +46,7 @@ export type BookingSumAggregateOutputType = {
   cashCollected: number | null
   eventSurcharge: number | null
   waitingCharge: number | null
+  waitingSeconds: number | null
   priorityCharge: number | null
 }
 
@@ -78,6 +80,7 @@ export type BookingMinAggregateOutputType = {
   eventPricingId: string | null
   eventSurcharge: number | null
   waitingCharge: number | null
+  waitingSeconds: number | null
   extraChargeNote: string | null
   isPriority: boolean | null
   priorityCharge: number | null
@@ -117,6 +120,7 @@ export type BookingMaxAggregateOutputType = {
   eventPricingId: string | null
   eventSurcharge: number | null
   waitingCharge: number | null
+  waitingSeconds: number | null
   extraChargeNote: string | null
   isPriority: boolean | null
   priorityCharge: number | null
@@ -156,6 +160,7 @@ export type BookingCountAggregateOutputType = {
   eventPricingId: number
   eventSurcharge: number
   waitingCharge: number
+  waitingSeconds: number
   extraChargeNote: number
   isPriority: number
   priorityCharge: number
@@ -175,6 +180,7 @@ export type BookingAvgAggregateInputType = {
   cashCollected?: true
   eventSurcharge?: true
   waitingCharge?: true
+  waitingSeconds?: true
   priorityCharge?: true
 }
 
@@ -186,6 +192,7 @@ export type BookingSumAggregateInputType = {
   cashCollected?: true
   eventSurcharge?: true
   waitingCharge?: true
+  waitingSeconds?: true
   priorityCharge?: true
 }
 
@@ -219,6 +226,7 @@ export type BookingMinAggregateInputType = {
   eventPricingId?: true
   eventSurcharge?: true
   waitingCharge?: true
+  waitingSeconds?: true
   extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
@@ -258,6 +266,7 @@ export type BookingMaxAggregateInputType = {
   eventPricingId?: true
   eventSurcharge?: true
   waitingCharge?: true
+  waitingSeconds?: true
   extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
@@ -297,6 +306,7 @@ export type BookingCountAggregateInputType = {
   eventPricingId?: true
   eventSurcharge?: true
   waitingCharge?: true
+  waitingSeconds?: true
   extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
@@ -423,6 +433,7 @@ export type BookingGroupByOutputType = {
   eventPricingId: string | null
   eventSurcharge: number | null
   waitingCharge: number | null
+  waitingSeconds: number | null
   extraChargeNote: string | null
   isPriority: boolean
   priorityCharge: number | null
@@ -485,6 +496,7 @@ export type BookingWhereInput = {
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingSeconds?: Prisma.IntNullableFilter<"Booking"> | number | null
   extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
@@ -528,6 +540,7 @@ export type BookingOrderByWithRelationInput = {
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
   waitingCharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrderInput | Prisma.SortOrder
   extraChargeNote?: Prisma.SortOrderInput | Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -574,6 +587,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingSeconds?: Prisma.IntNullableFilter<"Booking"> | number | null
   extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
@@ -617,6 +631,7 @@ export type BookingOrderByWithAggregationInput = {
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
   waitingCharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrderInput | Prisma.SortOrder
   extraChargeNote?: Prisma.SortOrderInput | Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -664,6 +679,7 @@ export type BookingScalarWhereWithAggregatesInput = {
   eventPricingId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
   waitingCharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  waitingSeconds?: Prisma.IntNullableWithAggregatesFilter<"Booking"> | number | null
   extraChargeNote?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
@@ -701,6 +717,7 @@ export type BookingCreateInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -743,6 +760,7 @@ export type BookingUncheckedCreateInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -781,6 +799,7 @@ export type BookingUpdateInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -823,6 +842,7 @@ export type BookingUncheckedUpdateInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -863,6 +883,7 @@ export type BookingCreateManyInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -900,6 +921,7 @@ export type BookingUpdateManyMutationInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -938,6 +960,7 @@ export type BookingUncheckedUpdateManyInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -977,6 +1000,7 @@ export type BookingCountOrderByAggregateInput = {
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   waitingCharge?: Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrder
   extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
@@ -994,6 +1018,7 @@ export type BookingAvgOrderByAggregateInput = {
   cashCollected?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   waitingCharge?: Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
 }
 
@@ -1027,6 +1052,7 @@ export type BookingMaxOrderByAggregateInput = {
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   waitingCharge?: Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrder
   extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
@@ -1066,6 +1092,7 @@ export type BookingMinOrderByAggregateInput = {
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   waitingCharge?: Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrder
   extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
@@ -1083,6 +1110,7 @@ export type BookingSumOrderByAggregateInput = {
   cashCollected?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
   waitingCharge?: Prisma.SortOrder
+  waitingSeconds?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
 }
 
@@ -1127,6 +1155,14 @@ export type NullableFloatFieldUpdateOperationsInput = {
 
 export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
+}
+
+export type NullableIntFieldUpdateOperationsInput = {
+  set?: number | null
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
 }
 
 export type BoolFieldUpdateOperationsInput = {
@@ -1305,6 +1341,7 @@ export type BookingCreateWithoutDriverInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1345,6 +1382,7 @@ export type BookingUncheckedCreateWithoutDriverInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1414,6 +1452,7 @@ export type BookingScalarWhereInput = {
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingSeconds?: Prisma.IntNullableFilter<"Booking"> | number | null
   extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
@@ -1451,6 +1490,7 @@ export type BookingCreateWithoutCustomerInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1491,6 +1531,7 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1555,6 +1596,7 @@ export type BookingCreateWithoutRecurringInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1596,6 +1638,7 @@ export type BookingUncheckedCreateWithoutRecurringInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1659,6 +1702,7 @@ export type BookingCreateWithoutInvoiceItemsInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1700,6 +1744,7 @@ export type BookingUncheckedCreateWithoutInvoiceItemsInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1753,6 +1798,7 @@ export type BookingUpdateWithoutInvoiceItemsInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1794,6 +1840,7 @@ export type BookingUncheckedUpdateWithoutInvoiceItemsInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1832,6 +1879,7 @@ export type BookingCreateManyDriverInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -1869,6 +1917,7 @@ export type BookingUpdateWithoutDriverInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1909,6 +1958,7 @@ export type BookingUncheckedUpdateWithoutDriverInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1948,6 +1998,7 @@ export type BookingUncheckedUpdateManyWithoutDriverInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1986,6 +2037,7 @@ export type BookingCreateManyCustomerInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -2023,6 +2075,7 @@ export type BookingUpdateWithoutCustomerInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2063,6 +2116,7 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2102,6 +2156,7 @@ export type BookingUncheckedUpdateManyWithoutCustomerInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2141,6 +2196,7 @@ export type BookingCreateManyRecurringInput = {
   eventPricingId?: string | null
   eventSurcharge?: number | null
   waitingCharge?: number | null
+  waitingSeconds?: number | null
   extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
@@ -2177,6 +2233,7 @@ export type BookingUpdateWithoutRecurringInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2218,6 +2275,7 @@ export type BookingUncheckedUpdateWithoutRecurringInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2257,6 +2315,7 @@ export type BookingUncheckedUpdateManyWithoutRecurringInput = {
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2326,6 +2385,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   eventPricingId?: boolean
   eventSurcharge?: boolean
   waitingCharge?: boolean
+  waitingSeconds?: boolean
   extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
@@ -2370,6 +2430,7 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   eventPricingId?: boolean
   eventSurcharge?: boolean
   waitingCharge?: boolean
+  waitingSeconds?: boolean
   extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
@@ -2412,6 +2473,7 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   eventPricingId?: boolean
   eventSurcharge?: boolean
   waitingCharge?: boolean
+  waitingSeconds?: boolean
   extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
@@ -2454,6 +2516,7 @@ export type BookingSelectScalar = {
   eventPricingId?: boolean
   eventSurcharge?: boolean
   waitingCharge?: boolean
+  waitingSeconds?: boolean
   extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
@@ -2463,7 +2526,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "buildingInfo" | "eventPricingId" | "eventSurcharge" | "waitingCharge" | "extraChargeNote" | "isPriority" | "priorityCharge" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "buildingInfo" | "eventPricingId" | "eventSurcharge" | "waitingCharge" | "waitingSeconds" | "extraChargeNote" | "isPriority" | "priorityCharge" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   driver?: boolean | Prisma.Booking$driverArgs<ExtArgs>
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
@@ -2520,6 +2583,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     eventPricingId: string | null
     eventSurcharge: number | null
     waitingCharge: number | null
+    waitingSeconds: number | null
     extraChargeNote: string | null
     isPriority: boolean
     priorityCharge: number | null
@@ -2983,6 +3047,7 @@ export interface BookingFieldRefs {
   readonly eventPricingId: Prisma.FieldRef<"Booking", 'String'>
   readonly eventSurcharge: Prisma.FieldRef<"Booking", 'Float'>
   readonly waitingCharge: Prisma.FieldRef<"Booking", 'Float'>
+  readonly waitingSeconds: Prisma.FieldRef<"Booking", 'Int'>
   readonly extraChargeNote: Prisma.FieldRef<"Booking", 'String'>
   readonly isPriority: Prisma.FieldRef<"Booking", 'Boolean'>
   readonly priorityCharge: Prisma.FieldRef<"Booking", 'Float'>

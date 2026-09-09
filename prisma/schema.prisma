@@ -37,6 +37,7 @@ model Booking {
   eventPricingId String?
   eventSurcharge Float?
   waitingCharge    Float?
+  waitingSeconds   Int?
   extraChargeNote  String?
   isPriority    Boolean   @default(false)
   priorityCharge Float?
