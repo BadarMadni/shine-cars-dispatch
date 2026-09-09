@@ -110,6 +110,8 @@ export const BookingScalarFieldEnum = {
   buildingInfo: 'buildingInfo',
   eventPricingId: 'eventPricingId',
   eventSurcharge: 'eventSurcharge',
+  waitingCharge: 'waitingCharge',
+  extraChargeNote: 'extraChargeNote',
   isPriority: 'isPriority',
   priorityCharge: 'priorityCharge',
   isRecurring: 'isRecurring',

@@ -33,6 +33,7 @@ export type BookingAvgAggregateOutputType = {
   meterFare: number | null
   cashCollected: number | null
   eventSurcharge: number | null
+  waitingCharge: number | null
   priorityCharge: number | null
 }
 
@@ -43,6 +44,7 @@ export type BookingSumAggregateOutputType = {
   meterFare: number | null
   cashCollected: number | null
   eventSurcharge: number | null
+  waitingCharge: number | null
   priorityCharge: number | null
 }
 
@@ -75,6 +77,8 @@ export type BookingMinAggregateOutputType = {
   buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
+  waitingCharge: number | null
+  extraChargeNote: string | null
   isPriority: boolean | null
   priorityCharge: number | null
   isRecurring: boolean | null
@@ -112,6 +116,8 @@ export type BookingMaxAggregateOutputType = {
   buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
+  waitingCharge: number | null
+  extraChargeNote: string | null
   isPriority: boolean | null
   priorityCharge: number | null
   isRecurring: boolean | null
@@ -149,6 +155,8 @@ export type BookingCountAggregateOutputType = {
   buildingInfo: number
   eventPricingId: number
   eventSurcharge: number
+  waitingCharge: number
+  extraChargeNote: number
   isPriority: number
   priorityCharge: number
   isRecurring: number
@@ -166,6 +174,7 @@ export type BookingAvgAggregateInputType = {
   meterFare?: true
   cashCollected?: true
   eventSurcharge?: true
+  waitingCharge?: true
   priorityCharge?: true
 }
 
@@ -176,6 +185,7 @@ export type BookingSumAggregateInputType = {
   meterFare?: true
   cashCollected?: true
   eventSurcharge?: true
+  waitingCharge?: true
   priorityCharge?: true
 }
 
@@ -208,6 +218,8 @@ export type BookingMinAggregateInputType = {
   buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
+  waitingCharge?: true
+  extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
   isRecurring?: true
@@ -245,6 +257,8 @@ export type BookingMaxAggregateInputType = {
   buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
+  waitingCharge?: true
+  extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
   isRecurring?: true
@@ -282,6 +296,8 @@ export type BookingCountAggregateInputType = {
   buildingInfo?: true
   eventPricingId?: true
   eventSurcharge?: true
+  waitingCharge?: true
+  extraChargeNote?: true
   isPriority?: true
   priorityCharge?: true
   isRecurring?: true
@@ -406,6 +422,8 @@ export type BookingGroupByOutputType = {
   buildingInfo: string | null
   eventPricingId: string | null
   eventSurcharge: number | null
+  waitingCharge: number | null
+  extraChargeNote: string | null
   isPriority: boolean
   priorityCharge: number | null
   isRecurring: boolean
@@ -466,6 +484,8 @@ export type BookingWhereInput = {
   buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isRecurring?: Prisma.BoolFilter<"Booking"> | boolean
@@ -507,6 +527,8 @@ export type BookingOrderByWithRelationInput = {
   buildingInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  extraChargeNote?: Prisma.SortOrderInput | Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrderInput | Prisma.SortOrder
   isRecurring?: Prisma.SortOrder
@@ -551,6 +573,8 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isRecurring?: Prisma.BoolFilter<"Booking"> | boolean
@@ -592,6 +616,8 @@ export type BookingOrderByWithAggregationInput = {
   buildingInfo?: Prisma.SortOrderInput | Prisma.SortOrder
   eventPricingId?: Prisma.SortOrderInput | Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrderInput | Prisma.SortOrder
+  extraChargeNote?: Prisma.SortOrderInput | Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrderInput | Prisma.SortOrder
   isRecurring?: Prisma.SortOrder
@@ -637,6 +663,8 @@ export type BookingScalarWhereWithAggregatesInput = {
   buildingInfo?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  waitingCharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
+  extraChargeNote?: Prisma.StringNullableWithAggregatesFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableWithAggregatesFilter<"Booking"> | number | null
   isRecurring?: Prisma.BoolWithAggregatesFilter<"Booking"> | boolean
@@ -672,6 +700,8 @@ export type BookingCreateInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -712,6 +742,8 @@ export type BookingUncheckedCreateInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -748,6 +780,8 @@ export type BookingUpdateInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -788,6 +822,8 @@ export type BookingUncheckedUpdateInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -826,6 +862,8 @@ export type BookingCreateManyInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -861,6 +899,8 @@ export type BookingUpdateManyMutationInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -897,6 +937,8 @@ export type BookingUncheckedUpdateManyInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -934,6 +976,8 @@ export type BookingCountOrderByAggregateInput = {
   buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrder
+  extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
   isRecurring?: Prisma.SortOrder
@@ -949,6 +993,7 @@ export type BookingAvgOrderByAggregateInput = {
   meterFare?: Prisma.SortOrder
   cashCollected?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
 }
 
@@ -981,6 +1026,8 @@ export type BookingMaxOrderByAggregateInput = {
   buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrder
+  extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
   isRecurring?: Prisma.SortOrder
@@ -1018,6 +1065,8 @@ export type BookingMinOrderByAggregateInput = {
   buildingInfo?: Prisma.SortOrder
   eventPricingId?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrder
+  extraChargeNote?: Prisma.SortOrder
   isPriority?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
   isRecurring?: Prisma.SortOrder
@@ -1033,6 +1082,7 @@ export type BookingSumOrderByAggregateInput = {
   meterFare?: Prisma.SortOrder
   cashCollected?: Prisma.SortOrder
   eventSurcharge?: Prisma.SortOrder
+  waitingCharge?: Prisma.SortOrder
   priorityCharge?: Prisma.SortOrder
 }
 
@@ -1254,6 +1304,8 @@ export type BookingCreateWithoutDriverInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1292,6 +1344,8 @@ export type BookingUncheckedCreateWithoutDriverInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1359,6 +1413,8 @@ export type BookingScalarWhereInput = {
   buildingInfo?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventPricingId?: Prisma.StringNullableFilter<"Booking"> | string | null
   eventSurcharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  waitingCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
+  extraChargeNote?: Prisma.StringNullableFilter<"Booking"> | string | null
   isPriority?: Prisma.BoolFilter<"Booking"> | boolean
   priorityCharge?: Prisma.FloatNullableFilter<"Booking"> | number | null
   isRecurring?: Prisma.BoolFilter<"Booking"> | boolean
@@ -1394,6 +1450,8 @@ export type BookingCreateWithoutCustomerInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1432,6 +1490,8 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1494,6 +1554,8 @@ export type BookingCreateWithoutRecurringInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1533,6 +1595,8 @@ export type BookingUncheckedCreateWithoutRecurringInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1594,6 +1658,8 @@ export type BookingCreateWithoutInvoiceItemsInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1633,6 +1699,8 @@ export type BookingUncheckedCreateWithoutInvoiceItemsInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1684,6 +1752,8 @@ export type BookingUpdateWithoutInvoiceItemsInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1723,6 +1793,8 @@ export type BookingUncheckedUpdateWithoutInvoiceItemsInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1759,6 +1831,8 @@ export type BookingCreateManyDriverInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1794,6 +1868,8 @@ export type BookingUpdateWithoutDriverInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1832,6 +1908,8 @@ export type BookingUncheckedUpdateWithoutDriverInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1869,6 +1947,8 @@ export type BookingUncheckedUpdateManyWithoutDriverInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1905,6 +1985,8 @@ export type BookingCreateManyCustomerInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -1940,6 +2022,8 @@ export type BookingUpdateWithoutCustomerInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1978,6 +2062,8 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2015,6 +2101,8 @@ export type BookingUncheckedUpdateManyWithoutCustomerInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2052,6 +2140,8 @@ export type BookingCreateManyRecurringInput = {
   buildingInfo?: string | null
   eventPricingId?: string | null
   eventSurcharge?: number | null
+  waitingCharge?: number | null
+  extraChargeNote?: string | null
   isPriority?: boolean
   priorityCharge?: number | null
   isRecurring?: boolean
@@ -2086,6 +2176,8 @@ export type BookingUpdateWithoutRecurringInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2125,6 +2217,8 @@ export type BookingUncheckedUpdateWithoutRecurringInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2162,6 +2256,8 @@ export type BookingUncheckedUpdateManyWithoutRecurringInput = {
   buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
   priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
   isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -2229,6 +2325,8 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
+  waitingCharge?: boolean
+  extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
   isRecurring?: boolean
@@ -2271,6 +2369,8 @@ export type BookingSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
+  waitingCharge?: boolean
+  extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
   isRecurring?: boolean
@@ -2311,6 +2411,8 @@ export type BookingSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
+  waitingCharge?: boolean
+  extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
   isRecurring?: boolean
@@ -2351,6 +2453,8 @@ export type BookingSelectScalar = {
   buildingInfo?: boolean
   eventPricingId?: boolean
   eventSurcharge?: boolean
+  waitingCharge?: boolean
+  extraChargeNote?: boolean
   isPriority?: boolean
   priorityCharge?: boolean
   isRecurring?: boolean
@@ -2359,7 +2463,7 @@ export type BookingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "buildingInfo" | "eventPricingId" | "eventSurcharge" | "isPriority" | "priorityCharge" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+export type BookingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "pickup" | "dropoff" | "date" | "time" | "distance" | "fare" | "vehicle" | "status" | "source" | "paymentMethod" | "paymentStatus" | "driverId" | "customerId" | "assignedAt" | "fareType" | "meterDistance" | "meterFare" | "cashCollected" | "stops" | "notes" | "pickupDetails" | "dropoffDetails" | "buildingInfo" | "eventPricingId" | "eventSurcharge" | "waitingCharge" | "extraChargeNote" | "isPriority" | "priorityCharge" | "isRecurring" | "recurringId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
 export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   driver?: boolean | Prisma.Booking$driverArgs<ExtArgs>
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
@@ -2415,6 +2519,8 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     buildingInfo: string | null
     eventPricingId: string | null
     eventSurcharge: number | null
+    waitingCharge: number | null
+    extraChargeNote: string | null
     isPriority: boolean
     priorityCharge: number | null
     isRecurring: boolean
@@ -2876,6 +2982,8 @@ export interface BookingFieldRefs {
   readonly buildingInfo: Prisma.FieldRef<"Booking", 'String'>
   readonly eventPricingId: Prisma.FieldRef<"Booking", 'String'>
   readonly eventSurcharge: Prisma.FieldRef<"Booking", 'Float'>
+  readonly waitingCharge: Prisma.FieldRef<"Booking", 'Float'>
+  readonly extraChargeNote: Prisma.FieldRef<"Booking", 'String'>
   readonly isPriority: Prisma.FieldRef<"Booking", 'Boolean'>
   readonly priorityCharge: Prisma.FieldRef<"Booking", 'Float'>
   readonly isRecurring: Prisma.FieldRef<"Booking", 'Boolean'>
