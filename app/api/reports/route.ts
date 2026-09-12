@@ -45,19 +45,31 @@ export async function GET(req: NextRequest) {
     });
 
     const totalRevenue = bookings.reduce((s, b) => s + (b.meterFare || b.fare || 0), 0);
-    const platformRevenue = Math.round(totalRevenue * 0.15 * 100) / 100;
 
-    // Per-driver summary
-    const driverMap = new Map<string, { name: string; rides: number; earnings: number }>();
+    // Fetch per-driver commission rates
+    const allDrivers = await prisma.driver.findMany({ select: { id: true, commissionRate: true } });
+    const rateMap = new Map(allDrivers.map((d) => [d.id, d.commissionRate ?? 20]));
+
+    // Per-driver summary with commission
+    const driverMap = new Map<string, { name: string; rides: number; earnings: number; commission: number; commissionRate: number }>();
+    let platformRevenue = 0;
     for (const b of bookings) {
       if (!b.driver) continue;
-      const d = driverMap.get(b.driver.id) || { name: b.driver.name, rides: 0, earnings: 0 };
+      const rate = rateMap.get(b.driver.id) ?? 20;
+      const fare = b.meterFare || b.fare || 0;
+      const comm = fare * (rate / 100);
+      const d = driverMap.get(b.driver.id) || { name: b.driver.name, rides: 0, earnings: 0, commission: 0, commissionRate: rate };
       d.rides++;
-      d.earnings += b.meterFare || b.fare || 0;
+      d.earnings += fare;
+      d.commission += comm;
+      platformRevenue += comm;
       driverMap.set(b.driver.id, d);
     }
+    platformRevenue = Math.round(platformRevenue * 100) / 100;
     const driverSummary = Array.from(driverMap.entries()).map(([id, d]) => ({
       id, name: d.name, rides: d.rides, earnings: Math.round(d.earnings * 100) / 100,
+      commission: Math.round(d.commission * 100) / 100, commissionRate: d.commissionRate,
+      netEarnings: Math.round((d.earnings - d.commission) * 100) / 100,
     })).sort((a, b) => b.earnings - a.earnings);
 
     // All drivers for filter dropdown

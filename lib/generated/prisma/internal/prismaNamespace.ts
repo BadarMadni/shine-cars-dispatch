@@ -404,6 +404,8 @@ export const ModelName = {
   RecurringBooking: 'RecurringBooking',
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
+  DriverInvoice: 'DriverInvoice',
+  DriverInvoiceItem: 'DriverInvoiceItem',
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
   DriverDocument: 'DriverDocument',
@@ -424,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "booking" | "operator" | "driver" | "customer" | "recurringBooking" | "invoice" | "invoiceItem" | "driverNotification" | "chatMessage" | "driverDocument" | "siteSetting" | "eventPricing"
+    modelProps: "booking" | "operator" | "driver" | "customer" | "recurringBooking" | "invoice" | "invoiceItem" | "driverInvoice" | "driverInvoiceItem" | "driverNotification" | "chatMessage" | "driverDocument" | "siteSetting" | "eventPricing"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -946,6 +948,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DriverInvoice: {
+      payload: Prisma.$DriverInvoicePayload<ExtArgs>
+      fields: Prisma.DriverInvoiceFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DriverInvoiceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DriverInvoiceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        findFirst: {
+          args: Prisma.DriverInvoiceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DriverInvoiceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        findMany: {
+          args: Prisma.DriverInvoiceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>[]
+        }
+        create: {
+          args: Prisma.DriverInvoiceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        createMany: {
+          args: Prisma.DriverInvoiceCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DriverInvoiceCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>[]
+        }
+        delete: {
+          args: Prisma.DriverInvoiceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        update: {
+          args: Prisma.DriverInvoiceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        deleteMany: {
+          args: Prisma.DriverInvoiceDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DriverInvoiceUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DriverInvoiceUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>[]
+        }
+        upsert: {
+          args: Prisma.DriverInvoiceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoicePayload>
+        }
+        aggregate: {
+          args: Prisma.DriverInvoiceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDriverInvoice>
+        }
+        groupBy: {
+          args: Prisma.DriverInvoiceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverInvoiceGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DriverInvoiceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverInvoiceCountAggregateOutputType> | number
+        }
+      }
+    }
+    DriverInvoiceItem: {
+      payload: Prisma.$DriverInvoiceItemPayload<ExtArgs>
+      fields: Prisma.DriverInvoiceItemFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DriverInvoiceItemFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DriverInvoiceItemFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        findFirst: {
+          args: Prisma.DriverInvoiceItemFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DriverInvoiceItemFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        findMany: {
+          args: Prisma.DriverInvoiceItemFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>[]
+        }
+        create: {
+          args: Prisma.DriverInvoiceItemCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        createMany: {
+          args: Prisma.DriverInvoiceItemCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DriverInvoiceItemCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>[]
+        }
+        delete: {
+          args: Prisma.DriverInvoiceItemDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        update: {
+          args: Prisma.DriverInvoiceItemUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        deleteMany: {
+          args: Prisma.DriverInvoiceItemDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DriverInvoiceItemUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DriverInvoiceItemUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>[]
+        }
+        upsert: {
+          args: Prisma.DriverInvoiceItemUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DriverInvoiceItemPayload>
+        }
+        aggregate: {
+          args: Prisma.DriverInvoiceItemAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDriverInvoiceItem>
+        }
+        groupBy: {
+          args: Prisma.DriverInvoiceItemGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverInvoiceItemGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DriverInvoiceItemCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DriverInvoiceItemCountAggregateOutputType> | number
+        }
+      }
+    }
     DriverNotification: {
       payload: Prisma.$DriverNotificationPayload<ExtArgs>
       fields: Prisma.DriverNotificationFieldRefs
@@ -1426,6 +1576,7 @@ export const DriverScalarFieldEnum = {
   vehicleColor: 'vehicleColor',
   vehicleReg: 'vehicleReg',
   passengerLicense: 'passengerLicense',
+  commissionRate: 'commissionRate',
   pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1504,6 +1655,41 @@ export const InvoiceItemScalarFieldEnum = {
 } as const
 
 export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const DriverInvoiceScalarFieldEnum = {
+  id: 'id',
+  driverId: 'driverId',
+  weekStart: 'weekStart',
+  weekEnd: 'weekEnd',
+  totalFares: 'totalFares',
+  commissionRate: 'commissionRate',
+  commissionAmount: 'commissionAmount',
+  licenceFee: 'licenceFee',
+  otherCharges: 'otherCharges',
+  otherChargesNote: 'otherChargesNote',
+  netPayable: 'netPayable',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverInvoiceScalarFieldEnum = (typeof DriverInvoiceScalarFieldEnum)[keyof typeof DriverInvoiceScalarFieldEnum]
+
+
+export const DriverInvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  bookingId: 'bookingId',
+  fare: 'fare',
+  date: 'date',
+  pickup: 'pickup',
+  dropoff: 'dropoff',
+  createdAt: 'createdAt'
+} as const
+
+export type DriverInvoiceItemScalarFieldEnum = (typeof DriverInvoiceItemScalarFieldEnum)[keyof typeof DriverInvoiceItemScalarFieldEnum]
 
 
 export const DriverNotificationScalarFieldEnum = {
@@ -1819,6 +2005,8 @@ export type GlobalOmitConfig = {
   recurringBooking?: Prisma.RecurringBookingOmit
   invoice?: Prisma.InvoiceOmit
   invoiceItem?: Prisma.InvoiceItemOmit
+  driverInvoice?: Prisma.DriverInvoiceOmit
+  driverInvoiceItem?: Prisma.DriverInvoiceItemOmit
   driverNotification?: Prisma.DriverNotificationOmit
   chatMessage?: Prisma.ChatMessageOmit
   driverDocument?: Prisma.DriverDocumentOmit

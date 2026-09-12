@@ -508,6 +508,7 @@ export type BookingWhereInput = {
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   recurring?: Prisma.XOR<Prisma.RecurringBookingNullableScalarRelationFilter, Prisma.RecurringBookingWhereInput> | null
   invoiceItems?: Prisma.InvoiceItemListRelationFilter
+  driverInvoiceItems?: Prisma.DriverInvoiceItemListRelationFilter
 }
 
 export type BookingOrderByWithRelationInput = {
@@ -552,6 +553,7 @@ export type BookingOrderByWithRelationInput = {
   customer?: Prisma.CustomerOrderByWithRelationInput
   recurring?: Prisma.RecurringBookingOrderByWithRelationInput
   invoiceItems?: Prisma.InvoiceItemOrderByRelationAggregateInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemOrderByRelationAggregateInput
 }
 
 export type BookingWhereUniqueInput = Prisma.AtLeast<{
@@ -599,6 +601,7 @@ export type BookingWhereUniqueInput = Prisma.AtLeast<{
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   recurring?: Prisma.XOR<Prisma.RecurringBookingNullableScalarRelationFilter, Prisma.RecurringBookingWhereInput> | null
   invoiceItems?: Prisma.InvoiceItemListRelationFilter
+  driverInvoiceItems?: Prisma.DriverInvoiceItemListRelationFilter
 }, "id">
 
 export type BookingOrderByWithAggregationInput = {
@@ -728,6 +731,7 @@ export type BookingCreateInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutBookingsInput
   recurring?: Prisma.RecurringBookingCreateNestedOneWithoutBookingsInput
   invoiceItems?: Prisma.InvoiceItemCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateInput = {
@@ -769,6 +773,7 @@ export type BookingUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUpdateInput = {
@@ -810,6 +815,7 @@ export type BookingUpdateInput = {
   customer?: Prisma.CustomerUpdateOneWithoutBookingsNestedInput
   recurring?: Prisma.RecurringBookingUpdateOneWithoutBookingsNestedInput
   invoiceItems?: Prisma.InvoiceItemUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateInput = {
@@ -851,6 +857,7 @@ export type BookingUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyInput = {
@@ -1313,6 +1320,20 @@ export type BookingUpdateOneRequiredWithoutInvoiceItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutInvoiceItemsInput, Prisma.BookingUpdateWithoutInvoiceItemsInput>, Prisma.BookingUncheckedUpdateWithoutInvoiceItemsInput>
 }
 
+export type BookingCreateNestedOneWithoutDriverInvoiceItemsInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedCreateWithoutDriverInvoiceItemsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutDriverInvoiceItemsInput
+  connect?: Prisma.BookingWhereUniqueInput
+}
+
+export type BookingUpdateOneRequiredWithoutDriverInvoiceItemsNestedInput = {
+  create?: Prisma.XOR<Prisma.BookingCreateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedCreateWithoutDriverInvoiceItemsInput>
+  connectOrCreate?: Prisma.BookingCreateOrConnectWithoutDriverInvoiceItemsInput
+  upsert?: Prisma.BookingUpsertWithoutDriverInvoiceItemsInput
+  connect?: Prisma.BookingWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.BookingUpdateToOneWithWhereWithoutDriverInvoiceItemsInput, Prisma.BookingUpdateWithoutDriverInvoiceItemsInput>, Prisma.BookingUncheckedUpdateWithoutDriverInvoiceItemsInput>
+}
+
 export type BookingCreateWithoutDriverInput = {
   id?: string
   name: string
@@ -1351,6 +1372,7 @@ export type BookingCreateWithoutDriverInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutBookingsInput
   recurring?: Prisma.RecurringBookingCreateNestedOneWithoutBookingsInput
   invoiceItems?: Prisma.InvoiceItemCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutDriverInput = {
@@ -1391,6 +1413,7 @@ export type BookingUncheckedCreateWithoutDriverInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutDriverInput = {
@@ -1500,6 +1523,7 @@ export type BookingCreateWithoutCustomerInput = {
   driver?: Prisma.DriverCreateNestedOneWithoutBookingsInput
   recurring?: Prisma.RecurringBookingCreateNestedOneWithoutBookingsInput
   invoiceItems?: Prisma.InvoiceItemCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutCustomerInput = {
@@ -1540,6 +1564,7 @@ export type BookingUncheckedCreateWithoutCustomerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutCustomerInput = {
@@ -1606,6 +1631,7 @@ export type BookingCreateWithoutRecurringInput = {
   driver?: Prisma.DriverCreateNestedOneWithoutBookingsInput
   customer?: Prisma.CustomerCreateNestedOneWithoutBookingsInput
   invoiceItems?: Prisma.InvoiceItemCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutRecurringInput = {
@@ -1646,6 +1672,7 @@ export type BookingUncheckedCreateWithoutRecurringInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutBookingInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutRecurringInput = {
@@ -1712,6 +1739,7 @@ export type BookingCreateWithoutInvoiceItemsInput = {
   driver?: Prisma.DriverCreateNestedOneWithoutBookingsInput
   customer?: Prisma.CustomerCreateNestedOneWithoutBookingsInput
   recurring?: Prisma.RecurringBookingCreateNestedOneWithoutBookingsInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemCreateNestedManyWithoutBookingInput
 }
 
 export type BookingUncheckedCreateWithoutInvoiceItemsInput = {
@@ -1752,6 +1780,7 @@ export type BookingUncheckedCreateWithoutInvoiceItemsInput = {
   recurringId?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedCreateNestedManyWithoutBookingInput
 }
 
 export type BookingCreateOrConnectWithoutInvoiceItemsInput = {
@@ -1808,6 +1837,7 @@ export type BookingUpdateWithoutInvoiceItemsInput = {
   driver?: Prisma.DriverUpdateOneWithoutBookingsNestedInput
   customer?: Prisma.CustomerUpdateOneWithoutBookingsNestedInput
   recurring?: Prisma.RecurringBookingUpdateOneWithoutBookingsNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutInvoiceItemsInput = {
@@ -1848,6 +1878,187 @@ export type BookingUncheckedUpdateWithoutInvoiceItemsInput = {
   recurringId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingCreateWithoutDriverInvoiceItemsInput = {
+  id?: string
+  name: string
+  phone: string
+  pickup: string
+  dropoff: string
+  date: string
+  time: string
+  distance: number
+  fare: number
+  vehicle?: string
+  status?: string
+  source?: string
+  paymentMethod?: string
+  paymentStatus?: string
+  assignedAt?: Date | string | null
+  fareType?: string
+  meterDistance?: number | null
+  meterFare?: number | null
+  cashCollected?: number | null
+  stops?: string | null
+  notes?: string | null
+  pickupDetails?: string | null
+  dropoffDetails?: string | null
+  buildingInfo?: string | null
+  eventPricingId?: string | null
+  eventSurcharge?: number | null
+  waitingCharge?: number | null
+  waitingSeconds?: number | null
+  extraChargeNote?: string | null
+  isPriority?: boolean
+  priorityCharge?: number | null
+  isRecurring?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  driver?: Prisma.DriverCreateNestedOneWithoutBookingsInput
+  customer?: Prisma.CustomerCreateNestedOneWithoutBookingsInput
+  recurring?: Prisma.RecurringBookingCreateNestedOneWithoutBookingsInput
+  invoiceItems?: Prisma.InvoiceItemCreateNestedManyWithoutBookingInput
+}
+
+export type BookingUncheckedCreateWithoutDriverInvoiceItemsInput = {
+  id?: string
+  name: string
+  phone: string
+  pickup: string
+  dropoff: string
+  date: string
+  time: string
+  distance: number
+  fare: number
+  vehicle?: string
+  status?: string
+  source?: string
+  paymentMethod?: string
+  paymentStatus?: string
+  driverId?: string | null
+  customerId?: string | null
+  assignedAt?: Date | string | null
+  fareType?: string
+  meterDistance?: number | null
+  meterFare?: number | null
+  cashCollected?: number | null
+  stops?: string | null
+  notes?: string | null
+  pickupDetails?: string | null
+  dropoffDetails?: string | null
+  buildingInfo?: string | null
+  eventPricingId?: string | null
+  eventSurcharge?: number | null
+  waitingCharge?: number | null
+  waitingSeconds?: number | null
+  extraChargeNote?: string | null
+  isPriority?: boolean
+  priorityCharge?: number | null
+  isRecurring?: boolean
+  recurringId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  invoiceItems?: Prisma.InvoiceItemUncheckedCreateNestedManyWithoutBookingInput
+}
+
+export type BookingCreateOrConnectWithoutDriverInvoiceItemsInput = {
+  where: Prisma.BookingWhereUniqueInput
+  create: Prisma.XOR<Prisma.BookingCreateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedCreateWithoutDriverInvoiceItemsInput>
+}
+
+export type BookingUpsertWithoutDriverInvoiceItemsInput = {
+  update: Prisma.XOR<Prisma.BookingUpdateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedUpdateWithoutDriverInvoiceItemsInput>
+  create: Prisma.XOR<Prisma.BookingCreateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedCreateWithoutDriverInvoiceItemsInput>
+  where?: Prisma.BookingWhereInput
+}
+
+export type BookingUpdateToOneWithWhereWithoutDriverInvoiceItemsInput = {
+  where?: Prisma.BookingWhereInput
+  data: Prisma.XOR<Prisma.BookingUpdateWithoutDriverInvoiceItemsInput, Prisma.BookingUncheckedUpdateWithoutDriverInvoiceItemsInput>
+}
+
+export type BookingUpdateWithoutDriverInvoiceItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  pickup?: Prisma.StringFieldUpdateOperationsInput | string
+  dropoff?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  time?: Prisma.StringFieldUpdateOperationsInput | string
+  distance?: Prisma.FloatFieldUpdateOperationsInput | number
+  fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fareType?: Prisma.StringFieldUpdateOperationsInput | string
+  meterDistance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  meterFare?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  driver?: Prisma.DriverUpdateOneWithoutBookingsNestedInput
+  customer?: Prisma.CustomerUpdateOneWithoutBookingsNestedInput
+  recurring?: Prisma.RecurringBookingUpdateOneWithoutBookingsNestedInput
+  invoiceItems?: Prisma.InvoiceItemUpdateManyWithoutBookingNestedInput
+}
+
+export type BookingUncheckedUpdateWithoutDriverInvoiceItemsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  pickup?: Prisma.StringFieldUpdateOperationsInput | string
+  dropoff?: Prisma.StringFieldUpdateOperationsInput | string
+  date?: Prisma.StringFieldUpdateOperationsInput | string
+  time?: Prisma.StringFieldUpdateOperationsInput | string
+  distance?: Prisma.FloatFieldUpdateOperationsInput | number
+  fare?: Prisma.FloatFieldUpdateOperationsInput | number
+  vehicle?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentMethod?: Prisma.StringFieldUpdateOperationsInput | string
+  paymentStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  driverId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  customerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assignedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  fareType?: Prisma.StringFieldUpdateOperationsInput | string
+  meterDistance?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  meterFare?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  cashCollected?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  stops?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  notes?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pickupDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dropoffDetails?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buildingInfo?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventPricingId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  eventSurcharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  waitingSeconds?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  extraChargeNote?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isPriority?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  priorityCharge?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  isRecurring?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  recurringId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  invoiceItems?: Prisma.InvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingCreateManyDriverInput = {
@@ -1927,6 +2138,7 @@ export type BookingUpdateWithoutDriverInput = {
   customer?: Prisma.CustomerUpdateOneWithoutBookingsNestedInput
   recurring?: Prisma.RecurringBookingUpdateOneWithoutBookingsNestedInput
   invoiceItems?: Prisma.InvoiceItemUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutDriverInput = {
@@ -1967,6 +2179,7 @@ export type BookingUncheckedUpdateWithoutDriverInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutDriverInput = {
@@ -2085,6 +2298,7 @@ export type BookingUpdateWithoutCustomerInput = {
   driver?: Prisma.DriverUpdateOneWithoutBookingsNestedInput
   recurring?: Prisma.RecurringBookingUpdateOneWithoutBookingsNestedInput
   invoiceItems?: Prisma.InvoiceItemUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutCustomerInput = {
@@ -2125,6 +2339,7 @@ export type BookingUncheckedUpdateWithoutCustomerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutCustomerInput = {
@@ -2243,6 +2458,7 @@ export type BookingUpdateWithoutRecurringInput = {
   driver?: Prisma.DriverUpdateOneWithoutBookingsNestedInput
   customer?: Prisma.CustomerUpdateOneWithoutBookingsNestedInput
   invoiceItems?: Prisma.InvoiceItemUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateWithoutRecurringInput = {
@@ -2283,6 +2499,7 @@ export type BookingUncheckedUpdateWithoutRecurringInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   invoiceItems?: Prisma.InvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
+  driverInvoiceItems?: Prisma.DriverInvoiceItemUncheckedUpdateManyWithoutBookingNestedInput
 }
 
 export type BookingUncheckedUpdateManyWithoutRecurringInput = {
@@ -2331,10 +2548,12 @@ export type BookingUncheckedUpdateManyWithoutRecurringInput = {
 
 export type BookingCountOutputType = {
   invoiceItems: number
+  driverInvoiceItems: number
 }
 
 export type BookingCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   invoiceItems?: boolean | BookingCountOutputTypeCountInvoiceItemsArgs
+  driverInvoiceItems?: boolean | BookingCountOutputTypeCountDriverInvoiceItemsArgs
 }
 
 /**
@@ -2352,6 +2571,13 @@ export type BookingCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Exte
  */
 export type BookingCountOutputTypeCountInvoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.InvoiceItemWhereInput
+}
+
+/**
+ * BookingCountOutputType without action
+ */
+export type BookingCountOutputTypeCountDriverInvoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DriverInvoiceItemWhereInput
 }
 
 
@@ -2397,6 +2623,7 @@ export type BookingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
   recurring?: boolean | Prisma.Booking$recurringArgs<ExtArgs>
   invoiceItems?: boolean | Prisma.Booking$invoiceItemsArgs<ExtArgs>
+  driverInvoiceItems?: boolean | Prisma.Booking$driverInvoiceItemsArgs<ExtArgs>
   _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["booking"]>
 
@@ -2532,6 +2759,7 @@ export type BookingInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   customer?: boolean | Prisma.Booking$customerArgs<ExtArgs>
   recurring?: boolean | Prisma.Booking$recurringArgs<ExtArgs>
   invoiceItems?: boolean | Prisma.Booking$invoiceItemsArgs<ExtArgs>
+  driverInvoiceItems?: boolean | Prisma.Booking$driverInvoiceItemsArgs<ExtArgs>
   _count?: boolean | Prisma.BookingCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type BookingIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2552,6 +2780,7 @@ export type $BookingPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     customer: Prisma.$CustomerPayload<ExtArgs> | null
     recurring: Prisma.$RecurringBookingPayload<ExtArgs> | null
     invoiceItems: Prisma.$InvoiceItemPayload<ExtArgs>[]
+    driverInvoiceItems: Prisma.$DriverInvoiceItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2989,6 +3218,7 @@ export interface Prisma__BookingClient<T, Null = never, ExtArgs extends runtime.
   customer<T extends Prisma.Booking$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   recurring<T extends Prisma.Booking$recurringArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$recurringArgs<ExtArgs>>): Prisma.Prisma__RecurringBookingClient<runtime.Types.Result.GetResult<Prisma.$RecurringBookingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   invoiceItems<T extends Prisma.Booking$invoiceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$invoiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  driverInvoiceItems<T extends Prisma.Booking$driverInvoiceItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Booking$driverInvoiceItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DriverInvoiceItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3534,6 +3764,30 @@ export type Booking$invoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.InvoiceItemScalarFieldEnum | Prisma.InvoiceItemScalarFieldEnum[]
+}
+
+/**
+ * Booking.driverInvoiceItems
+ */
+export type Booking$driverInvoiceItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DriverInvoiceItem
+   */
+  select?: Prisma.DriverInvoiceItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DriverInvoiceItem
+   */
+  omit?: Prisma.DriverInvoiceItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DriverInvoiceItemInclude<ExtArgs> | null
+  where?: Prisma.DriverInvoiceItemWhereInput
+  orderBy?: Prisma.DriverInvoiceItemOrderByWithRelationInput | Prisma.DriverInvoiceItemOrderByWithRelationInput[]
+  cursor?: Prisma.DriverInvoiceItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DriverInvoiceItemScalarFieldEnum | Prisma.DriverInvoiceItemScalarFieldEnum[]
 }
 
 /**

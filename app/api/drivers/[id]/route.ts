@@ -31,6 +31,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
         id: driver.id, name: driver.name, email: driver.email, phone: driver.phone,
         status: driver.status, isAvailable: driver.isAvailable, isEnabled: driver.isEnabled,
         vehicleMake: driver.vehicleMake, vehicleColor: driver.vehicleColor, vehicleReg: driver.vehicleReg, passengerLicense: driver.passengerLicense,
+        commissionRate: driver.commissionRate,
         createdAt: driver.createdAt, documents, bookings: driver.bookings,
       },
     });
@@ -62,6 +63,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     if (body.vehicleColor !== undefined) data.vehicleColor = body.vehicleColor || null;
     if (body.vehicleReg !== undefined) data.vehicleReg = body.vehicleReg || null;
     if (body.passengerLicense !== undefined) data.passengerLicense = body.passengerLicense ? parseInt(body.passengerLicense) : null;
+    if (body.commissionRate !== undefined) {
+      const rate = parseFloat(body.commissionRate);
+      if (!isNaN(rate) && rate >= 0 && rate <= 100) data.commissionRate = rate;
+    }
 
     if (!Object.keys(data).length) {
       return NextResponse.json({ error: "Invalid data" }, { status: 400 });

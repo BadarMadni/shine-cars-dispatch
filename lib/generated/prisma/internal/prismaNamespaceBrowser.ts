@@ -58,6 +58,8 @@ export const ModelName = {
   RecurringBooking: 'RecurringBooking',
   Invoice: 'Invoice',
   InvoiceItem: 'InvoiceItem',
+  DriverInvoice: 'DriverInvoice',
+  DriverInvoiceItem: 'DriverInvoiceItem',
   DriverNotification: 'DriverNotification',
   ChatMessage: 'ChatMessage',
   DriverDocument: 'DriverDocument',
@@ -152,6 +154,7 @@ export const DriverScalarFieldEnum = {
   vehicleColor: 'vehicleColor',
   vehicleReg: 'vehicleReg',
   passengerLicense: 'passengerLicense',
+  commissionRate: 'commissionRate',
   pushToken: 'pushToken',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -230,6 +233,41 @@ export const InvoiceItemScalarFieldEnum = {
 } as const
 
 export type InvoiceItemScalarFieldEnum = (typeof InvoiceItemScalarFieldEnum)[keyof typeof InvoiceItemScalarFieldEnum]
+
+
+export const DriverInvoiceScalarFieldEnum = {
+  id: 'id',
+  driverId: 'driverId',
+  weekStart: 'weekStart',
+  weekEnd: 'weekEnd',
+  totalFares: 'totalFares',
+  commissionRate: 'commissionRate',
+  commissionAmount: 'commissionAmount',
+  licenceFee: 'licenceFee',
+  otherCharges: 'otherCharges',
+  otherChargesNote: 'otherChargesNote',
+  netPayable: 'netPayable',
+  status: 'status',
+  paidAt: 'paidAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DriverInvoiceScalarFieldEnum = (typeof DriverInvoiceScalarFieldEnum)[keyof typeof DriverInvoiceScalarFieldEnum]
+
+
+export const DriverInvoiceItemScalarFieldEnum = {
+  id: 'id',
+  invoiceId: 'invoiceId',
+  bookingId: 'bookingId',
+  fare: 'fare',
+  date: 'date',
+  pickup: 'pickup',
+  dropoff: 'dropoff',
+  createdAt: 'createdAt'
+} as const
+
+export type DriverInvoiceItemScalarFieldEnum = (typeof DriverInvoiceItemScalarFieldEnum)[keyof typeof DriverInvoiceItemScalarFieldEnum]
 
 
 export const DriverNotificationScalarFieldEnum = {

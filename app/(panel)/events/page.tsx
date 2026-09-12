@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Zap, AlertTriangle, MapPin, Power } from "lucide-react";
+import { Zap, AlertTriangle, MapPin, Power, PoundSterling } from "lucide-react";
 import EventPricingForm from "@/components/dispatch/EventPricingForm";
 import EventPricingList from "@/components/dispatch/EventPricingList";
 
@@ -20,6 +20,8 @@ export default function EventsPage() {
   const [systemOpen, setSystemOpen] = useState(true);
   const [systemLoading, setSystemLoading] = useState(false);
   const [reopeningTime, setReopeningTime] = useState("08:00");
+  const [licenceFee, setLicenceFee] = useState("3");
+  const [licenceSaving, setLicenceSaving] = useState(false);
 
   const load = useCallback(() => {
     fetch("/api/events").then((r) => r.json()).then((d) => setEvents(d.events || [])).catch(() => {});
@@ -31,6 +33,7 @@ export default function EventsPage() {
     fetch("/api/settings/priority").then((r) => r.json()).then((d) => setPriorityEnabled(d.enabled)).catch(() => {});
     fetch("/api/settings/march-surcharge").then((r) => r.json()).then((d) => setMarchSurchargeOn(d.enabled !== false)).catch(() => {});
     fetch("/api/settings/system-status").then((r) => r.json()).then((d) => { setSystemOpen(d.open); setReopeningTime(d.reopeningTime || "08:00"); }).catch(() => {});
+    fetch("/api/settings/licence-fee").then((r) => r.json()).then((d) => setLicenceFee(String(d.fee ?? 3))).catch(() => {});
   }, []);
 
   const togglePriority = async () => {
@@ -143,6 +146,34 @@ export default function EventsPage() {
           className={`relative w-12 h-6 rounded-full transition-colors cursor-pointer ${marchSurchargeOn ? "bg-blue-500" : "bg-gray-300"}`}>
           <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${marchSurchargeOn ? "translate-x-6.5" : "translate-x-0.5"}`} />
         </button>
+      </div>
+
+      {/* Driver Licence Fee */}
+      <div className="bg-white rounded-2xl border border-gray-100 p-5">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center">
+              <PoundSterling className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <h3 className="text-navy font-bold text-sm">Driver Licence Fee</h3>
+              <p className="text-navy/50 text-xs">Weekly fee charged to drivers on each invoice</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-navy/40 text-sm">£</span>
+            <input type="number" value={licenceFee} onChange={(e) => setLicenceFee(e.target.value)}
+              className="w-20 border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-navy font-bold outline-none focus:border-crimson/40 text-center" min="0" step="0.5" />
+            <span className="text-navy/40 text-xs">/week</span>
+            <button disabled={licenceSaving} onClick={async () => {
+              setLicenceSaving(true);
+              await fetch("/api/settings/licence-fee", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ fee: licenceFee }) });
+              setLicenceSaving(false);
+            }} className="text-xs text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-1.5 rounded-lg font-semibold cursor-pointer transition-colors">
+              {licenceSaving ? "..." : "Save"}
+            </button>
+          </div>
+        </div>
       </div>
 
       <EventPricingForm onCreated={load} />

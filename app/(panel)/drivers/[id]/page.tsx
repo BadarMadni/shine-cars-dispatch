@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Mail, Phone, Clock, Car, Palette, Hash, Loader2, Shield, Power, Users } from "lucide-react";
+import { ArrowLeft, Mail, Phone, Clock, Car, Palette, Hash, Loader2, Shield, Power, Users, Percent } from "lucide-react";
 import StatusBadge from "@/components/dispatch/StatusBadge";
 import DriverBookingStats from "@/components/dispatch/DriverBookingStats";
 import DriverBookingsList from "@/components/dispatch/DriverBookingsList";
@@ -11,6 +11,7 @@ interface Driver {
   id: string; name: string; email: string; phone: string;
   status: string; isAvailable: boolean; isEnabled: boolean;
   vehicleMake?: string; vehicleColor?: string; vehicleReg?: string; passengerLicense?: number;
+  commissionRate?: number;
   createdAt: string;
   bookings: { id: string; pickup: string; dropoff: string; pickupDetails?: string | null; dropoffDetails?: string | null; date: string; time: string; status: string; fare?: number; vehicle?: string }[];
 }
@@ -20,11 +21,14 @@ export default function DriverDetailPage({ params }: { params: Promise<{ id: str
   const router = useRouter();
   const [driver, setDriver] = useState<Driver | null>(null);
   const [loading, setLoading] = useState(true);
+  const [editingComm, setEditingComm] = useState(false);
+  const [commInput, setCommInput] = useState("");
+  const [savingComm, setSavingComm] = useState(false);
 
   useEffect(() => {
     fetch(`/api/drivers/${id}`)
       .then((r) => r.json())
-      .then((d) => setDriver(d.driver || null))
+      .then((d) => { setDriver(d.driver || null); setCommInput(String(d.driver?.commissionRate ?? 20)); })
       .catch(() => setDriver(null))
       .finally(() => setLoading(false));
   }, [id]);
@@ -80,7 +84,7 @@ export default function DriverDetailPage({ params }: { params: Promise<{ id: str
       </div>
 
       {/* Vehicle + Quick Info */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
         {[
           { icon: Car, label: "Vehicle", value: driver.vehicleMake || "Not set", color: "text-blue-600", bg: "bg-blue-50" },
           { icon: Palette, label: "Colour", value: driver.vehicleColor || "Not set", color: "text-purple-600", bg: "bg-purple-50" },
@@ -97,9 +101,40 @@ export default function DriverDetailPage({ params }: { params: Promise<{ id: str
             </div>
           </div>
         ))}
+        {/* Commission Card - Editable */}
+        <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+          <div className="w-10 h-10 bg-crimson/10 rounded-xl flex items-center justify-center shrink-0">
+            <Percent className="w-5 h-5 text-crimson" />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[11px] text-navy/40 font-medium">Commission</p>
+            {editingComm ? (
+              <div className="flex items-center gap-1 mt-0.5">
+                <input type="number" value={commInput} onChange={(e) => setCommInput(e.target.value)}
+                  className="w-16 text-sm font-bold text-navy border border-gray-200 rounded px-1.5 py-0.5" min="0" max="100" step="1" />
+                <span className="text-xs text-navy/40">%</span>
+                <button disabled={savingComm} onClick={async () => {
+                  setSavingComm(true);
+                  try {
+                    await fetch(`/api/drivers/${id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ commissionRate: commInput }) });
+                    setDriver((prev) => prev ? { ...prev, commissionRate: parseFloat(commInput) } : prev);
+                    setEditingComm(false);
+                  } catch {}
+                  setSavingComm(false);
+                }} className="text-[10px] text-white bg-crimson px-2 py-0.5 rounded font-semibold cursor-pointer">
+                  {savingComm ? "..." : "Save"}
+                </button>
+              </div>
+            ) : (
+              <p className="text-sm text-crimson font-bold cursor-pointer" onClick={() => setEditingComm(true)}>
+                {driver.commissionRate ?? 20}% <span className="text-[10px] text-navy/30 font-normal ml-1">click to edit</span>
+              </p>
+            )}
+          </div>
+        </div>
       </div>
 
-      <DriverBookingStats bookings={driver.bookings} />
+      <DriverBookingStats bookings={driver.bookings} commissionRate={driver.commissionRate ?? 20} />
       <DriverBookingsList bookings={driver.bookings} />
     </div>
   );

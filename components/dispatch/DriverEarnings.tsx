@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { Users, TrendingUp } from "lucide-react";
 
-interface DriverSummary { id: string; name: string; rides: number; earnings: number }
+interface DriverSummary { id: string; name: string; rides: number; earnings: number; commission?: number; commissionRate?: number; netEarnings?: number }
 
 export default function DriverEarnings({ drivers }: { drivers: DriverSummary[] }) {
   if (!drivers.length) return null;
@@ -30,9 +30,12 @@ export default function DriverEarnings({ drivers }: { drivers: DriverSummary[] }
                 <p className="text-sm font-semibold text-navy truncate">{d.name}</p>
                 <div className="flex items-center gap-3 shrink-0">
                   <span className="text-[11px] text-navy/40 font-medium">{d.rides} rides</span>
+                  {d.commissionRate !== undefined && (
+                    <span className="text-[10px] text-crimson font-semibold">{d.commissionRate}%</span>
+                  )}
                   <span className="text-sm font-bold text-navy flex items-center gap-0.5">
                     <TrendingUp className="w-3 h-3 text-green-500" />
-                    £{d.earnings.toFixed(2)}
+                    £{(d.netEarnings ?? d.earnings).toFixed(2)}
                   </span>
                 </div>
               </div>

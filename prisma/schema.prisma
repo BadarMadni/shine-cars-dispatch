@@ -48,7 +48,8 @@ model Booking {
   driver        Driver?   @relation(fields: [driverId], references: [id])
   customer      Customer? @relation(fields: [customerId], references: [id])
   recurring     RecurringBooking? @relation(fields: [recurringId], references: [id])
-  invoiceItems  InvoiceItem[]
+  invoiceItems        InvoiceItem[]
+  driverInvoiceItems  DriverInvoiceItem[]
 
   @@index([status])
   @@index([createdAt])
@@ -82,6 +83,7 @@ model Driver {
   vehicleColor      String?
   vehicleReg        String?
   passengerLicense  Int?
+  commissionRate    Float     @default(20)
   pushToken         String?
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
@@ -90,6 +92,7 @@ model Driver {
   recurringBookings RecurringBooking[]
   notifications     DriverNotification[]
   chatMessages      ChatMessage[]
+  driverInvoices    DriverInvoice[]
 }
 
 model Customer {
@@ -170,6 +173,47 @@ model InvoiceItem {
   createdAt DateTime @default(now())
   invoice   Invoice  @relation(fields: [invoiceId], references: [id])
   booking   Booking  @relation(fields: [bookingId], references: [id])
+
+  @@index([invoiceId])
+  @@index([bookingId])
+}
+
+model DriverInvoice {
+  id               String    @id @default(cuid())
+  driverId         String
+  weekStart        String
+  weekEnd          String
+  totalFares       Float     @default(0)
+  commissionRate   Float     @default(20)
+  commissionAmount Float     @default(0)
+  licenceFee       Float     @default(0)
+  otherCharges     Float     @default(0)
+  otherChargesNote String?
+  netPayable       Float     @default(0)
+  status           String    @default("unpaid")
+  paidAt           DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  driver           Driver    @relation(fields: [driverId], references: [id])
+  items            DriverInvoiceItem[]
+
+  @@unique([driverId, weekStart])
+  @@index([driverId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model DriverInvoiceItem {
+  id        String   @id @default(cuid())
+  invoiceId String
+  bookingId String
+  fare      Float
+  date      String
+  pickup    String
+  dropoff   String
+  createdAt DateTime @default(now())
+  invoice   DriverInvoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+  booking   Booking       @relation(fields: [bookingId], references: [id])
 
   @@index([invoiceId])
   @@index([bookingId])

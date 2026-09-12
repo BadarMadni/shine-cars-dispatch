@@ -77,6 +77,16 @@ export type Invoice = Prisma.InvoiceModel
  */
 export type InvoiceItem = Prisma.InvoiceItemModel
 /**
+ * Model DriverInvoice
+ * 
+ */
+export type DriverInvoice = Prisma.DriverInvoiceModel
+/**
+ * Model DriverInvoiceItem
+ * 
+ */
+export type DriverInvoiceItem = Prisma.DriverInvoiceItemModel
+/**
  * Model DriverNotification
  * 
  */

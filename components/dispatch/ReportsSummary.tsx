@@ -13,7 +13,7 @@ interface Props {
 const cards = [
   { key: "totalRides", label: "Total Rides", icon: Car, color: "from-blue-500 to-blue-600" },
   { key: "totalRevenue", label: "Total Revenue", icon: PoundSterling, color: "from-green-500 to-green-600", currency: true },
-  { key: "platformRevenue", label: "Platform (15%)", icon: TrendingUp, color: "from-indigo-500 to-indigo-600", currency: true },
+  { key: "platformRevenue", label: "Company Revenue", icon: TrendingUp, color: "from-indigo-500 to-indigo-600", currency: true },
   { key: "driverCount", label: "Active Drivers", icon: Users, color: "from-purple-500 to-purple-600" },
 ] as const;
 
